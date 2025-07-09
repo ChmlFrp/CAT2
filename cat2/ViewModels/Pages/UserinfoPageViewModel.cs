@@ -30,6 +30,7 @@ public partial class UserinfoPageViewModel : ObservableObject
         IsFlyoutOpen = true;
     }
 
+
     private async void Loading(object sender, EventArgs e)
     {
         var userInfo = await User.GetUserInfo();
@@ -51,21 +52,11 @@ public partial class UserinfoPageViewModel : ObservableObject
         Regtime = $"注册时间：{userInfo.regtime}";
         TunnelCount = $"隧道使用：{userInfo.tunnelCount}/{userInfo.tunnel}";
         Bandwidth = $"带宽限制：国内{userInfo.bandwidth}m | 国外{userInfo.bandwidth * 4}m";
-
         WritingLog("加载用户信息成功");
 
         if (CurrentImage != null) return;
-        var tempUserImage = Path.GetTempFileName();
-        if (await Http.GetFile(userInfo.userimg, tempUserImage))
-        {
-            CurrentImage = new BitmapImage();
-            CurrentImage.BeginInit();
-            CurrentImage.CacheOption = BitmapCacheOption.OnLoad;
-            CurrentImage.UriSource = new Uri(tempUserImage);
-            CurrentImage.EndInit();
-        }
-
-        File.Delete(tempUserImage);
+        CurrentImage = new BitmapImage(new Uri(userInfo.userimg));
+        WritingLog("用户头像加载成功");
     }
 
     [RelayCommand]

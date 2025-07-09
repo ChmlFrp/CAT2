@@ -13,28 +13,34 @@
         Margin="0,25,35,25"
         HorizontalAlignment="Right"
         VerticalAlignment="Stretch">
-
         <StackPanel
             Orientation="Vertical"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Margin="10">
 
-            <ui:Image
-                Margin="0,0,0,10"
-                Source="{Binding CurrentImage,Mode=TwoWay}"
-                CornerRadius="100"
-                Height="150" />
+            <Grid
+                Height="150"
+                Width="150"
+                Margin="0,0,0,10">
+                <ui:Image
+                    Source="https://chmlfrp.cn/favicon.ico"
+                    CornerRadius="100" />
+
+                <ui:Image
+                    Source="{Binding CurrentImage}"
+                    CornerRadius="100" />
+            </Grid>
 
             <ui:TextBlock
-                Margin="0,0,0,10"
                 HorizontalAlignment="Center"
+                Margin="0,0,0,10"
                 Text="{Binding Name,Mode=TwoWay}"
                 FontSize="18"
                 FontWeight="Bold" />
             <Label
-                Margin="0,0,0,10"
                 HorizontalAlignment="Center"
+                Margin="0,0,0,10"
                 Content="{Binding Email,Mode=TwoWay}"
                 Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
 
@@ -61,7 +67,6 @@
                 <StackPanel
                     Orientation="Vertical">
                     <TextBlock
-                        HorizontalAlignment="Left"
                         Text="你下好退出的决心了吗？"
                         TextWrapping="WrapWithOverflow" />
 
