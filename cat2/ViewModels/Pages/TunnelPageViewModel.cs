@@ -25,7 +25,7 @@ public partial class TunnelPageViewModel : ObservableObject
     {
         LoadNodes();
         LoadTunnels(null, null);
-        var timer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(1) };
+        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
         timer.Tick += LoadTunnels;
         timer.Start();
     }
@@ -65,7 +65,6 @@ public partial class TunnelPageViewModel : ObservableObject
     {
         ListDataContext = [];
         Offlinelist = [];
-
         var tunnelsData = await GetTunnelsData();
         if (tunnelsData == null)
         {
@@ -98,6 +97,7 @@ public partial class TunnelPageViewModel : ObservableObject
                     Info = $"[节点名称:{tunnelData.node}]-[隧道类型:{tunnelData.type}]",
                     Tooltip = $"[内网端口:{tunnelData.nport}]-[外网端口/连接域名:{tunnelData.dorp}]-[节点状态:{tunnelData.nodestate}]"
                 };
+
                 ListDataContext.Add(person);
                 if (tunnelData.nodestate != "online") Offlinelist.Add(person);
             }
@@ -162,106 +162,94 @@ public partial class TunnelItem(TunnelPageViewModel parentViewModel, string url)
     {
         IsEnabled = false;
         if (IsTunnelStarted)
-        {
-            StartTunnel(Name, StartTrueHandler, StartFalseHandler, IniUnKnown,
-                FrpcNotExists, TunnelRunning);
-
-            void TunnelRunning()
-            {
-                Application.Current.Dispatcher.Invoke(() =>
+            StartTunnel(Name,
+                () =>
                 {
-                    ShowTip(
-                        "隧道已在运行",
-                        $"隧道 {Name} 已在运行中。",
-                        ControlAppearance.Danger,
-                        SymbolRegular.Warning24);
-                    IsEnabled = true;
-                });
-            }
-
-            void FrpcNotExists()
-            {
-                Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ShowTip("隧道启动成功",
+                            $"隧道 {Name} 已成功启动，链接已复制到剪切板。",
+                            ControlAppearance.Success,
+                            SymbolRegular.Checkmark24);
+                        IsEnabled = true;
+                        Clipboard.SetDataObject(url);
+                    });
+                },
+                () =>
                 {
-                    ShowTip(
-                        "FRPC 暂未安装",
-                        "请等待一会，或重新启动。（软件会自动安装）",
-                        ControlAppearance.Danger,
-                        SymbolRegular.TagError24);
-                    IsTunnelStarted = false;
-                    IsEnabled = true;
-                });
-            }
-
-            void IniUnKnown()
-            {
-                Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ShowTip("隧道启动失败",
+                            $"隧道 {Name} 启动失败，具体请看日志。",
+                            ControlAppearance.Danger,
+                            SymbolRegular.TagError24);
+                        IsTunnelStarted = false;
+                        IsEnabled = true;
+                    });
+                },
+                () =>
                 {
-                    ShowTip(
-                        "隧道启动数据获取失败",
-                        "请检查网络状态，或查看API状态。",
-                        ControlAppearance.Danger,
-                        SymbolRegular.TagError24);
-                    IsTunnelStarted = false;
-                    IsEnabled = true;
-                });
-            }
-
-            void StartFalseHandler()
-            {
-                Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ShowTip(
+                            "隧道启动数据获取失败",
+                            "请检查网络状态，或查看API状态。",
+                            ControlAppearance.Danger,
+                            SymbolRegular.TagError24);
+                        IsTunnelStarted = false;
+                        IsEnabled = true;
+                    });
+                },
+                () =>
                 {
-                    ShowTip(
-                        "隧道启动失败",
-                        $"隧道 {Name} 启动失败，具体请看日志。",
-                        ControlAppearance.Danger,
-                        SymbolRegular.TagError24);
-                    IsTunnelStarted = false;
-                    IsEnabled = true;
-                });
-            }
-
-            void StartTrueHandler()
-            {
-                Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ShowTip(
+                            "FRPC 暂未安装",
+                            "请等待一会，或重新启动。（软件会自动安装）",
+                            ControlAppearance.Danger,
+                            SymbolRegular.TagError24);
+                        IsTunnelStarted = false;
+                        IsEnabled = true;
+                    });
+                },
+                () =>
                 {
-                    ShowTip("隧道启动成功",
-                        $"隧道 {Name} 已成功启动，链接已复制到剪切板。",
-                        ControlAppearance.Success,
-                        SymbolRegular.Checkmark24);
-                    IsEnabled = true;
-                    Clipboard.SetDataObject(url);
-                });
-            }
-        }
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ShowTip(
+                            "隧道已在运行",
+                            $"隧道 {Name} 已在运行中。",
+                            ControlAppearance.Danger,
+                            SymbolRegular.Warning24);
+                        IsEnabled = true;
+                    });
+                }
+            );
         else
-        {
-            StopTunnel(Name, StopTrueHandler, StopFalseHandler);
-
-            void StopTrueHandler()
-            {
-                Application.Current.Dispatcher.Invoke(() =>
+            StopTunnel(Name,
+                () =>
                 {
-                    ShowTip("隧道关闭成功",
-                        $"隧道 {Name} 已成功关闭。",
-                        ControlAppearance.Success,
-                        SymbolRegular.Checkmark24);
-                    IsEnabled = true;
-                });
-            }
-
-            void StopFalseHandler()
-            {
-                Application.Current.Dispatcher.Invoke(() =>
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ShowTip("隧道关闭成功",
+                            $"隧道 {Name} 已成功关闭。",
+                            ControlAppearance.Success,
+                            SymbolRegular.Checkmark24);
+                        IsEnabled = true;
+                    });
+                },
+                () =>
                 {
-                    ShowTip("隧道关闭失败",
-                        $"隧道 {Name} 已退出。",
-                        ControlAppearance.Danger,
-                        SymbolRegular.TagError24);
-                    IsEnabled = true;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ShowTip("隧道关闭失败",
+                            $"隧道 {Name} 已退出。",
+                            ControlAppearance.Danger,
+                            SymbolRegular.TagError24);
+                        IsEnabled = true;
+                    });
                 });
-            }
-        }
     }
 
 
@@ -286,7 +274,6 @@ public partial class TunnelItem(TunnelPageViewModel parentViewModel, string url)
     {
         IsFlyoutOpen = true;
     }
-
 
     [RelayCommand]
     private void CopyTunnel()

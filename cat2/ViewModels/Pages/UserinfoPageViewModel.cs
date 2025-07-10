@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using static ChmlFrp.SDK.API.User;
 
 namespace CAT2.ViewModels;
 
@@ -18,9 +19,13 @@ public partial class UserinfoPageViewModel : ObservableObject
 
     public UserinfoPageViewModel()
     {
-        Loading(null, null);
-        var timer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(1) };
-        timer.Tick += Loading;
+        LoadData();
+        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
+        timer.Tick += (_, _) =>
+        {
+            GetUserInfo();
+            LoadData();
+        };
         timer.Start();
     }
 
@@ -30,11 +35,9 @@ public partial class UserinfoPageViewModel : ObservableObject
         IsFlyoutOpen = true;
     }
 
-
-    private async void Loading(object sender, EventArgs e)
+    private void LoadData()
     {
-        var userInfo = await User.GetUserInfo();
-        if (userInfo == null)
+        if (UserInfo == null)
         {
             WritingLog("加载用户信息失败");
             ShowTip(
@@ -45,17 +48,17 @@ public partial class UserinfoPageViewModel : ObservableObject
             return;
         }
 
-        Name = userInfo.username;
-        Email = userInfo.email;
-        Group = $"用户组：{userInfo.usergroup}";
-        Integral = $"积分：{userInfo.integral}";
-        Regtime = $"注册时间：{userInfo.regtime}";
-        TunnelCount = $"隧道使用：{userInfo.tunnelCount}/{userInfo.tunnel}";
-        Bandwidth = $"带宽限制：国内{userInfo.bandwidth}m | 国外{userInfo.bandwidth * 4}m";
+        Name = UserInfo.username;
+        Email = UserInfo.email;
+        Group = $"用户组：{UserInfo.usergroup}";
+        Integral = $"积分：{UserInfo.integral}";
+        Regtime = $"注册时间：{UserInfo.regtime}";
+        TunnelCount = $"隧道使用：{UserInfo.tunnelCount}/{UserInfo.tunnel}";
+        Bandwidth = $"带宽限制：国内{UserInfo.bandwidth}m | 国外{UserInfo.bandwidth * 4}m";
         WritingLog("加载用户信息成功");
 
         if (CurrentImage != null) return;
-        CurrentImage = new BitmapImage(new Uri(userInfo.userimg));
+        CurrentImage = new BitmapImage(new Uri(UserInfo.userimg));
         WritingLog("用户头像加载成功");
     }
 

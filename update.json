@@ -1,16 +1,9 @@
 {
-    "CAT1": {
-        "version": "0.0.3",
-        "data": {
-            "url": ""
-        }
-    },
-    
-    "CAT2": {
-        "version": "1.0.1.6",
-        "data": {
-            "url": "https://gitcode.com/Qyzgj/cat2/releases/download/1.0.1.6/Release.exe"
-        }
-    },
-    "state": "success"
+  "CAT2": {
+    "version": "1.0.1.7",
+    "data": {
+      "url": "https://gitcode.com/Qyzgj/cat2/releases/download/1.0.1.7/Release.exe"
+    }
+  },
+  "state": "success"
 }
