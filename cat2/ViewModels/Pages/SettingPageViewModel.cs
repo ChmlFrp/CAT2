@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace CAT2.ViewModels;
 
@@ -7,7 +9,15 @@ public partial class SettingPageViewModel : ObservableObject
     [ObservableProperty] private string _assemblyName = Model.AssemblyName;
     [ObservableProperty] private string _copyright = Model.Copyright;
     [ObservableProperty] private string _fileVersion = $"文件版本：{Model.FileVersion}";
+    [ObservableProperty] private bool _isAutoUpdateEnabled;
     [ObservableProperty] private string _version = Model.Version;
+
+    public SettingPageViewModel()
+    {
+        var data = File.ReadAllText(SettingsFilePath);
+        var settings = JsonSerializer.Deserialize<Dictionary<string, bool>>(data);
+        if (settings.TryGetValue("IsAutoUpdate", out var isAutoUpdate)) IsAutoUpdateEnabled = isAutoUpdate;
+    }
 
     [RelayCommand]
     private void OpenDataPath()
@@ -37,5 +47,36 @@ public partial class SettingPageViewModel : ObservableObject
             "所有缓存文件已被删除。",
             ControlAppearance.Success,
             SymbolRegular.PresenceAvailable24);
+    }
+
+    [RelayCommand]
+    private void AutoUpdate()
+    {
+        if (IsAutoUpdateEnabled)
+        {
+            ShowTip(
+                "自动更新已启用",
+                "应用将在下次启动时自动检查更新。",
+                ControlAppearance.Success,
+                SymbolRegular.CheckmarkCircle24);
+            File.WriteAllText(SettingsFilePath,
+                JsonSerializer.Serialize(new Dictionary<string, object> { ["IsAutoUpdateEnabled"] = true }));
+        }
+        else
+        {
+            ShowTip(
+                "自动更新已禁用",
+                "应用将不会自动检查更新，请手动检查。",
+                ControlAppearance.Success,
+                SymbolRegular.CheckmarkCircle24);
+            File.WriteAllText(SettingsFilePath,
+                JsonSerializer.Serialize(new Dictionary<string, object> { ["IsAutoUpdateEnabled"] = false }));
+        }
+    }
+
+    [RelayCommand]
+    private static void Update()
+    {
+        UpdateApp(true);
     }
 }

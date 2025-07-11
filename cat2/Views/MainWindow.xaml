@@ -2,18 +2,20 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:viewModels="clr-namespace:CAT2.ViewModels"
-    x:Class="CAT2.Views.MainWindow" Topmost="True"
     xmlns:pages="clr-namespace:CAT2.Views.Pages"
+    xmlns:vm="clr-namespace:CAT2.ViewModels"
+
     Title="{Binding AssemblyName}"
     ExtendsContentIntoTitleBar="True"
+    x:Class="CAT2.Views.MainWindow"
     MaxHeight="750" MaxWidth="1450"
     MinHeight="500" MinWidth="950"
     Height="550" Width="1050"
-    WindowBackdropType="Mica">
+    WindowBackdropType="Mica"
+    Topmost="True">
 
     <ui:FluentWindow.DataContext>
-        <viewModels:MainWindowViewModel />
+        <vm:MainWindowViewModel />
     </ui:FluentWindow.DataContext>
 
     <Grid>
@@ -51,7 +53,7 @@
                         Margin="5,0,0,0"
                         ToolTip="a怎么看看不见了？ (●ˇ∀ˇ●)"
                         Command="{Binding MinimizeThisCommand}"
-                        Icon="{ui:SymbolIcon ArrowMinimize24}" />
+                        Icon="{ui:SymbolIcon ArrowMinimize28}" />
 
                     <ui:Button
                         Height="30" Width="45"
@@ -65,19 +67,19 @@
 
         <ui:NavigationView
             IsBackButtonVisible="Collapsed"
-            x:Name="RootNavigation"
+            Name="RootNavigation"
             Grid.Row="1">
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
                     Content="登录"
                     FontSize="16"
-                    x:Name="LoginItem"
+                    Name="LoginItem"
                     Icon="{ui:SymbolIcon NoteAdd48}"
                     TargetPageType="{x:Type pages:LoginPage}" />
 
                 <ui:NavigationViewItem
                     Content="用户页"
-                    x:Name="UserItem"
+                    Name="UserItem"
                     Visibility="Collapsed"
                     NavigationCacheMode="Enabled"
                     Icon="{ui:SymbolIcon ContactCard48}"
@@ -85,7 +87,7 @@
 
                 <ui:NavigationViewItem
                     Content="隧道管理"
-                    x:Name="TunnelItem"
+                    Name="TunnelItem"
                     Visibility="Collapsed"
                     NavigationCacheMode="Enabled"
                     Icon="{ui:SymbolIcon Channel48}"

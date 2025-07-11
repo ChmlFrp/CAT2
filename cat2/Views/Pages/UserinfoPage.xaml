@@ -1,9 +1,10 @@
 ﻿<Page
-    x:Class="CAT2.Views.Pages.UserinfoPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:vm="clr-namespace:CAT2.ViewModels">
+    xmlns:vm="clr-namespace:CAT2.ViewModels"
+    
+    x:Class="CAT2.Views.Pages.UserinfoPage">
 
     <Page.DataContext>
         <vm:UserinfoPageViewModel />
@@ -35,35 +36,35 @@
             <ui:TextBlock
                 HorizontalAlignment="Center"
                 Margin="0,0,0,10"
-                Text="{Binding Name,Mode=TwoWay}"
+                Text="{Binding Name}"
                 FontSize="18"
                 FontWeight="Bold" />
             <Label
                 HorizontalAlignment="Center"
                 Margin="0,0,0,10"
-                Content="{Binding Email,Mode=TwoWay}"
+                Content="{Binding Email}"
                 Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
 
             <ui:TextBlock>
                 <Run
-                    Text="{Binding Integral,Mode=TwoWay}" />
+                    Text="{Binding Integral}" />
                 <LineBreak />
                 <Run
-                    Text="{Binding TunnelCount,Mode=TwoWay}" />
+                    Text="{Binding TunnelCount}" />
                 <LineBreak />
                 <Run
-                    Text="{Binding Group,Mode=TwoWay}" />
+                    Text="{Binding Group}" />
                 <LineBreak />
                 <Run
-                    Text="{Binding Regtime,Mode=TwoWay}" />
+                    Text="{Binding Regtime}" />
                 <LineBreak />
                 <Run
-                    Text="{Binding Bandwidth,Mode=TwoWay}" />
+                    Text="{Binding Bandwidth}" />
             </ui:TextBlock>
 
             <ui:Flyout
                 Placement="Top"
-                IsOpen="{Binding IsFlyoutOpen, Mode=TwoWay}">
+                IsOpen="{Binding IsFlyoutOpen}">
                 <StackPanel
                     Orientation="Vertical">
                     <TextBlock

@@ -1,4 +1,7 @@
-﻿using Microsoft.Win32;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using Microsoft.Win32;
 using Wpf.Ui.Appearance;
 
 namespace CAT2.ViewModels;
@@ -42,7 +45,33 @@ public partial class MainWindowViewModel : ObservableObject
             }
 
             MainClass.Topmost = false;
-            UpdateApp();
+
+            if (!File.Exists(SettingsFilePath))
+            {
+                var settings = new Dictionary<string, bool>
+                {
+                    { "IsAutoUpdate", true }
+                };
+                await File.WriteAllTextAsync(SettingsFilePath, JsonSerializer.Serialize(settings));
+                WritingLog("settings.json文件不存在，已创建");
+            }
+
+            var data = File.ReadAllText(SettingsFilePath);
+            var deserialize = JsonSerializer.Deserialize<Dictionary<string, bool>>(data);
+
+            if (deserialize.TryGetValue("IsAutoUpdate", out var isAutoUpdate))
+            {
+                if (isAutoUpdate)
+                {
+                    WritingLog("自动更新已启用");
+                    UpdateApp();
+                }
+                else
+                {
+                    WritingLog("自动更新已禁用");
+                }
+            }
+
             WritingLog("主窗口加载完成");
         };
 

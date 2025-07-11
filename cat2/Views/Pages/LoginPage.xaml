@@ -1,9 +1,10 @@
 ﻿<Page
-    x:Class="CAT2.Views.Pages.LoginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:vm="clr-namespace:CAT2.ViewModels">
+    xmlns:vm="clr-namespace:CAT2.ViewModels"
+
+    x:Class="CAT2.Views.Pages.LoginPage">
 
     <Page.DataContext>
         <vm:LoginPageViewModel />
