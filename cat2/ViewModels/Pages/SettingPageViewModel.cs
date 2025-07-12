@@ -15,8 +15,8 @@ public partial class SettingPageViewModel : ObservableObject
     public SettingPageViewModel()
     {
         var data = File.ReadAllText(SettingsFilePath);
-        var settings = JsonSerializer.Deserialize<Dictionary<string, bool>>(data);
-        if (settings.TryGetValue("IsAutoUpdate", out var isAutoUpdate)) IsAutoUpdateEnabled = isAutoUpdate;
+        var deserialize = JsonSerializer.Deserialize<Dictionary<string, bool>>(data);
+        IsAutoUpdateEnabled = deserialize["IsAutoUpdate"];
     }
 
     [RelayCommand]
@@ -60,7 +60,7 @@ public partial class SettingPageViewModel : ObservableObject
                 ControlAppearance.Success,
                 SymbolRegular.CheckmarkCircle24);
             File.WriteAllText(SettingsFilePath,
-                JsonSerializer.Serialize(new Dictionary<string, object> { ["IsAutoUpdateEnabled"] = true }));
+                JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", true } }));
         }
         else
         {
@@ -70,7 +70,7 @@ public partial class SettingPageViewModel : ObservableObject
                 ControlAppearance.Success,
                 SymbolRegular.CheckmarkCircle24);
             File.WriteAllText(SettingsFilePath,
-                JsonSerializer.Serialize(new Dictionary<string, object> { ["IsAutoUpdateEnabled"] = false }));
+                JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", false } }));
         }
     }
 

@@ -80,7 +80,7 @@ public abstract class Model
             SymbolRegular.Add48);
 
         var temp = Path.GetTempFileName();
-        if (!await Http.GetFile((string)jObject["CAT2"]["data"]!["url"], temp)) return;
+        if (!await Http.GetFile("https://gitcode.com/Qyzgj/cat2/releases/download/lastest/Release.zip", temp)) return;
 
         try
         {
