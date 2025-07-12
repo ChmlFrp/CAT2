@@ -28,6 +28,13 @@ public partial class MainWindowViewModel : ObservableObject
             });
         };
 
+        SystemEvents.UserPreferenceChanged += (_, _) =>
+        {
+            var theme = ApplicationThemeManager.GetSystemTheme() == SystemTheme.Light;
+            ApplicationThemeManager.Apply(theme ? ApplicationTheme.Light : ApplicationTheme.Dark);
+            IsDarkTheme = !theme;
+        };
+
         MainClass.Loaded += async (_, _) =>
         {
             Init("CAT2");
@@ -67,13 +74,8 @@ public partial class MainWindowViewModel : ObservableObject
             }
 
             WritingLog("主窗口加载完成");
-        };
 
-        SystemEvents.UserPreferenceChanged += (_, _) =>
-        {
-            var theme = ApplicationThemeManager.GetSystemTheme() == SystemTheme.Light;
-            ApplicationThemeManager.Apply(theme ? ApplicationTheme.Light : ApplicationTheme.Dark);
-            IsDarkTheme = !theme;
+            await Task.Run(() => { SetFrpc(); });
         };
     }
 

@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Windows.Threading;
 
 namespace CAT2.ViewModels;
 
 public partial class SettingPageViewModel : ObservableObject
 {
     [ObservableProperty] private string _assemblyName = Model.AssemblyName;
+    [ObservableProperty] private string _context = IsFrpcExists ? "已下载" : "下载中";
     [ObservableProperty] private string _copyright = Model.Copyright;
     [ObservableProperty] private string _fileVersion = $"文件版本：{Model.FileVersion}";
     [ObservableProperty] private bool _isAutoUpdateEnabled;
@@ -17,6 +19,18 @@ public partial class SettingPageViewModel : ObservableObject
         var data = File.ReadAllText(SettingsFilePath);
         var deserialize = JsonSerializer.Deserialize<Dictionary<string, bool>>(data);
         IsAutoUpdateEnabled = deserialize["IsAutoUpdate"];
+
+        var dotCount = 0;
+        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        timer.Tick += (_, _) =>
+        {
+            dotCount = (dotCount + 1) % 4;
+            Context = "下载中" + new string('.', dotCount);
+            if (!IsFrpcExists) return;
+            Context = "已下载";
+            timer.Stop();
+        };
+        timer.Start();
     }
 
     [RelayCommand]

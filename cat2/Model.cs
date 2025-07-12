@@ -79,6 +79,8 @@ public abstract class Model
             ControlAppearance.Light,
             SymbolRegular.Add48);
 
+        await Task.Delay(3000);
+
         var temp = Path.GetTempFileName();
         if (!await Http.GetFile("https://gitcode.com/Qyzgj/cat2/releases/download/lastest/Release.zip", temp)) return;
 

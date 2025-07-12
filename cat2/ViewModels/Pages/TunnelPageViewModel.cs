@@ -44,7 +44,7 @@ public partial class TunnelPageViewModel : ObservableObject
     {
         // 节点数据
         NodeDataContext = [];
-        foreach (var nodeData in await Node.GetNodeData())
+        foreach (var nodeData in await Node.GetNodesData())
         {
             nodeData.udp = nodeData.udp == "true" ? "允许UDP" : "不允许UDP";
             nodeData.web = nodeData.web == "yes" ? "允许建站" : "不允许建站";

@@ -55,7 +55,8 @@
                 Command="{Binding UpdateCommand}" />
         </ui:CardExpander>
 
-        <ui:CardExpander>
+        <ui:CardExpander
+            Margin="0,0,0,5">
             <ui:CardExpander.Header>
                 <Grid>
                     <StackPanel
@@ -87,6 +88,33 @@
                 Content="清除隧道日志缓存"
                 Command="{Binding ClearCacheCommand}" />
         </ui:CardExpander>
+
+        <ui:Card>
+            <Grid>
+                <StackPanel
+                    Orientation="Horizontal">
+                    <ui:SymbolIcon
+                        FontSize="25"
+                        Margin="10,0,10,0"
+                        Symbol="ArrowDownload48" />
+                    <TextBlock>
+                        <Run
+                            Text="下载FRPC" />
+                        <LineBreak />
+                        <Run
+                            FontSize="14"
+                            Text="启动时会自动检测下载这里只做展示。"
+                            Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
+                    </TextBlock>
+                </StackPanel>
+
+                <Button
+                    IsEnabled="False"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    Content="{Binding Context}" />
+            </Grid>
+        </ui:Card>
 
         <Label
             Margin="0,20,0,5"
