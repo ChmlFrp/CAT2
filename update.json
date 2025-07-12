@@ -1,1 +1,9 @@
-{"CAT2": {"version": "1.0.7.1","data": {"url": "https://gitcode.com/Qyzgj/cat2/releases/download/lastest/Release.zip"}},"state": "success"}
+{
+  "CAT2": {
+    "version": "1.1.7.1",
+    "data": {
+      "url": "https://gitcode.com/Qyzgj/cat2/releases/download/lastest/Release.exe"
+    }
+  },
+  "state": "success"
+}
