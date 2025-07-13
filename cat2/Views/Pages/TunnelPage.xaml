@@ -148,7 +148,7 @@
         <ui:Flyout
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            IsOpen="{Binding IsCreateTunnelFlyoutOpen}"
+            IsOpen="{Binding IsCreateTunnelFlyoutOpen,Mode=TwoWay}"
             Placement="Top">
 
             <StackPanel
