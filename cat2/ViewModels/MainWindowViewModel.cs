@@ -42,7 +42,7 @@ public partial class MainWindowViewModel : ObservableObject
             if (ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark) ThemesChanged();
 
             MainClass.RootNavigation.Navigate("登录");
-            WritingLog($"验证上次登录：{await Sign.Signin()}");
+            await Sign.Signin(); // 尝试自动登录
             if (Sign.IsSignin)
             {
                 MainClass.LoginItem.Visibility = Visibility.Collapsed;

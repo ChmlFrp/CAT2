@@ -37,9 +37,8 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Margin="0,0,15,0"
-                            IsChecked="{Binding IsTunnelStarted,Mode=TwoWay}"
-                            Command="{Binding TunnelCommand}"
-                            IsEnabled="{Binding IsEnabled,Mode=TwoWay}"
+                            IsChecked="{Binding IsTunnelStarted}"
+                            IsEnabled="{Binding IsEnabled}"
                             OffContent="启动"
                             OnContent="关闭" />
                     </Grid>
@@ -85,7 +84,9 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center">
                         <ui:TextBlock.InputBindings>
-                            <MouseBinding Gesture="LeftClick" Command="{Binding CopyTunnelCommand}" />
+                            <MouseBinding
+                                Gesture="LeftClick"
+                                Command="{Binding CopyTunnelCommand}" />
                         </ui:TextBlock.InputBindings>
                     </ui:TextBlock>
                 </Grid>
@@ -111,7 +112,7 @@
 
                 <ui:ListView
                     Margin="0,10,0,10"
-                    ItemsSource="{Binding ListDataContext,Mode=TwoWay}"
+                    ItemsSource="{Binding ListDataContext}"
                     ItemTemplate="{StaticResource ListViewItemTemplate}" />
             </TabItem>
 
@@ -129,7 +130,7 @@
 
                 <ui:ListView
                     Margin="0,10,0,10"
-                    ItemsSource="{Binding Offlinelist,Mode=TwoWay}"
+
                     ItemTemplate="{StaticResource ListViewItemTemplate}" />
             </TabItem>
         </TabControl>
@@ -147,7 +148,7 @@
         <ui:Flyout
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            IsOpen="{Binding IsCreateTunnelFlyoutOpen, Mode=TwoWay}"
+            IsOpen="{Binding IsCreateTunnelFlyoutOpen}"
             Placement="Top">
 
             <StackPanel
@@ -160,15 +161,15 @@
                     Orientation="Horizontal">
 
                     <ComboBox
-                        ItemsSource="{Binding NodeDataContext,Mode=TwoWay}"
-                        SelectedValue="{Binding NodeName, Mode=TwoWay}"
+                        ItemsSource="{Binding NodeDataContext}"
+                        SelectedValue="{Binding NodeName}"
                         SelectedIndex="0"
                         Margin="0,0,5,0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock
-                                    Text="{Binding Content,Mode=TwoWay}"
-                                    ToolTip="{Binding Notes,Mode=TwoWay}" />
+                                    Text="{Binding Content}"
+                                    ToolTip="{Binding Notes}" />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>

@@ -64,7 +64,7 @@
 
             <ui:Flyout
                 Placement="Top"
-                IsOpen="{Binding IsFlyoutOpen}">
+                IsOpen="{Binding IsFlyoutOpen, Mode=TwoWay}">
                 <StackPanel
                     Orientation="Vertical">
                     <TextBlock
