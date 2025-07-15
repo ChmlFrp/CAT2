@@ -3,6 +3,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using CAT2.Views;
+using CSDK;
 
 namespace CAT2;
 
@@ -53,8 +54,8 @@ public abstract class Model
 
     public static async void UpdateApp(bool showTip = false)
     {
-        var jObject = await Http.GetApi("https://cat2.chmlfrp.com/update.json");
-        if (jObject == null || (string)jObject["state"] != "success")
+        var jsonNode = await Http.GetJsonAsync("https://cat2.chmlfrp.com/update.json");
+        if (jsonNode == null || (string)jsonNode["state"] != "success")
         {
             if (showTip)
                 ShowTip("更新失败",
@@ -64,7 +65,7 @@ public abstract class Model
             return;
         }
 
-        if ((string)jObject["CAT2"]!["version"] == Version)
+        if ((string)jsonNode["CAT2"]!["version"] == Version)
         {
             if (showTip)
                 ShowTip("已是最新版本",
@@ -82,7 +83,8 @@ public abstract class Model
         await Task.Delay(3000);
 
         var temp = Path.GetTempFileName();
-        if (!await Http.GetFile("https://gitcode.com/Qyzgj/cat2/releases/download/lastest/Release.zip", temp)) return;
+        if (!await Http.GetFileAsync("https://gitcode.com/Qyzgj/cat2/releases/download/lastest/Release.zip",
+                temp)) return;
 
         try
         {

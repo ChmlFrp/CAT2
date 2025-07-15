@@ -1,4 +1,6 @@
-﻿namespace CAT2.ViewModels;
+﻿using static CSDK.UserActions;
+
+namespace CAT2.ViewModels;
 
 public partial class LoginPageViewModel : ObservableObject
 {
@@ -19,10 +21,10 @@ public partial class LoginPageViewModel : ObservableObject
     [RelayCommand]
     private async Task LoginClick()
     {
-        var msg = await Sign.Signin(Username, Password);
+        var msg = await LoginAsync(Username, Password);
         WritingLog($"登录提示：{msg}");
 
-        if (Sign.IsSignin)
+        if (IsLoggedIn)
         {
             MainClass.LoginItem.Visibility = Visibility.Collapsed;
             MainClass.UserItem.Visibility = Visibility.Visible;
@@ -54,6 +56,6 @@ public partial class LoginPageViewModel : ObservableObject
             SymbolRegular.Tag24);
 
         await Task.Delay(500);
-        Process.Start(new ProcessStartInfo("https://panel.chmlfrp.cn/sign") { UseShellExecute = true });
+        Register();
     }
 }

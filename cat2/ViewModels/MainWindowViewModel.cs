@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json;
 using Microsoft.Win32;
 using Wpf.Ui.Appearance;
+using static CSDK.UserActions;
 
 namespace CAT2.ViewModels;
 
@@ -42,8 +43,8 @@ public partial class MainWindowViewModel : ObservableObject
             if (ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark) ThemesChanged();
 
             MainClass.RootNavigation.Navigate("登录");
-            await Sign.Signin(); // 尝试自动登录
-            if (Sign.IsSignin)
+            await AutoLoginAsync(); // 尝试自动登录
+            if (IsLoggedIn)
             {
                 MainClass.LoginItem.Visibility = Visibility.Collapsed;
                 MainClass.UserItem.Visibility = Visibility.Visible;
@@ -75,7 +76,7 @@ public partial class MainWindowViewModel : ObservableObject
 
             WritingLog("主窗口加载完成");
 
-            await Task.Run(() => { SetFrpc(); });
+            await SetFrpcAsync();
         };
     }
 

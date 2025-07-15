@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using static ChmlFrp.SDK.API.User;
+using static CSDK.UserActions;
 
 namespace CAT2.ViewModels;
 
@@ -21,9 +21,9 @@ public partial class UserinfoPageViewModel : ObservableObject
     {
         LoadData();
         var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
-        timer.Tick += (_, _) =>
+        timer.Tick += async (_, _) =>
         {
-            GetUserInfo();
+            await AutoLoginAsync();
             LoadData();
         };
         timer.Start();
@@ -65,7 +65,7 @@ public partial class UserinfoPageViewModel : ObservableObject
     [RelayCommand]
     private static async Task OnSignOut()
     {
-        Sign.Signout();
+        LogoutAsync();
         WritingLog("用户已退出登录");
         ShowTip(
             "已退出登录",

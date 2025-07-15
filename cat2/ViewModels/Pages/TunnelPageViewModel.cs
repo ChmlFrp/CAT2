@@ -2,18 +2,20 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Threading;
-using static ChmlFrp.SDK.API.Tunnel;
-using static ChmlFrp.SDK.Services.Tunnel;
+using CSDK;
 
 namespace CAT2.ViewModels;
 
 public partial class TunnelPageViewModel : ObservableObject
 {
-    private readonly Dictionary<string, TunnelInfo> _tunnelInfos = new();
+    private readonly Dictionary<string, Classes.TunnelInfoClass> _tunnelInfos = new();
     [ObservableProperty] private bool _isCreateTunnelFlyoutOpen;
     [ObservableProperty] private bool _isTunnelEnabled;
     [ObservableProperty] private ObservableCollection<TunnelItem> _listDataContext = [];
     [ObservableProperty] private string _localPort;
+
+    [ObservableProperty] private int _maximum;
+    [ObservableProperty] private int _minimum;
     [ObservableProperty] private ObservableCollection<NodeItem> _nodeDataContext = [];
     [ObservableProperty] private NodeItem _nodeName;
     [ObservableProperty] private ObservableCollection<TunnelItem> _offlinelist = [];
@@ -29,6 +31,15 @@ public partial class TunnelPageViewModel : ObservableObject
         timer.Start();
     }
 
+    async partial void OnNodeNameChanged(NodeItem value)
+    {
+        var nodeInfo = await NodeActions.GetNodeInfoAsync(value.Name);
+        if (nodeInfo == null) return;
+        var sArray = nodeInfo.rport.Split('-');
+        Minimum = int.Parse(sArray[0]);
+        Maximum = int.Parse(sArray[1]);
+    }
+
     partial void OnRemotePortChanged(string value)
     {
         IsTunnelEnabled = !string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(LocalPort);
@@ -42,7 +53,7 @@ public partial class TunnelPageViewModel : ObservableObject
     private async void LoadNodes()
     {
         // 节点数据
-        foreach (var nodeData in await Node.GetNodesData())
+        foreach (var nodeData in await NodeActions.GetNodesDataListAsync())
         {
             nodeData.udp = nodeData.udp == "true" ? "允许UDP" : "不允许UDP";
             nodeData.web = nodeData.web == "yes" ? "允许建站" : "不允许建站";
@@ -55,7 +66,7 @@ public partial class TunnelPageViewModel : ObservableObject
 
     public async void LoadTunnels(object sender, EventArgs e)
     {
-        var tunnelsData = await GetTunnelsData();
+        var tunnelsData = await GetTunnelListAsync();
         if (tunnelsData == null)
         {
             WritingLog("隧道信息加载失败");
@@ -77,7 +88,7 @@ public partial class TunnelPageViewModel : ObservableObject
         else
         {
             WritingLog($"加载到 {tunnelsData.Count} 个隧道信息");
-            var tunnelsRunning = await IsTunnelRunning(tunnelsData);
+            var tunnelsRunning = await IsTunnelRunningAsync(tunnelsData);
 
             foreach (var tunnelData in tunnelsData)
             {
@@ -90,6 +101,7 @@ public partial class TunnelPageViewModel : ObservableObject
             foreach (var item in ListDataContext.ToList()
                          .Where(item => tunnelsData.All(tunnelData => tunnelData.name != item.Name)))
             {
+                await StopTunnelAsync(item.Name);
                 ListDataContext.Remove(item);
                 Offlinelist.Remove(item);
             }
@@ -99,36 +111,35 @@ public partial class TunnelPageViewModel : ObservableObject
     [RelayCommand]
     private async Task CreateTunnel()
     {
-        var msg = await Tunnel.CreateTunnel(NodeName.Name, TunnelType, LocalPort, RemotePort);
+        var msg = await CreateTunnelAsync(NodeName.Name, TunnelType, "127.0.0.1", LocalPort, RemotePort);
 
-        WritingLog($"创建隧道请求：{NodeName.Name} {TunnelType} {LocalPort} {RemotePort}");
         WritingLog($"创建隧道返回：{msg}");
 
-        if (msg == null)
+        if (string.IsNullOrEmpty(msg))
         {
-            ShowTip("隧道创建失败",
-                "请检查网络连接或稍后重试。",
+            ShowTip(
+                "隧道创建失败",
+                "请检查网络状态，或查看API状态。",
                 ControlAppearance.Danger,
                 SymbolRegular.TagError24);
-            return;
         }
-
-        if (msg.Contains("成功"))
+        else if (msg.Contains("成功"))
         {
             ShowTip("隧道创建成功",
-                $"{msg}。",
+                $"{NodeName.Name}已添加至隧道列表。",
                 ControlAppearance.Success,
                 SymbolRegular.Checkmark24);
             RemotePort = string.Empty;
             LocalPort = string.Empty;
             LoadTunnels(null, null);
-            return;
         }
-
-        ShowTip("隧道创建失败",
-            msg,
-            ControlAppearance.Danger,
-            SymbolRegular.TagError24);
+        else
+        {
+            ShowTip("隧道创建失败",
+                $"{msg}",
+                ControlAppearance.Danger,
+                SymbolRegular.TagError24);
+        }
     }
 
     [RelayCommand]
@@ -138,7 +149,10 @@ public partial class TunnelPageViewModel : ObservableObject
     }
 }
 
-public partial class TunnelItem(TunnelPageViewModel parentViewModel, TunnelInfo tunnelData, bool istunnelstarted)
+public partial class TunnelItem(
+    TunnelPageViewModel parentViewModel,
+    Classes.TunnelInfoClass tunnelData,
+    bool istunnelstarted)
     : ObservableObject
 {
     [ObservableProperty] private string _id = $"[隧道ID:{tunnelData.id}]";
@@ -158,7 +172,8 @@ public partial class TunnelItem(TunnelPageViewModel parentViewModel, TunnelInfo 
     {
         IsEnabled = false;
         if (value)
-            StartTunnel(tunnelData.name,
+            StartTunnelAsync(
+                tunnelData.name,
                 () =>
                 {
                     Application.Current.Dispatcher.Invoke(() =>
@@ -223,7 +238,8 @@ public partial class TunnelItem(TunnelPageViewModel parentViewModel, TunnelInfo 
                 }
             );
         else
-            StopTunnel(tunnelData.name,
+            StopTunnelAsync(
+                tunnelData.name,
                 () =>
                 {
                     Application.Current.Dispatcher.Invoke(() =>
@@ -251,8 +267,8 @@ public partial class TunnelItem(TunnelPageViewModel parentViewModel, TunnelInfo 
     [RelayCommand]
     private async Task DeleteTunnel()
     {
-        await StopTunnel(tunnelData.name);
-        Tunnel.DeleteTunnel(tunnelData.name);
+        await StopTunnelAsync(tunnelData.name);
+        await DeleteTunnelAsync(tunnelData.name);
         WritingLog($"删除隧道请求：{tunnelData.name}");
 
         ShowTip("隧道删除成功",
@@ -290,7 +306,7 @@ public partial class TunnelItem(TunnelPageViewModel parentViewModel, TunnelInfo 
     }
 }
 
-public partial class NodeItem(Node.NodeData nodeData) : ObservableObject
+public partial class NodeItem(Classes.NodeDataClass nodeData) : ObservableObject
 {
     [ObservableProperty] private string _content = $"{nodeData.name} ({nodeData.nodegroup})";
     [ObservableProperty] private string _name = nodeData.name;
