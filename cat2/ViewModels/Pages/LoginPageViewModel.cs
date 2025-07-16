@@ -36,6 +36,14 @@ public partial class LoginPageViewModel : ObservableObject
                 ControlAppearance.Success,
                 SymbolRegular.PresenceAvailable24);
         }
+        else if (msg == null)
+        {
+            ShowTip(
+                "登录错误",
+                "网络错误，请稍后再试。",
+                ControlAppearance.Danger,
+                SymbolRegular.TagError24);
+        }
         else
         {
             ShowTip(
