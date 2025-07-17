@@ -15,23 +15,24 @@
         HorizontalAlignment="Right"
         VerticalAlignment="Stretch">
         <StackPanel
-            Orientation="Vertical"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Margin="10">
-
-            <Grid
+            MinWidth="200"
+            Orientation="Vertical">
+            <ui:Image
                 Height="150"
                 Width="150"
-                Margin="0,0,0,10">
-                <ui:Image
-                    Source="https://chmlfrp.cn/favicon.ico"
-                    CornerRadius="100" />
-
-                <ui:Image
-                    Source="{Binding CurrentImage}"
-                    CornerRadius="100" />
-            </Grid>
+                Margin="0,0,0,10"
+                Source="{Binding CurrentImage}"
+                CornerRadius="50">
+                <ui:Image.ContextMenu>
+                    <ContextMenu>
+                        <ui:MenuItem
+                            Icon="{ui:SymbolIcon SignOut24}"
+                            Command="{Binding SignOutCommand}"
+                            ToolTip="(°ー°〃) 你不会真要退出吧？"
+                            Header="退出登录" />
+                    </ContextMenu>
+                </ui:Image.ContextMenu>
+            </ui:Image>
 
             <ui:TextBlock
                 HorizontalAlignment="Center"
@@ -39,13 +40,15 @@
                 Text="{Binding Name}"
                 FontSize="18"
                 FontWeight="Bold" />
+
             <Label
                 HorizontalAlignment="Center"
-                Margin="0,0,0,10"
+                Margin="0,0,0,15"
                 Content="{Binding Email}"
                 Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
 
-            <ui:TextBlock>
+            <ui:TextBlock
+                Margin="10,0,0,0">
                 <Run
                     Text="{Binding Integral}" />
                 <LineBreak />
@@ -56,36 +59,14 @@
                     Text="{Binding Group}" />
                 <LineBreak />
                 <Run
-                    Text="{Binding Regtime}" />
+                    Text="{Binding Qq}" />
+                <LineBreak />
+                <Run
+                    Text="{Binding Term}" />
                 <LineBreak />
                 <Run
                     Text="{Binding Bandwidth}" />
             </ui:TextBlock>
-
-            <ui:Flyout
-                Placement="Top"
-                IsOpen="{Binding IsFlyoutOpen, Mode=TwoWay}">
-                <StackPanel
-                    Orientation="Vertical">
-                    <TextBlock
-                        Text="你下好退出的决心了吗？"
-                        TextWrapping="WrapWithOverflow" />
-
-                    <Button
-                        ToolTip="😭我还会再想你的"
-                        Command="{Binding SignOutCommand}"
-                        Margin="0,10,0,0"
-                        Content="确定" />
-                </StackPanel>
-            </ui:Flyout>
-
-            <ui:Button
-                HorizontalAlignment="Center"
-                Command="{Binding OpenFlyoutCommand}"
-                ToolTip="(°ー°〃) 你不会真要退出吧？"
-                Appearance="Primary"
-                Icon="{ui:SymbolIcon SignOut24}"
-                Content="退出登录" />
         </StackPanel>
     </ui:Card>
 </Page>

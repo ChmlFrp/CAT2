@@ -13,84 +13,52 @@
     <Page.Resources>
         <DataTemplate
             x:Key="ListViewItemTemplate">
-            <ui:CardExpander>
-                <ui:CardExpander.Header>
-                    <Grid>
-                        <StackPanel
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left"
-                            Orientation="Horizontal">
-                            <ui:TextBlock
-                                FontSize="18"
-                                FontWeight="Bold"
-                                ToolTip="{Binding Id}"
-                                Text="{Binding Name}" />
-
-                            <ui:TextBlock
-                                FontSize="16"
-                                Margin="10,0,0,0"
-                                ToolTip="{Binding Tooltip}"
-                                Text="{Binding Info}" />
-                        </StackPanel>
-
-                        <ui:ToggleSwitch
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            Margin="0,0,15,0"
-                            IsChecked="{Binding IsTunnelStarted}"
-                            IsEnabled="{Binding IsEnabled}"
-                            OffContent="启动"
-                            OnContent="关闭" />
-                    </Grid>
-                </ui:CardExpander.Header>
+            <ui:Card>
+                <ui:Card.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem
+                            ToolTip="还没实现＞︿＜"
+                            Icon="{ui:SymbolIcon Edit48}"
+                            Header="编辑" />
+                        <MenuItem
+                            Command="{Binding DeleteTunnelCommand}"
+                            Icon="{ui:SymbolIcon Delete48}"
+                            Header="删除" />
+                        <MenuItem
+                            Command="{Binding CopyTunnelCommand}"
+                            Icon="{ui:SymbolIcon CopyAdd24}"
+                            Header="复制链接" />
+                    </ContextMenu>
+                </ui:Card.ContextMenu>
 
                 <Grid>
                     <StackPanel
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
                         Orientation="Horizontal">
-                        <ui:Button
-                            ToolTip="o还没写✍ (￣▽￣)"
-                            Content="编辑隧道"
-                            Margin="10,0,0,0" />
+                        <ui:TextBlock
+                            FontSize="18"
+                            FontWeight="Bold"
+                            ToolTip="{Binding Id}"
+                            Text="{Binding Name}" />
 
-                        <ui:Flyout
-                            Placement="Top"
-                            IsOpen="{Binding IsFlyoutOpen, Mode=TwoWay}">
-                            <StackPanel
-                                Orientation="Vertical">
-                                <TextBlock
-                                    HorizontalAlignment="Left"
-                                    Text="你有多少把握删除呢？"
-                                    TextWrapping="WrapWithOverflow" />
-
-                                <ui:Button
-                                    ToolTip="没事再来一瓶🤓"
-                                    Command="{Binding DeleteTunnelCommand}"
-                                    Margin="0,10,0,0"
-                                    Content="确定" />
-                            </StackPanel>
-                        </ui:Flyout>
-
-                        <ui:Button
-                            Command="{Binding OpenFlyoutCommand}"
-                            ToolTip="￣へ￣ 你确定要删除吗？"
-                            Icon="{ui:SymbolIcon Delete48}"
-                            Appearance="Danger"
-                            Content="删除隧道" />
+                        <ui:TextBlock
+                            FontSize="16"
+                            Margin="10,0,0,0"
+                            ToolTip="{Binding Tooltip}"
+                            Text="{Binding Info}" />
                     </StackPanel>
 
-                    <ui:TextBlock
-                        Text="{Binding Url}"
-                        ToolTip="点击复制"
+                    <ui:ToggleSwitch
                         HorizontalAlignment="Right"
-                        VerticalAlignment="Center">
-                        <ui:TextBlock.InputBindings>
-                            <MouseBinding
-                                Gesture="LeftClick"
-                                Command="{Binding CopyTunnelCommand}" />
-                        </ui:TextBlock.InputBindings>
-                    </ui:TextBlock>
+                        VerticalAlignment="Top"
+                        Margin="0,0,15,0"
+                        IsChecked="{Binding IsTunnelStarted}"
+                        IsEnabled="{Binding IsEnabled}"
+                        OffContent="启动"
+                        OnContent="关闭" />
                 </Grid>
-            </ui:CardExpander>
+            </ui:Card>
         </DataTemplate>
     </Page.Resources>
 

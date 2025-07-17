@@ -158,15 +158,12 @@ public partial class TunnelItem(
     [ObservableProperty] private string _id = $"[隧道ID:{tunnelData.id}]";
     [ObservableProperty] private string _info = $"[节点名称:{tunnelData.node}]-[隧道类型:{tunnelData.type}]";
     [ObservableProperty] private bool _isEnabled = true;
-    [ObservableProperty] private bool _isFlyoutOpen;
     [ObservableProperty] private bool _isTunnelStarted = istunnelstarted;
-
     [ObservableProperty] private string _name = tunnelData.name;
 
     [ObservableProperty] private string _tooltip =
         $"[内网端口:{tunnelData.nport}]-[外网端口/连接域名:{tunnelData.dorp}]-[节点状态:{tunnelData.nodestate}]";
 
-    [ObservableProperty] private string _url = $"[连接地址:{tunnelData.ip}:{tunnelData.dorp}]";
 
     partial void OnIsTunnelStartedChanged(bool value)
     {
@@ -278,12 +275,6 @@ public partial class TunnelItem(
 
         await Task.Delay(500);
         parentViewModel.LoadTunnels(null, null);
-    }
-
-    [RelayCommand]
-    private void OpenFlyout()
-    {
-        IsFlyoutOpen = true;
     }
 
     [RelayCommand]

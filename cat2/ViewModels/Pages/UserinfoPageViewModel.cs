@@ -12,9 +12,11 @@ public partial class UserinfoPageViewModel : ObservableObject
     [ObservableProperty] private string _email;
     [ObservableProperty] private string _group;
     [ObservableProperty] private string _integral;
-    [ObservableProperty] private bool _isFlyoutOpen;
     [ObservableProperty] private string _name;
-    [ObservableProperty] private string _regtime;
+    [ObservableProperty] private string _qq;
+    [ObservableProperty] private string _term;
+    [ObservableProperty] private string _total_download;
+    [ObservableProperty] private string _total_upload;
     [ObservableProperty] private string _tunnelCount;
 
     public UserinfoPageViewModel()
@@ -27,12 +29,6 @@ public partial class UserinfoPageViewModel : ObservableObject
             LoadData();
         };
         timer.Start();
-    }
-
-    [RelayCommand]
-    private void OpenFlyout()
-    {
-        IsFlyoutOpen = true;
     }
 
     private void LoadData()
@@ -48,11 +44,12 @@ public partial class UserinfoPageViewModel : ObservableObject
             return;
         }
 
-        Name = UserInfo.username;
+        Name = $"Hi,{UserInfo.username}👋";
         Email = UserInfo.email;
         Group = $"用户组：{UserInfo.usergroup}";
         Integral = $"积分：{UserInfo.integral}";
-        Regtime = $"注册时间：{UserInfo.regtime}";
+        Term = $"到期时间：{UserInfo.term}";
+        Qq = $"QQ：{UserInfo.qq}";
         TunnelCount = $"隧道使用：{UserInfo.tunnelCount}/{UserInfo.tunnel}";
         Bandwidth = $"带宽限制：国内{UserInfo.bandwidth}m | 国外{UserInfo.bandwidth * 4}m";
         WritingLog("加载用户信息成功");
