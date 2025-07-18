@@ -84,6 +84,7 @@ public partial class TunnelPageViewModel : ObservableObject
                 "当前没有可用的隧道信息，请注册隧道。",
                 ControlAppearance.Danger,
                 SymbolRegular.Warning24);
+            ListDataContext = [];
         }
         else
         {
