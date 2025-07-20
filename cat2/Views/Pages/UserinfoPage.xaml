@@ -26,6 +26,12 @@
                 <ui:Image.ContextMenu>
                     <ContextMenu>
                         <ui:MenuItem
+                            IsEnabled="{Binding IsEnabled}"
+                            Icon="{ui:SymbolIcon ArrowClockwise24}"
+                            Command="{Binding LoadingCommand}"
+                            Header="刷新信息" />
+
+                        <ui:MenuItem
                             Icon="{ui:SymbolIcon SignOut24}"
                             Command="{Binding SignOutCommand}"
                             ToolTip="(°ー°〃) 你不会真要退出吧？"

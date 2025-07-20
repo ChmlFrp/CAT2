@@ -12,7 +12,11 @@ public partial class SettingPageViewModel : ObservableObject
     [ObservableProperty] private string _copyright = Model.Copyright;
     [ObservableProperty] private string _fileVersion = $"文件版本：{Model.FileVersion}";
     [ObservableProperty] private bool _isAutoUpdateEnabled;
+
+    [ObservableProperty] private bool _isClearCacheButtonEnabled = true;
+    [ObservableProperty] private bool _isUpdateButtonEnabled = true;
     [ObservableProperty] private string _version = Model.Version;
+
 
     public SettingPageViewModel()
     {
@@ -33,40 +37,9 @@ public partial class SettingPageViewModel : ObservableObject
         timer.Start();
     }
 
-    [RelayCommand]
-    private void OpenDataPath()
+    partial void OnIsAutoUpdateEnabledChanged(bool value)
     {
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = DataPath,
-            UseShellExecute = true
-        });
-    }
-
-    [RelayCommand]
-    private void ClearCache()
-    {
-        foreach (var cachefile in Directory.GetFiles(DataPath, "*.log"))
-            try
-            {
-                File.Delete(cachefile);
-            }
-            catch
-            {
-                // ignored
-            }
-
-        ShowTip(
-            "缓存已清理",
-            "所有缓存文件已被删除。",
-            ControlAppearance.Success,
-            SymbolRegular.PresenceAvailable24);
-    }
-
-    [RelayCommand]
-    private void AutoUpdate()
-    {
-        if (IsAutoUpdateEnabled)
+        if (value)
         {
             ShowTip(
                 "自动更新已启用",
@@ -89,8 +62,42 @@ public partial class SettingPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private static void Update()
+    private void OpenDataPath()
     {
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = DataPath,
+            UseShellExecute = true
+        });
+    }
+
+    [RelayCommand]
+    private void ClearCache()
+    {
+        IsClearCacheButtonEnabled = false;
+        foreach (var cacheFile in Directory.GetFiles(DataPath, "*.log"))
+            try
+            {
+                File.Delete(cacheFile);
+            }
+            catch
+            {
+                // ignored
+            }
+
+        ShowTip(
+            "缓存已清理",
+            "所有缓存文件已被删除。",
+            ControlAppearance.Success,
+            SymbolRegular.PresenceAvailable24);
+        IsClearCacheButtonEnabled = true;
+    }
+
+    [RelayCommand]
+    private void Update()
+    {
+        IsUpdateButtonEnabled = false;
         UpdateApp(true);
+        IsUpdateButtonEnabled = true;
     }
 }

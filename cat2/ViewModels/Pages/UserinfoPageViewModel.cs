@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using static CSDK.UserActions;
 
 namespace CAT2.ViewModels;
@@ -10,29 +9,29 @@ public partial class UserinfoPageViewModel : ObservableObject
     [ObservableProperty] private string _bandwidth;
     [ObservableProperty] private BitmapImage _currentImage;
     [ObservableProperty] private string _email;
+
+    private bool _first = true;
     [ObservableProperty] private string _group;
     [ObservableProperty] private string _integral;
+    [ObservableProperty] private bool _isEnabled = true;
     [ObservableProperty] private string _name;
     [ObservableProperty] private string _qq;
     [ObservableProperty] private string _term;
-    [ObservableProperty] private string _total_download;
-    [ObservableProperty] private string _total_upload;
     [ObservableProperty] private string _tunnelCount;
 
     public UserinfoPageViewModel()
     {
-        LoadData();
-        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
-        timer.Tick += async (_, _) =>
-        {
-            await AutoLoginAsync();
-            LoadData();
-        };
-        timer.Start();
+        _ = Loading();
     }
 
-    private void LoadData()
+    [RelayCommand]
+    private async Task Loading()
     {
+        if (_first)
+            _first = false;
+        else
+            await AutoLoginAsync();
+
         if (UserInfo == null)
         {
             WritingLog("加载用户信息失败");
@@ -53,6 +52,12 @@ public partial class UserinfoPageViewModel : ObservableObject
         TunnelCount = $"隧道使用：{UserInfo.tunnelCount}/{UserInfo.tunnel}";
         Bandwidth = $"带宽限制：国内{UserInfo.bandwidth}m | 国外{UserInfo.bandwidth * 4}m";
         WritingLog("加载用户信息成功");
+
+        ShowTip(
+            "加载用户信息成功",
+            "请查看您的账户信息。",
+            ControlAppearance.Success,
+            SymbolRegular.Tag24);
 
         if (CurrentImage != null) return;
         CurrentImage = new BitmapImage(new Uri(UserInfo.userimg));

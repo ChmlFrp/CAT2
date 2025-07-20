@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Threading;
 using CSDK;
 
 namespace CAT2.ViewModels;
@@ -10,6 +9,8 @@ public partial class TunnelPageViewModel : ObservableObject
 {
     private readonly Dictionary<string, Classes.TunnelInfoClass> _tunnelInfos = new();
     [ObservableProperty] private bool _isCreateTunnelFlyoutOpen;
+
+    [ObservableProperty] private bool _isEnabled = true;
     [ObservableProperty] private bool _isTunnelEnabled;
     [ObservableProperty] private ObservableCollection<TunnelItem> _listDataContext = [];
     [ObservableProperty] private string _localPort;
@@ -24,11 +25,8 @@ public partial class TunnelPageViewModel : ObservableObject
 
     public TunnelPageViewModel()
     {
-        LoadNodes();
-        LoadTunnels(null, null);
-        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
-        timer.Tick += LoadTunnels;
-        timer.Start();
+        _ = LoadNodes();
+        _ = LoadTunnels();
     }
 
     async partial void OnNodeNameChanged(NodeItem value)
@@ -50,7 +48,7 @@ public partial class TunnelPageViewModel : ObservableObject
         IsTunnelEnabled = !string.IsNullOrEmpty(RemotePort) && !string.IsNullOrEmpty(value);
     }
 
-    private async void LoadNodes()
+    private async Task LoadNodes()
     {
         // 节点数据
         foreach (var nodeData in await NodeActions.GetNodesDataListAsync())
@@ -64,8 +62,10 @@ public partial class TunnelPageViewModel : ObservableObject
         WritingLog(NodeDataContext.Count != 0 ? "节点数据加载成功" : "节点数据加载失败");
     }
 
-    public async void LoadTunnels(object sender, EventArgs e)
+    [RelayCommand]
+    public async Task LoadTunnels()
     {
+        IsEnabled = false;
         var tunnelsData = await GetTunnelListAsync();
         if (tunnelsData == null)
         {
@@ -106,7 +106,15 @@ public partial class TunnelPageViewModel : ObservableObject
                 ListDataContext.Remove(item);
                 Offlinelist.Remove(item);
             }
+
+            ShowTip(
+                "加载隧道信息成功",
+                "请查看您的隧道信息。",
+                ControlAppearance.Success,
+                SymbolRegular.Tag24);
         }
+
+        IsEnabled = true;
     }
 
     [RelayCommand]
@@ -132,7 +140,7 @@ public partial class TunnelPageViewModel : ObservableObject
                 SymbolRegular.Checkmark24);
             RemotePort = string.Empty;
             LocalPort = string.Empty;
-            LoadTunnels(null, null);
+            await LoadTunnels();
         }
         else
         {
@@ -162,7 +170,7 @@ public partial class TunnelItem(
     [ObservableProperty] private bool _isTunnelStarted = istunnelstarted;
     [ObservableProperty] private string _name = tunnelData.name;
 
-    [ObservableProperty] private string _tooltip =
+    [ObservableProperty] private string _toolTip =
         $"[内网端口:{tunnelData.nport}]-[外网端口/连接域名:{tunnelData.dorp}]-[节点状态:{tunnelData.nodestate}]";
 
 
@@ -275,7 +283,7 @@ public partial class TunnelItem(
             SymbolRegular.Checkmark24);
 
         await Task.Delay(500);
-        parentViewModel.LoadTunnels(null, null);
+        await parentViewModel.LoadTunnels();
     }
 
     [RelayCommand]

@@ -41,7 +41,6 @@
                     </StackPanel>
 
                     <ui:ToggleSwitch
-                        Command="{Binding AutoUpdateCommand}"
                         IsChecked="{Binding IsAutoUpdateEnabled}"
                         OnContent="启用"
                         OffContent="禁用"
@@ -50,8 +49,12 @@
                 </Grid>
             </ui:CardExpander.Header>
 
-            <Button
-                Content="检测软件更新"
+            <MenuItem
+                Padding="10"
+                FontSize="18"
+                Header="检测软件更新"
+                IsEnabled="{Binding IsUpdateButtonEnabled}"
+                Icon="{ui:SymbolIcon ArrowSync24}"
                 Command="{Binding UpdateCommand}" />
         </ui:CardExpander>
 
@@ -84,8 +87,12 @@
                 </Grid>
             </ui:CardExpander.Header>
 
-            <Button
-                Content="清除隧道日志缓存"
+            <MenuItem
+                Padding="10"
+                FontSize="18"
+                Header="清除隧道日志缓存"
+                Icon="{ui:SymbolIcon CommentOff24}"
+                IsEnabled="{Binding IsClearCacheButtonEnabled}"
                 Command="{Binding ClearCacheCommand}" />
         </ui:CardExpander>
 
