@@ -94,7 +94,7 @@ public partial class SettingPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void Update()
+    private async Task Update()
     {
         IsUpdateButtonEnabled = false;
         UpdateApp(true);
