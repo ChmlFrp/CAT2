@@ -52,20 +52,20 @@ public abstract class Model
         await globalSnackbar.ShowAsync();
     }
 
-    public static async void UpdateApp(bool showTip = false)
+    public static async Task UpdateApp(bool showTip = false)
     {
         var jsonNode = await Http.GetJsonAsync("https://cat2.chmlfrp.com/update.json");
-        if (jsonNode == null || (string)jsonNode["state"] != "success")
+        if (jsonNode == null)
         {
             if (showTip)
                 ShowTip("更新失败",
                     "无法获取更新信息，请稍后再试。",
                     ControlAppearance.Danger,
-                    SymbolRegular.ErrorCircle48);
+                    SymbolRegular.TagError24);
             return;
         }
 
-        if ((string)jsonNode["CAT2"]!["version"] == Version)
+        if ((string)jsonNode["version"] == Version)
         {
             if (showTip)
                 ShowTip("已是最新版本",
@@ -96,21 +96,24 @@ public abstract class Model
                 ShowTip("更新失败",
                     "无法解压更新文件，请检查磁盘空间或权限。",
                     ControlAppearance.Danger,
-                    SymbolRegular.TagError24);
+                    SymbolRegular.TagError24); 
             return;
+        }
+        finally
+        {
+            File.Delete(temp);
         }
 
         Process.Start(
             new ProcessStartInfo
             (
                 "cmd.exe",
-                $"""/c %WINDIR%\System32\timeout.exe /t 3 /nobreak & move /y "{Path.Combine(DataPath, "CAT2.exe")}" "{Process.GetCurrentProcess().MainModule?.FileName}" & start "" "{Process.GetCurrentProcess().MainModule?.FileName}" """
+                $"""/c %WINDIR%\System32\timeout.exe /t 3 /nobreak & move /y "{Path.Combine(DataPath, $"{AssemblyName}.exe")}" "{Process.GetCurrentProcess().MainModule?.FileName}" & start "" "{Process.GetCurrentProcess().MainModule?.FileName}" """
             )
             {
                 UseShellExecute = false,
                 CreateNoWindow = true
             });
-
         Application.Current.Shutdown();
     }
 }

@@ -65,7 +65,7 @@
             </ui:TitleBar.TrailingContent>
         </ui:TitleBar>
 
-        <ui:NavigationView 
+        <ui:NavigationView
             IsBackButtonVisible="Collapsed"
             Name="RootNavigation"
             Grid.Row="1">

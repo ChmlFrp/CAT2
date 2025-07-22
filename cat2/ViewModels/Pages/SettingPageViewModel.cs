@@ -97,7 +97,7 @@ public partial class SettingPageViewModel : ObservableObject
     private async Task Update()
     {
         IsUpdateButtonEnabled = false;
-        UpdateApp(true);
+        await UpdateApp(true);
         IsUpdateButtonEnabled = true;
     }
 }
