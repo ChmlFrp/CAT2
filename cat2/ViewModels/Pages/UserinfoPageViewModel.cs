@@ -67,6 +67,11 @@ public partial class UserinfoPageViewModel : ObservableObject
     [RelayCommand]
     private static async Task OnSignOut()
     {
+        if (await ShowConfirm(
+                "你确定要退出登录吗?",
+                "退出登录后将重启软件。",
+                "确认",
+                "放弃") != ContentDialogResult.Primary) return;
         LogoutAsync();
         WritingLog("用户已退出登录");
         ShowTip(

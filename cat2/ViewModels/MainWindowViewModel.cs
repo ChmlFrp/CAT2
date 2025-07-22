@@ -42,6 +42,8 @@ public partial class MainWindowViewModel : ObservableObject
 
             if (ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark) ThemesChanged();
 
+            SnackbarService.SetSnackbarPresenter(MainClass.RootSnackbarDialog);
+            ContentDialogService.SetDialogHost(MainClass.RootContentDialogPresenter);
             MainClass.RootNavigation.Navigate("登录");
             await AutoLoginAsync(); // 尝试自动登录
             if (IsLoggedIn)
@@ -67,7 +69,7 @@ public partial class MainWindowViewModel : ObservableObject
             if (deserialize["IsAutoUpdate"])
             {
                 WritingLog("自动更新已启用");
-                UpdateApp();
+                await UpdateApp();
             }
             else
             {
@@ -75,7 +77,6 @@ public partial class MainWindowViewModel : ObservableObject
             }
 
             WritingLog("主窗口加载完成");
-
             await SetFrpcAsync();
         };
     }

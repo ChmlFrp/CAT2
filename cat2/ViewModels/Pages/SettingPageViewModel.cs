@@ -37,7 +37,7 @@ public partial class SettingPageViewModel : ObservableObject
         timer.Start();
     }
 
-    partial void OnIsAutoUpdateEnabledChanged(bool value)
+    async partial void OnIsAutoUpdateEnabledChanged(bool value)
     {
         if (value)
         {
@@ -46,7 +46,7 @@ public partial class SettingPageViewModel : ObservableObject
                 "应用将在下次启动时自动检查更新。",
                 ControlAppearance.Success,
                 SymbolRegular.CheckmarkCircle24);
-            File.WriteAllText(SettingsFilePath,
+            await File.WriteAllTextAsync(SettingsFilePath,
                 JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", true } }));
         }
         else
@@ -56,7 +56,7 @@ public partial class SettingPageViewModel : ObservableObject
                 "应用将不会自动检查更新，请手动检查。",
                 ControlAppearance.Success,
                 SymbolRegular.CheckmarkCircle24);
-            File.WriteAllText(SettingsFilePath,
+            await File.WriteAllTextAsync(SettingsFilePath,
                 JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", false } }));
         }
     }

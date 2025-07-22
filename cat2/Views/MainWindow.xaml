@@ -19,92 +19,95 @@
     </ui:FluentWindow.DataContext>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition
-                Height="Auto" />
-            <RowDefinition
-                Height="*" />
-        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="*" />
+            </Grid.RowDefinitions>
 
-        <ui:TitleBar
-            Title="{Binding AssemblyName}"
-            CanMaximize="False" ShowMaximize="False"
-            ShowMinimize="False" ShowClose="False">
-            <ui:TitleBar.Icon>
-                <ui:ImageIcon
-                    Source="pack://application:,,,/logo.ico" />
-            </ui:TitleBar.Icon>
+            <ui:TitleBar
+                Title="{Binding AssemblyName}"
+                CanMaximize="False" ShowMaximize="False"
+                ShowMinimize="False" ShowClose="False">
+                <ui:TitleBar.Icon>
+                    <ui:ImageIcon
+                        Source="pack://application:,,,/logo.ico" />
+                </ui:TitleBar.Icon>
 
-            <ui:TitleBar.TrailingContent>
-                <StackPanel
-                    Margin="0,5,5,0"
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal">
-                    <ToggleButton
-                        Height="30" Width="45"
+                <ui:TitleBar.TrailingContent>
+                    <StackPanel
+                        Margin="0,5,5,0"
                         VerticalAlignment="Top"
-                        IsChecked="{Binding IsDarkTheme,Mode=TwoWay}"
-                        Command="{Binding ThemesChangedCommand}">
-                        <ui:SymbolIcon Symbol="DarkTheme24" />
-                    </ToggleButton>
+                        Orientation="Horizontal">
+                        <ToggleButton
+                            Height="30" Width="45"
+                            VerticalAlignment="Top"
+                            IsChecked="{Binding IsDarkTheme,Mode=TwoWay}"
+                            Command="{Binding ThemesChangedCommand}">
+                            <ui:SymbolIcon Symbol="DarkTheme24" />
+                        </ToggleButton>
 
-                    <ui:Button
-                        Height="30" Width="45"
-                        Margin="5,0,0,0"
-                        ToolTip="a怎么看看不见了？ (●ˇ∀ˇ●)"
-                        Command="{Binding MinimizeThisCommand}"
-                        Icon="{ui:SymbolIcon ArrowMinimize28}" />
+                        <ui:Button
+                            Height="30" Width="45"
+                            Margin="5,0,0,0"
+                            ToolTip="a怎么看看不见了？ (●ˇ∀ˇ●)"
+                            Command="{Binding MinimizeThisCommand}"
+                            Icon="{ui:SymbolIcon ArrowMinimize28}" />
 
-                    <ui:Button
-                        Height="30" Width="45"
-                        Margin="5,0,0,0"
-                        ToolTip="别走a (っ °Д °;)っ"
-                        Command="{Binding CloseThisCommand}"
-                        Icon="{ui:SymbolIcon ArrowExit20}" />
-                </StackPanel>
-            </ui:TitleBar.TrailingContent>
-        </ui:TitleBar>
+                        <ui:Button
+                            Height="30" Width="45"
+                            Margin="5,0,0,0"
+                            ToolTip="别走a (っ °Д °;)っ"
+                            Command="{Binding CloseThisCommand}"
+                            Icon="{ui:SymbolIcon ArrowExit20}" />
+                    </StackPanel>
+                </ui:TitleBar.TrailingContent>
+            </ui:TitleBar>
 
-        <ui:NavigationView
-            IsBackButtonVisible="Collapsed"
-            Name="RootNavigation"
-            Grid.Row="1">
-            <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem
-                    Content="登录"
-                    FontSize="16"
-                    Name="LoginItem"
-                    Icon="{ui:SymbolIcon NoteAdd48}"
-                    TargetPageType="{x:Type pages:LoginPage}" />
+            <ui:NavigationView
+                IsBackButtonVisible="Collapsed"
+                Name="RootNavigation"
+                Grid.Row="1">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem
+                        Content="登录"
+                        FontSize="16"
+                        Name="LoginItem"
+                        Icon="{ui:SymbolIcon NoteAdd48}"
+                        TargetPageType="{x:Type pages:LoginPage}" />
 
-                <ui:NavigationViewItem
-                    Content="用户页"
-                    Name="UserItem"
-                    Visibility="Collapsed"
-                    NavigationCacheMode="Enabled"
-                    Icon="{ui:SymbolIcon ContactCard48}"
-                    TargetPageType="{x:Type pages:UserinfoPage}" />
+                    <ui:NavigationViewItem
+                        Content="用户页"
+                        Name="UserItem"
+                        Visibility="Collapsed"
+                        NavigationCacheMode="Enabled"
+                        Icon="{ui:SymbolIcon ContactCard48}"
+                        TargetPageType="{x:Type pages:UserinfoPage}" />
 
-                <ui:NavigationViewItem
-                    Content="隧道管理"
-                    Name="TunnelItem"
-                    Visibility="Collapsed"
-                    NavigationCacheMode="Enabled"
-                    Icon="{ui:SymbolIcon Channel48}"
-                    TargetPageType="{x:Type pages:TunnelPage}" />
-            </ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem
+                        Content="隧道管理"
+                        Name="TunnelItem"
+                        Visibility="Collapsed"
+                        NavigationCacheMode="Enabled"
+                        Icon="{ui:SymbolIcon Channel48}"
+                        TargetPageType="{x:Type pages:TunnelPage}" />
+                </ui:NavigationView.MenuItems>
 
-            <ui:NavigationView.FooterMenuItems>
-                <ui:NavigationViewItem
-                    Content="设置"
-                    NavigationCacheMode="Enabled"
-                    Icon="{ui:SymbolIcon Settings48}"
-                    TargetPageType="{x:Type pages:SettingPage}" />
-            </ui:NavigationView.FooterMenuItems>
-        </ui:NavigationView>
+                <ui:NavigationView.FooterMenuItems>
+                    <ui:NavigationViewItem
+                        Content="设置"
+                        NavigationCacheMode="Enabled"
+                        Icon="{ui:SymbolIcon Settings48}"
+                        TargetPageType="{x:Type pages:SettingPage}" />
+                </ui:NavigationView.FooterMenuItems>
+            </ui:NavigationView>
+        </Grid>
 
-        <Grid
-            Grid.Row="1"
-            Name="SnackbarGrid" />
+        <ui:SnackbarPresenter
+            Name="RootSnackbarDialog" />
+        <ContentPresenter
+            Name="RootContentDialogPresenter" />
     </Grid>
 </ui:FluentWindow>

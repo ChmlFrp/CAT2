@@ -161,24 +161,24 @@ public partial class TunnelPageViewModel : ObservableObject
 public partial class TunnelItem(
     TunnelPageViewModel parentViewModel,
     Classes.TunnelInfoClass tunnelData,
-    bool istunnelstarted)
+    bool isTunnelStarted)
     : ObservableObject
 {
     [ObservableProperty] private string _id = $"[隧道ID:{tunnelData.id}]";
     [ObservableProperty] private string _info = $"[节点名称:{tunnelData.node}]-[隧道类型:{tunnelData.type}]";
     [ObservableProperty] private bool _isEnabled = true;
-    [ObservableProperty] private bool _isTunnelStarted = istunnelstarted;
+    [ObservableProperty] private bool _isTunnelStarted = isTunnelStarted;
     [ObservableProperty] private string _name = tunnelData.name;
 
     [ObservableProperty] private string _toolTip =
         $"[内网端口:{tunnelData.nport}]-[外网端口/连接域名:{tunnelData.dorp}]-[节点状态:{tunnelData.nodestate}]";
 
 
-    partial void OnIsTunnelStartedChanged(bool value)
+    async partial void OnIsTunnelStartedChanged(bool value)
     {
         IsEnabled = false;
         if (value)
-            StartTunnelAsync(
+            await StartTunnelAsync(
                 tunnelData.name,
                 () =>
                 {
@@ -244,7 +244,7 @@ public partial class TunnelItem(
                 }
             );
         else
-            StopTunnelAsync(
+            await StopTunnelAsync(
                 tunnelData.name,
                 () =>
                 {
@@ -273,6 +273,12 @@ public partial class TunnelItem(
     [RelayCommand]
     private async Task DeleteTunnel()
     {
+        if (await ShowConfirm(
+                "你确定要删除吗?",
+                "在删除前，问一个问题：你到底有多少力量?\no(￣┰￣*)ゞ",
+                "下定决心",
+                "就此罢手") != ContentDialogResult.Primary) return;
+
         await StopTunnelAsync(tunnelData.name);
         await DeleteTunnelAsync(tunnelData.name);
         WritingLog($"删除隧道请求：{tunnelData.name}");

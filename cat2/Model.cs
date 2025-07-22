@@ -1,9 +1,10 @@
 ﻿using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Reflection;
 using CAT2.Views;
 using CSDK;
+using Wpf.Ui;
+using Wpf.Ui.Extensions;
 
 namespace CAT2;
 
@@ -26,30 +27,32 @@ public abstract class Model
 
     public static readonly string SettingsFilePath = Path.Combine(DataPath, "Settings-CAT2.json");
 
-    public static async void ShowTip(string title, string content, ControlAppearance appearance, SymbolRegular icon)
+    public static readonly SnackbarService SnackbarService = new();
+
+    public static readonly ContentDialogService ContentDialogService = new();
+
+    public static void ShowTip(string title, string content, ControlAppearance appearance, SymbolRegular icon)
     {
-        var globalSnackbar = new Snackbar
-            (new SnackbarPresenter())
+        SnackbarService.Show(
+            title,
+            content,
+            appearance,
+            new SymbolIcon(icon) { FontSize = 32 },
+            new TimeSpan(0, 0, 0, 2));
+    }
+
+    public static async Task<ContentDialogResult> ShowConfirm(string title, string content,
+        string primaryButtonText = "确定", string closeButtonText = "取消")
+    {
+        return await ContentDialogService.ShowSimpleDialogAsync(
+            new SimpleContentDialogCreateOptions
             {
-                Margin = new Thickness(45, 0, 20, 40),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                Timeout = TimeSpan.FromMilliseconds(2000),
-                IsCloseButtonEnabled = false,
-                Icon = new SymbolIcon(icon)
-                {
-                    FontSize = 32
-                },
-                Appearance = appearance,
+                Title = title,
                 Content = content,
-                Title = title
-            };
-
-        foreach (var child in MainClass.SnackbarGrid.Children.OfType<Snackbar>().ToList())
-            MainClass.SnackbarGrid.Children.Remove(child);
-
-        MainClass.SnackbarGrid.Children.Add(globalSnackbar);
-        await globalSnackbar.ShowAsync();
+                PrimaryButtonText = primaryButtonText,
+                CloseButtonText = closeButtonText
+            }
+        );
     }
 
     public static async Task UpdateApp(bool showTip = false)
@@ -76,11 +79,21 @@ public abstract class Model
         }
 
         ShowTip("发现新版本",
-            "正在更新应用，请稍候...",
+            "正在检查更新...",
             ControlAppearance.Light,
             SymbolRegular.Add48);
 
-        await Task.Delay(3000);
+        await Task.Delay(1000);
+
+        if (await ShowConfirm("更新确认",
+                $"当前版本：{Version}\n最新版本：{jsonNode["version"]}\n\n是否立即更新？",
+                "更新") != ContentDialogResult.Primary)
+            return;
+
+        ShowTip("正在下载更新",
+            "请稍候，正在下载最新版本...",
+            ControlAppearance.Success,
+            SymbolRegular.Add48);
 
         var temp = Path.GetTempFileName();
         if (!await Http.GetFileAsync("https://gitcode.com/Qyzgj/cat2/releases/download/lastest/Release.zip",
@@ -96,7 +109,7 @@ public abstract class Model
                 ShowTip("更新失败",
                     "无法解压更新文件，请检查磁盘空间或权限。",
                     ControlAppearance.Danger,
-                    SymbolRegular.TagError24); 
+                    SymbolRegular.TagError24);
             return;
         }
         finally
