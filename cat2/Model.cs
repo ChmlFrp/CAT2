@@ -57,7 +57,7 @@ public abstract class Model
 
     public static async Task UpdateApp(bool showTip = false)
     {
-        var jsonNode = await Http.GetJsonAsync("https://cat2.chmlfrp.com/update.json");
+        var jsonNode = await Http.GetJsonAsync("https://raw.gitcode.com/Qyzgj/cat2/raw/main/update.json");
         if (jsonNode == null)
         {
             if (showTip)
@@ -85,9 +85,9 @@ public abstract class Model
 
         await Task.Delay(1000);
 
-        if (await ShowConfirm("更新确认",
-                $"当前版本：{Version}\n最新版本：{jsonNode["version"]}\n\n是否立即更新？",
-                "更新") != ContentDialogResult.Primary)
+        if (await ShowConfirm("确认更新",
+                $"当前版本：{Version}\n最新版本：{jsonNode["version"]}\n\n是否立即更新？\n下载完成后将自动重启应用，请等待应用重启。",
+                "确定更新") != ContentDialogResult.Primary)
             return;
 
         ShowTip("正在下载更新",
