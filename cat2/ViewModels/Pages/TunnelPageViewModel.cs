@@ -78,13 +78,13 @@ public partial class TunnelPageViewModel : ObservableObject
         }
         else if (tunnelsData.Count == 0)
         {
+            ListDataContext = [];
             WritingLog("没有隧道信息");
             ShowTip(
                 "没有隧道信息",
                 "当前没有可用的隧道信息，请注册隧道。",
                 ControlAppearance.Danger,
                 SymbolRegular.Warning24);
-            ListDataContext = [];
         }
         else
         {

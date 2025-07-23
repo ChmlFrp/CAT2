@@ -8,7 +8,6 @@
     Title="{Binding AssemblyName}"
     ExtendsContentIntoTitleBar="True"
     x:Class="CAT2.Views.MainWindow"
-    MaxHeight="750" MaxWidth="1450"
     MinHeight="500" MinWidth="950"
     Height="550" Width="1050"
     WindowBackdropType="Mica"
@@ -28,41 +27,22 @@
             </Grid.RowDefinitions>
 
             <ui:TitleBar
-                Title="{Binding AssemblyName}"
-                CanMaximize="False" ShowMaximize="False"
-                ShowMinimize="False" ShowClose="False">
+                Title="{Binding AssemblyName}">
                 <ui:TitleBar.Icon>
                     <ui:ImageIcon
                         Source="pack://application:,,,/logo.ico" />
                 </ui:TitleBar.Icon>
 
                 <ui:TitleBar.TrailingContent>
-                    <StackPanel
-                        Margin="0,5,5,0"
-                        VerticalAlignment="Top"
-                        Orientation="Horizontal">
                         <ToggleButton
                             Height="30" Width="45"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Top"
+                            BorderThickness="0"
                             IsChecked="{Binding IsDarkTheme,Mode=TwoWay}"
                             Command="{Binding ThemesChangedCommand}">
                             <ui:SymbolIcon Symbol="DarkTheme24" />
                         </ToggleButton>
-
-                        <ui:Button
-                            Height="30" Width="45"
-                            Margin="5,0,0,0"
-                            ToolTip="a怎么看看不见了？ (●ˇ∀ˇ●)"
-                            Command="{Binding MinimizeThisCommand}"
-                            Icon="{ui:SymbolIcon ArrowMinimize28}" />
-
-                        <ui:Button
-                            Height="30" Width="45"
-                            Margin="5,0,0,0"
-                            ToolTip="别走a (っ °Д °;)っ"
-                            Command="{Binding CloseThisCommand}"
-                            Icon="{ui:SymbolIcon ArrowExit20}" />
-                    </StackPanel>
                 </ui:TitleBar.TrailingContent>
             </ui:TitleBar>
 

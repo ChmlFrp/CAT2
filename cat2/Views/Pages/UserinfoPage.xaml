@@ -10,17 +10,14 @@
         <vm:UserinfoPageViewModel />
     </Page.DataContext>
 
-    <ui:Card
-        Margin="0,25,35,25"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Stretch">
-        <StackPanel
-            MinWidth="200"
-            Orientation="Vertical">
+    <Grid
+        HorizontalAlignment="Right">
+        <ui:Card
+            Padding="20">
             <ui:Image
                 Height="150"
                 Width="150"
-                Margin="0,0,0,10"
+                VerticalAlignment="Top"
                 Source="{Binding CurrentImage}"
                 CornerRadius="50">
                 <ui:Image.ContextMenu>
@@ -39,40 +36,42 @@
                     </ContextMenu>
                 </ui:Image.ContextMenu>
             </ui:Image>
-
-            <ui:TextBlock
-                HorizontalAlignment="Center"
-                Margin="0,0,0,10"
-                Text="{Binding Name}"
-                FontSize="18"
-                FontWeight="Bold" />
-
-            <Label
-                HorizontalAlignment="Center"
-                Margin="0,0,0,15"
-                Content="{Binding Email}"
-                Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
-
-            <ui:TextBlock
-                Margin="10,0,0,0">
-                <Run
-                    Text="{Binding Integral}" />
-                <LineBreak />
-                <Run
-                    Text="{Binding TunnelCount}" />
-                <LineBreak />
-                <Run
-                    Text="{Binding Group}" />
-                <LineBreak />
-                <Run
-                    Text="{Binding Qq}" />
-                <LineBreak />
-                <Run
-                    Text="{Binding Term}" />
-                <LineBreak />
-                <Run
-                    Text="{Binding Bandwidth}" />
-            </ui:TextBlock>
-        </StackPanel>
-    </ui:Card>
+            <ui:Card.Footer>
+                <StackPanel
+                    Orientation="Vertical">
+                    <ui:TextBlock
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,10"
+                        Text="{Binding Name}"
+                        FontSize="18"
+                        FontWeight="Bold" />
+                    <Label
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,15"
+                        Content="{Binding Email}"
+                        Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
+                    <ui:TextBlock
+                        Margin="10,0,0,0">
+                        <Run
+                            Text="{Binding Integral}" />
+                        <LineBreak />
+                        <Run
+                            Text="{Binding TunnelCount}" />
+                        <LineBreak />
+                        <Run
+                            Text="{Binding Group}" />
+                        <LineBreak />
+                        <Run
+                            Text="{Binding Qq}" />
+                        <LineBreak />
+                        <Run
+                            Text="{Binding Term}" />
+                        <LineBreak />
+                        <Run
+                            Text="{Binding Bandwidth}" />
+                    </ui:TextBlock>
+                </StackPanel>
+            </ui:Card.Footer>
+        </ui:Card>
+    </Grid>
 </Page>

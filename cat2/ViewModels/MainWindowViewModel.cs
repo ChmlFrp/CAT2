@@ -88,17 +88,4 @@ public partial class MainWindowViewModel : ObservableObject
         ApplicationThemeManager.Apply(theme ? ApplicationTheme.Dark : ApplicationTheme.Light);
         IsDarkTheme = theme;
     }
-
-    [RelayCommand]
-    private static void MinimizeThis()
-    {
-        MainClass.WindowState = WindowState.Minimized;
-    }
-
-    [RelayCommand]
-    private static void CloseThis()
-    {
-        WritingLog("主窗口正常退出");
-        MainClass.Close();
-    }
 }
