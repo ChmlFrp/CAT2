@@ -34,15 +34,15 @@
                 </ui:TitleBar.Icon>
 
                 <ui:TitleBar.TrailingContent>
-                        <ToggleButton
-                            Height="30" Width="45"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            BorderThickness="0"
-                            IsChecked="{Binding IsDarkTheme,Mode=TwoWay}"
-                            Command="{Binding ThemesChangedCommand}">
-                            <ui:SymbolIcon Symbol="DarkTheme24" />
-                        </ToggleButton>
+                    <ToggleButton
+                        Height="30" Width="45"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        BorderThickness="0"
+                        IsChecked="{Binding IsDarkTheme,Mode=TwoWay}"
+                        Command="{Binding ThemesChangedCommand}">
+                        <ui:SymbolIcon Symbol="DarkTheme24" />
+                    </ToggleButton>
                 </ui:TitleBar.TrailingContent>
             </ui:TitleBar>
 

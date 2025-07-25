@@ -4,7 +4,7 @@
         <UseWPF>true</UseWPF>
         <Version>1.1.7.6</Version>
         <OutputType>WinExe</OutputType>
-        <FileVersion>0.0.2.0</FileVersion>
+        <FileVersion>0.0.2.1</FileVersion>
         <LangVersion>preview</LangVersion>
         <ApplicationIcon>logo.ico</ApplicationIcon>
         <TargetFramework>net9.0-windows</TargetFramework>

@@ -2,20 +2,21 @@
 using System.IO;
 using System.Text.Json;
 using System.Windows.Threading;
+using CAT2.Models;
 
 namespace CAT2.ViewModels;
 
 public partial class SettingPageViewModel : ObservableObject
 {
-    [ObservableProperty] private string _assemblyName = Model.AssemblyName;
+    [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
     [ObservableProperty] private string _context = IsFrpcExists ? "已下载" : "下载中";
-    [ObservableProperty] private string _copyright = Model.Copyright;
-    [ObservableProperty] private string _fileVersion = $"文件版本：{Model.FileVersion}";
+    [ObservableProperty] private string _copyright = Constants.Copyright;
+    [ObservableProperty] private string _fileVersion = $"文件版本：{Constants.FileVersion}";
     [ObservableProperty] private bool _isAutoUpdateEnabled;
 
     [ObservableProperty] private bool _isClearCacheButtonEnabled = true;
     [ObservableProperty] private bool _isUpdateButtonEnabled = true;
-    [ObservableProperty] private string _version = Model.Version;
+    [ObservableProperty] private string _version = Constants.Version;
 
 
     public SettingPageViewModel()
@@ -41,7 +42,7 @@ public partial class SettingPageViewModel : ObservableObject
     {
         if (value)
         {
-            ShowTip(
+            ShowSnackbar(
                 "自动更新已启用",
                 "应用将在下次启动时自动检查更新。",
                 ControlAppearance.Success,
@@ -51,7 +52,7 @@ public partial class SettingPageViewModel : ObservableObject
         }
         else
         {
-            ShowTip(
+            ShowSnackbar(
                 "自动更新已禁用",
                 "应用将不会自动检查更新，请手动检查。",
                 ControlAppearance.Success,
@@ -85,7 +86,7 @@ public partial class SettingPageViewModel : ObservableObject
                 // ignored
             }
 
-        ShowTip(
+        ShowSnackbar(
             "缓存已清理",
             "所有缓存文件已被删除。",
             ControlAppearance.Success,

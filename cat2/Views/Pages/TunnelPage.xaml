@@ -113,7 +113,7 @@
                 Padding="6"
                 FontSize="16"
                 Margin="0,0,5,0"
-                Command="{Binding ShowFlyoutCommand}" />
+                Command="{Binding ShowDialogCommand}" />
 
             <ui:Button
                 Content="刷新信息"
@@ -123,74 +123,5 @@
                 IsEnabled="{Binding IsEnabled}"
                 Command="{Binding LoadTunnelsCommand}" />
         </StackPanel>
-
-        <ui:Flyout
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            IsOpen="{Binding IsCreateTunnelFlyoutOpen,Mode=TwoWay}"
-            Placement="Top">
-
-            <StackPanel
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Orientation="Vertical">
-
-                <StackPanel
-                    Margin="0,0,0,10"
-                    Orientation="Horizontal">
-
-                    <ComboBox
-                        ItemsSource="{Binding NodeDataContext}"
-                        SelectedValue="{Binding NodeName}"
-                        SelectedIndex="0"
-                        Margin="0,0,5,0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid
-                                    ToolTip="{Binding Notes}">
-                                    <TextBlock
-                                        Text="{Binding Content}" />
-                                </Grid>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-
-                    <ComboBox
-                        Text="{Binding TunnelType}"
-                        SelectedIndex="0">
-                        <ComboBoxItem
-                            Content="tcp" />
-                        <ComboBoxItem
-                            Content="udp" />
-                    </ComboBox>
-                </StackPanel>
-
-                <StackPanel
-                    Orientation="Horizontal"
-                    Margin="0,0,0,10">
-                    <ui:NumberBox
-                        Text="{Binding LocalPort,UpdateSourceTrigger=PropertyChanged}"
-                        PlaceholderText="内网端口"
-                        Maximum="65534"
-                        Minimum="1"
-                        Margin="0,0,5,0" />
-
-                    <ui:NumberBox
-                        Text="{Binding RemotePort,UpdateSourceTrigger=PropertyChanged}"
-                        Maximum="{Binding Maximum}"
-                        Minimum="{Binding Minimum}"
-                        PlaceholderText="外网端口" />
-                </StackPanel>
-
-                <ui:Button
-                    Command="{Binding CreateTunnelCommand}"
-                    HorizontalAlignment="Right"
-                    Appearance="Primary"
-                    Icon="{ui:SymbolIcon Add48}"
-                    IsEnabled="{Binding IsTunnelEnabled}"
-                    Content="添加隧道"
-                    Padding="8" />
-            </StackPanel>
-        </ui:Flyout>
     </Grid>
 </Page>

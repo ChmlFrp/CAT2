@@ -1,0 +1,98 @@
+﻿<ui:ContentDialog
+    x:Class="CAT2.Controls.AddTunnelContentDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:controls="clr-namespace:CAT2.Controls"
+
+    Title="添加隧道"
+    PrimaryButtonText="添加"
+    CloseButtonText="取消">
+
+    <ui:ContentDialog.Resources>
+        <Style
+            BasedOn="{StaticResource {x:Type ui:ContentDialog}}"
+            TargetType="{x:Type controls:AddTunnelContentDialog}" />
+    </ui:ContentDialog.Resources>
+
+    <ui:ContentDialog.IsPrimaryButtonEnabled>
+        <Binding
+            Path="IsTunnelEnabled" />
+    </ui:ContentDialog.IsPrimaryButtonEnabled>
+
+    <ui:ContentDialog.PrimaryButtonIcon>
+        <ui:SymbolIcon
+            Symbol="Add48" />
+    </ui:ContentDialog.PrimaryButtonIcon>
+
+    <ui:ContentDialog.CloseButtonIcon>
+        <ui:SymbolIcon
+            Symbol="ArchiveArrowBack48" />
+    </ui:ContentDialog.CloseButtonIcon>
+
+    <Grid
+        VerticalAlignment="Center"
+        MinWidth="300">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ComboBox
+            Grid.Row="0"
+            Margin="0,0,0,8"
+            ItemsSource="{Binding NodeDataContext}"
+            SelectedValue="{Binding NodeName}"
+            SelectedIndex="0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid
+                        ToolTip="{Binding Notes}">
+                        <TextBlock
+                            Text="{Binding Content}" />
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <ComboBox
+            Grid.Row="1"
+            Margin="0,0,0,8"
+            Text="{Binding TunnelType}"
+            SelectedIndex="0">
+            <ComboBoxItem
+                Content="tcp" />
+            <ComboBoxItem
+                Content="udp" />
+        </ComboBox>
+
+        <ui:TextBox
+            Grid.Row="2"
+            Margin="0,0,0,8"
+            PlaceholderText="本地IP"
+            Text="{Binding LocalIp}" />
+
+        <ui:NumberBox
+            Grid.Row="3"
+            Margin="0,0,0,8"
+            Text="{Binding LocalPort,UpdateSourceTrigger=PropertyChanged}"
+            PlaceholderText="内网端口"
+            Maximum="65534"
+            Minimum="1" />
+
+        <ui:NumberBox
+            Grid.Row="4"
+            Text="{Binding RemotePort,UpdateSourceTrigger=PropertyChanged}"
+            Maximum="{Binding Maximum}"
+            Minimum="{Binding Minimum}"
+            PlaceholderText="外网端口" />
+    </Grid>
+</ui:ContentDialog>

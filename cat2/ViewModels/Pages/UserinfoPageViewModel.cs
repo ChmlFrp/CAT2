@@ -35,7 +35,7 @@ public partial class UserinfoPageViewModel : ObservableObject
         if (UserInfo == null)
         {
             WritingLog("加载用户信息失败");
-            ShowTip(
+            ShowSnackbar(
                 "加载用户信息失败",
                 "请检查网络连接或稍后重试。",
                 ControlAppearance.Danger,
@@ -53,7 +53,7 @@ public partial class UserinfoPageViewModel : ObservableObject
         Bandwidth = $"带宽限制：国内{UserInfo.bandwidth}m | 国外{UserInfo.bandwidth * 4}m";
         WritingLog("加载用户信息成功");
 
-        ShowTip(
+        ShowSnackbar(
             "加载用户信息成功",
             "请查看您的账户信息。",
             ControlAppearance.Success,
@@ -74,7 +74,7 @@ public partial class UserinfoPageViewModel : ObservableObject
                 "放弃") != ContentDialogResult.Primary) return;
         LogoutAsync();
         WritingLog("用户已退出登录");
-        ShowTip(
+        ShowSnackbar(
             "已退出登录",
             "请重新登录以继续使用。",
             ControlAppearance.Info,

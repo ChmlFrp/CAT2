@@ -31,7 +31,6 @@
                         <ui:MenuItem
                             Icon="{ui:SymbolIcon SignOut24}"
                             Command="{Binding SignOutCommand}"
-                            ToolTip="(°ー°〃) 你不会真要退出吧？"
                             Header="退出登录" />
                     </ContextMenu>
                 </ui:Image.ContextMenu>

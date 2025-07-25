@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using CAT2.Models;
 using Microsoft.Win32;
 using Wpf.Ui.Appearance;
 using static CSDK.UserActions;
@@ -9,7 +10,7 @@ namespace CAT2.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
-    [ObservableProperty] private string _assemblyName = Model.AssemblyName;
+    [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
     [ObservableProperty] private bool _isDarkTheme;
 
     public MainWindowViewModel()
@@ -20,7 +21,7 @@ public partial class MainWindowViewModel : ObservableObject
 
             WritingLog(ex.Message.Contains("拒绝访问")
                 ? "请以管理员身份运行本程序"
-                : $"请将此日志反馈给开发者\n联系方式：\n1.QQ：2976779544\n2.Email：Qusay_Diaz@outlook.com\n3.GitHub：Qianyiaz/CAT2\n版本号：{Model.Version}次版本号：{FileVersion}\n异常信息：\n{ex}");
+                : $"请将此日志反馈给开发者\n联系方式：\n1.QQ：2976779544\n2.Email：Qusay_Diaz@outlook.com\n3.GitHub：Qianyiaz/CAT2\n版本号：{Constants.Version}次版本号：{FileVersion}\n异常信息：\n{ex}");
 
             Process.Start(new ProcessStartInfo
             {

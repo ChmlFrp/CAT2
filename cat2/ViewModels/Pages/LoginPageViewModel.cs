@@ -30,7 +30,7 @@ public partial class LoginPageViewModel : ObservableObject
             MainClass.UserItem.Visibility = Visibility.Visible;
             MainClass.TunnelItem.Visibility = Visibility.Visible;
             MainClass.RootNavigation.Navigate("用户页");
-            ShowTip(
+            ShowSnackbar(
                 "登录成功！",
                 $"欢迎回来，{Username}！",
                 ControlAppearance.Success,
@@ -38,7 +38,7 @@ public partial class LoginPageViewModel : ObservableObject
         }
         else if (msg == null)
         {
-            ShowTip(
+            ShowSnackbar(
                 "登录错误",
                 "网络错误，请稍后再试。",
                 ControlAppearance.Danger,
@@ -46,7 +46,7 @@ public partial class LoginPageViewModel : ObservableObject
         }
         else
         {
-            ShowTip(
+            ShowSnackbar(
                 "登录错误",
                 $"{msg}",
                 ControlAppearance.Danger,
@@ -57,7 +57,7 @@ public partial class LoginPageViewModel : ObservableObject
     [RelayCommand]
     private async Task RegisterClick()
     {
-        ShowTip(
+        ShowSnackbar(
             "跳转至网页中...",
             "请稍等...",
             ControlAppearance.Info,
