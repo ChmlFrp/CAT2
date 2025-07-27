@@ -70,6 +70,7 @@ public partial class MainWindowViewModel : ObservableObject
             if (deserialize["IsAutoUpdate"])
             {
                 WritingLog("自动更新已启用");
+                await Task.Delay(2000);
                 await UpdateApp();
             }
             else

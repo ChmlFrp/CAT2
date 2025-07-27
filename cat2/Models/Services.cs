@@ -49,7 +49,7 @@ public static class Services
 
     public static async Task UpdateApp(bool showTip = false)
     {
-        var jsonNode = await Http.GetJsonAsync("https://raw.gitcode.com/Qyzgj/cat2/raw/main/update.json");
+        var jsonNode = await HttpActions.GetJsonAsync("https://raw.gitcode.com/Qyzgj/cat2/raw/main/update.json");
         if (jsonNode == null)
         {
             if (showTip)
@@ -70,16 +70,16 @@ public static class Services
             return;
         }
 
-        ShowSnackbar("发现新版本",
-            "正在检查更新...",
+        ShowSnackbar("正在检查更新",
+            "已发现新版本，正在准备更新...",
             ControlAppearance.Light,
             SymbolRegular.Add48);
 
         await Task.Delay(1000);
 
         if (await ShowConfirm("确认更新",
-                $"当前版本：{Constants.Version}\n最新版本：{jsonNode["version"]}\n\n是否立即更新？\n下载完成后将自动重启应用，请等待应用重启。",
-                "确定更新") != ContentDialogResult.Primary)
+                $"当前版本：{Constants.Version}\n最新版本：{jsonNode["version"]}\n\n是否立即更新？\n下载完成后将自动重启应用，请等待应用重启。") !=
+            ContentDialogResult.Primary)
             return;
 
         ShowSnackbar("正在下载更新",
@@ -88,7 +88,7 @@ public static class Services
             SymbolRegular.Add48);
 
         var temp = Path.GetTempFileName();
-        if (!await Http.GetFileAsync("https://gitcode.com/Qyzgj/cat2/releases/download/lastest/Release.zip",
+        if (!await HttpActions.GetFileAsync("https://gitcode.com/Qyzgj/cat2/releases/download/lastest/Release.zip",
                 temp)) return;
 
         try

@@ -41,7 +41,6 @@
                 Icon="{ui:SymbolIcon Password24}"
                 ToolTip="密码字体怎么这么小？"
                 Password="{Binding Password,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-
             <Grid>
                 <ui:Button
                     Padding="8"

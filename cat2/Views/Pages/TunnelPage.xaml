@@ -17,13 +17,13 @@
                 <ui:Card.ContextMenu>
                     <ContextMenu>
                         <MenuItem
-                            ToolTip="还没实现＞︿＜"
+                            Command="{Binding UpdateTunnelCommand}"
                             Icon="{ui:SymbolIcon Edit48}"
-                            Header="编辑" />
+                            Header="修改隧道" />
                         <MenuItem
                             Command="{Binding DeleteTunnelCommand}"
                             Icon="{ui:SymbolIcon Delete48}"
-                            Header="删除" />
+                            Header="删除隧道" />
                         <MenuItem
                             Command="{Binding CopyTunnelCommand}"
                             Icon="{ui:SymbolIcon CopyAdd24}"
@@ -121,7 +121,7 @@
                 Padding="6"
                 FontSize="16"
                 IsEnabled="{Binding IsEnabled}"
-                Command="{Binding LoadTunnelsCommand}" />
+                Command="{Binding LoadingCommand}" />
         </StackPanel>
     </Grid>
 </Page>

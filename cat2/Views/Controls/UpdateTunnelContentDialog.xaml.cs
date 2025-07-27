@@ -1,21 +1,26 @@
 ﻿using System.Windows.Controls;
 using CAT2.ViewModels;
 using CAT2.ViewModels.Controls;
+using CSDK;
 
 namespace CAT2.Views.Controls;
 
-public partial class AddTunnelContentDialog
+public partial class UpdateTunnelContentDialog
 {
-    private readonly AddTunnelContentDialogViewModel _viewModel = new();
     private readonly TunnelPageViewModel _parentViewModel;
+    private readonly Classes.TunnelInfoClass _tunnelInfo;
+    private readonly UpdateTunnelContentDialogViewModel _viewModel;
 
-    public AddTunnelContentDialog
+    public UpdateTunnelContentDialog
     (
         ContentPresenter dialogHost,
+        Classes.TunnelInfoClass tunnelInfo,
         TunnelPageViewModel parentViewModel
     ) : base(dialogHost)
     {
+        _tunnelInfo = tunnelInfo;
         _parentViewModel = parentViewModel;
+        _viewModel = new UpdateTunnelContentDialogViewModel(_tunnelInfo);
         DataContext = _viewModel;
         Loaded += _viewModel.LoadNodes;
         InitializeComponent();
@@ -26,8 +31,9 @@ public partial class AddTunnelContentDialog
         base.OnButtonClick(button);
         if (button != ContentDialogButton.Primary) return;
 
-        var msg = await CreateTunnelAsync
+        var msg = await UpdateTunnelAsync
         (
+            _tunnelInfo,
             _viewModel.NodeName.Name,
             _viewModel.TunnelType,
             _viewModel.LocalIp,
@@ -35,17 +41,17 @@ public partial class AddTunnelContentDialog
             _viewModel.RemotePort
         );
 
-        WritingLog($"创建隧道返回：{msg}");
+        WritingLog($"更新隧道返回：{msg}");
 
         if (string.IsNullOrEmpty(msg))
             ShowSnackbar(
-                "隧道创建失败",
+                "隧道更新失败",
                 "请检查网络状态，或查看API状态。",
                 ControlAppearance.Danger,
                 SymbolRegular.TagError24);
         else if (msg.Contains("成功"))
-            ShowSnackbar("隧道创建成功",
-                "已添加至隧道列表。",
+            ShowSnackbar("隧道更新成功",
+                $"{_tunnelInfo.name}已更新至隧道列表。",
                 ControlAppearance.Success,
                 SymbolRegular.Checkmark24);
         else

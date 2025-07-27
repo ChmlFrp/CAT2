@@ -13,8 +13,26 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
     [ObservableProperty] private int _minimum;
     [ObservableProperty] private ObservableCollection<NodeItem> _nodeDataContext = [];
     [ObservableProperty] private NodeItem _nodeName;
+
+    [ObservableProperty] private Visibility _numberBoxVisibility = Visibility.Visible;
     [ObservableProperty] private string _remotePort;
+    [ObservableProperty] private Visibility _textBoxVisibility = Visibility.Collapsed;
     [ObservableProperty] private string _tunnelType = "tcp";
+
+    partial void OnTunnelTypeChanged(string value)
+    {
+        RemotePort = string.Empty;
+        if (value is "http" or "https")
+        {
+            NumberBoxVisibility = Visibility.Collapsed;
+            TextBoxVisibility = Visibility.Visible;
+        }
+        else
+        {
+            NumberBoxVisibility = Visibility.Visible;
+            TextBoxVisibility = Visibility.Collapsed;
+        }
+    }
 
     async partial void OnNodeNameChanged(NodeItem value)
     {
@@ -35,7 +53,7 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
         IsTunnelEnabled = !string.IsNullOrEmpty(RemotePort) && !string.IsNullOrEmpty(value);
     }
 
-    public async void LoadNodes(object sender, RoutedEventArgs e)
+    public virtual async void LoadNodes(object sender, RoutedEventArgs e)
     {
         // 节点数据
         foreach (var nodeData in await NodeActions.GetNodesDataListAsync())
