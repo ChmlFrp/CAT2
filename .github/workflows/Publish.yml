@@ -1,9 +1,7 @@
-name: Publish this
+name: Project Publishing
 on:
   push:
-    paths: ['cat2/**', '.github/workflows/Publish.yml']
-  workflow_dispatch:
-
+    paths: ['cat2/**','**/*.yml']
 jobs:
   publish:
     runs-on: windows-latest
@@ -12,10 +10,9 @@ jobs:
       - uses: actions/cache@main
         with:
           path: ~/.nuget/packages
-          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
-          restore-keys: nuget-${{ runner.os }}-
-      - run: dotnet publish -r win-x64 /p:PublishSingleFile=true --self-contained false
+          key: nuget-cache
+      - run: dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained false
       - uses: actions/upload-artifact@main
         with:
           name: Release
-          path: '**/publish/'
+          path: '**/publish/*.exe'
