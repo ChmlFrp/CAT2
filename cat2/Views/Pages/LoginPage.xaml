@@ -60,8 +60,8 @@
                     Content="登录"
                     ToolTip="快点登录a！"
                     Icon="{ui:SymbolIcon SignOut24}"
-                    IsEnabled="{Binding IsButtonEnabled}"
-                    Command="{Binding LoginClickCommand}" />
+                    IsEnabled="{Binding IsLoggedInEnabled}"
+                    Command="{Binding LoggedInCommand}" />
             </Grid>
         </StackPanel>
     </ui:Card>

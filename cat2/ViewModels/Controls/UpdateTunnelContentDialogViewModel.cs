@@ -2,7 +2,10 @@
 
 namespace CAT2.ViewModels.Controls;
 
-public class UpdateTunnelContentDialogViewModel(Classes.TunnelInfoClass tunnelInfo) : AddTunnelContentDialogViewModel
+public class UpdateTunnelContentDialogViewModel
+(
+    Classes.TunnelInfoClass tunnelInfo
+) : AddTunnelContentDialogViewModel
 {
     public override void LoadNodes(object sender, RoutedEventArgs e)
     {

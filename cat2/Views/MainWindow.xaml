@@ -62,7 +62,6 @@
                         Content="用户页"
                         Name="UserItem"
                         Visibility="Collapsed"
-                        NavigationCacheMode="Enabled"
                         Icon="{ui:SymbolIcon ContactCard48}"
                         TargetPageType="{x:Type pages:UserinfoPage}" />
 
@@ -70,7 +69,6 @@
                         Content="隧道管理"
                         Name="TunnelItem"
                         Visibility="Collapsed"
-                        NavigationCacheMode="Enabled"
                         Icon="{ui:SymbolIcon Channel48}"
                         TargetPageType="{x:Type pages:TunnelPage}" />
                 </ui:NavigationView.MenuItems>
@@ -78,7 +76,6 @@
                 <ui:NavigationView.FooterMenuItems>
                     <ui:NavigationViewItem
                         Content="设置"
-                        NavigationCacheMode="Enabled"
                         Icon="{ui:SymbolIcon Settings48}"
                         TargetPageType="{x:Type pages:SettingPage}" />
                 </ui:NavigationView.FooterMenuItems>

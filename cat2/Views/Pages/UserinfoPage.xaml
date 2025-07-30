@@ -23,9 +23,9 @@
                 <ui:Image.ContextMenu>
                     <ContextMenu>
                         <ui:MenuItem
-                            IsEnabled="{Binding IsEnabled}"
+                            IsEnabled="{Binding IsLoadedEnabled}"
                             Icon="{ui:SymbolIcon ArrowClockwise24}"
-                            Command="{Binding LoadingCommand}"
+                            Command="{Binding LoadedCommand}"
                             Header="刷新信息" />
 
                         <ui:MenuItem

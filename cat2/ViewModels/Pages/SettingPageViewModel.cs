@@ -9,21 +9,16 @@ namespace CAT2.ViewModels;
 public partial class SettingPageViewModel : ObservableObject
 {
     [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
-    [ObservableProperty] private string _context = IsFrpcExists ? "已下载" : "下载中";
     [ObservableProperty] private string _copyright = Constants.Copyright;
     [ObservableProperty] private string _fileVersion = $"文件版本：{Constants.FileVersion}";
-    [ObservableProperty] private bool _isAutoUpdateEnabled;
-
-    [ObservableProperty] private bool _isClearCacheButtonEnabled = true;
-    [ObservableProperty] private bool _isUpdateButtonEnabled = true;
     [ObservableProperty] private string _version = Constants.Version;
 
-
-    public SettingPageViewModel()
+    [ObservableProperty] private string _context = "正在检测...";
+    public async void Loaded(object sender, RoutedEventArgs e)
     {
-        var data = File.ReadAllText(SettingsFilePath);
+        var data = await File.ReadAllTextAsync(SettingsFilePath);
         var deserialize = JsonSerializer.Deserialize<Dictionary<string, bool>>(data);
-        IsAutoUpdateEnabled = deserialize["IsAutoUpdate"];
+        IsAutoUpdatedEnabled = deserialize["IsAutoUpdate"];
 
         var dotCount = 0;
         var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
@@ -37,45 +32,27 @@ public partial class SettingPageViewModel : ObservableObject
         };
         timer.Start();
     }
-
-    async partial void OnIsAutoUpdateEnabledChanged(bool value)
+    
+   [ObservableProperty] private bool _isAutoUpdatedEnabled;
+    async partial void OnIsAutoUpdatedEnabledChanged(bool value)
     {
         if (value)
         {
-            ShowSnackbar(
-                "自动更新已启用",
-                "应用将在下次启动时自动检查更新。",
-                ControlAppearance.Success,
-                SymbolRegular.CheckmarkCircle24);
             await File.WriteAllTextAsync(SettingsFilePath,
                 JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", true } }));
         }
         else
         {
-            ShowSnackbar(
-                "自动更新已禁用",
-                "应用将不会自动检查更新，请手动检查。",
-                ControlAppearance.Success,
-                SymbolRegular.CheckmarkCircle24);
             await File.WriteAllTextAsync(SettingsFilePath,
                 JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", false } }));
         }
     }
-
+    
+    [ObservableProperty] private bool _isClearedEnabled = true;
     [RelayCommand]
-    private void OpenDataPath()
+    private void Cleared()
     {
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = DataPath,
-            UseShellExecute = true
-        });
-    }
-
-    [RelayCommand]
-    private void ClearCache()
-    {
-        IsClearCacheButtonEnabled = false;
+        IsClearedEnabled = false;
         foreach (var cacheFile in Directory.GetFiles(DataPath, "*.log"))
             try
             {
@@ -91,14 +68,25 @@ public partial class SettingPageViewModel : ObservableObject
             "所有缓存文件已被删除。",
             ControlAppearance.Success,
             SymbolRegular.PresenceAvailable24);
-        IsClearCacheButtonEnabled = true;
+        IsClearedEnabled = true;
+    }
+
+    [ObservableProperty] private bool _isUpdatedEnabled = true;
+    [RelayCommand]
+    private async Task Updated()
+    {
+        IsUpdatedEnabled = false;
+        await UpdateApp(true);
+        IsUpdatedEnabled = true;
     }
 
     [RelayCommand]
-    private async Task Update()
+    private void OpenDataPath()
     {
-        IsUpdateButtonEnabled = false;
-        await UpdateApp(true);
-        IsUpdateButtonEnabled = true;
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = DataPath,
+            UseShellExecute = true
+        });
     }
 }

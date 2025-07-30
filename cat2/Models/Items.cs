@@ -1,30 +1,29 @@
 ﻿using CAT2.ViewModels;
 using CAT2.Views.Controls;
-using CSDK;
+using static CSDK.Classes;
 
 namespace CAT2.Models;
 
 public static partial class Items
 {
-    public partial class TunnelItem(
+    public partial class TunnelItem
+    (
         TunnelPageViewModel parentViewModel,
-        Classes.TunnelInfoClass tunnelInfo,
-        bool isTunnelStarted
+        TunnelInfoClass tunnelInfo,
+        bool isStarted
     ) : ObservableObject
     {
-        [ObservableProperty] private string _id = $"[隧道ID:{tunnelInfo.id}]";
-        [ObservableProperty] private string _info = $"[节点名称:{tunnelInfo.node}]-[隧道类型:{tunnelInfo.type}]";
-        [ObservableProperty] private bool _isEnabled = true;
-        [ObservableProperty] private bool _isTunnelStarted = isTunnelStarted;
         [ObservableProperty] private string _name = tunnelInfo.name;
-
+        [ObservableProperty] private string _info = $"[节点名称:{tunnelInfo.node}]-[隧道类型:{tunnelInfo.type}]";
+        [ObservableProperty] private string _id = $"[隧道ID:{tunnelInfo.id}]";
         [ObservableProperty] private string _toolTip =
             $"[内网端口:{tunnelInfo.nport}]-[外网端口/连接域名:{tunnelInfo.dorp}]-[节点状态:{tunnelInfo.nodestate}]";
-
-
-        async partial void OnIsTunnelStartedChanged(bool value)
+        
+        [ObservableProperty] private bool _isStartedEnabled = true;
+        [ObservableProperty] private bool _isStarted = isStarted;
+        async partial void OnIsStartedChanged(bool value)
         {
-            IsEnabled = false;
+            IsStartedEnabled = false;
             if (value)
                 await StartTunnelAsync(
                     tunnelInfo.name,
@@ -36,7 +35,7 @@ public static partial class Items
                                 $"隧道 {tunnelInfo.name} 已成功启动，链接已复制到剪切板。",
                                 ControlAppearance.Success,
                                 SymbolRegular.Checkmark24);
-                            IsEnabled = true;
+                            IsStartedEnabled = true;
                             Clipboard.SetDataObject($"{tunnelInfo.ip}:{tunnelInfo.dorp}");
                         });
                     },
@@ -48,8 +47,8 @@ public static partial class Items
                                 $"隧道 {tunnelInfo.name} 启动失败，具体请看日志。",
                                 ControlAppearance.Danger,
                                 SymbolRegular.TagError24);
-                            IsTunnelStarted = false;
-                            IsEnabled = true;
+                            IsStarted = false;
+                            IsStartedEnabled = true;
                         });
                     },
                     () =>
@@ -61,8 +60,8 @@ public static partial class Items
                                 "请检查网络状态，或查看API状态。",
                                 ControlAppearance.Danger,
                                 SymbolRegular.TagError24);
-                            IsTunnelStarted = false;
-                            IsEnabled = true;
+                            IsStarted = false;
+                            IsStartedEnabled = true;
                         });
                     },
                     () =>
@@ -74,8 +73,8 @@ public static partial class Items
                                 "请等待一会，或重新启动。（软件会自动安装）",
                                 ControlAppearance.Danger,
                                 SymbolRegular.TagError24);
-                            IsTunnelStarted = false;
-                            IsEnabled = true;
+                            IsStarted = false;
+                            IsStartedEnabled = true;
                         });
                     },
                     () =>
@@ -87,7 +86,7 @@ public static partial class Items
                                 $"隧道 {tunnelInfo.name} 已在运行中。",
                                 ControlAppearance.Danger,
                                 SymbolRegular.Warning24);
-                            IsEnabled = true;
+                            IsStartedEnabled = true;
                         });
                     }
                 );
@@ -102,7 +101,7 @@ public static partial class Items
                                 $"隧道 {tunnelInfo.name} 已成功关闭。",
                                 ControlAppearance.Success,
                                 SymbolRegular.Checkmark24);
-                            IsEnabled = true;
+                            IsStartedEnabled = true;
                         });
                     },
                     () =>
@@ -113,7 +112,7 @@ public static partial class Items
                                 $"隧道 {tunnelInfo.name} 已退出。",
                                 ControlAppearance.Danger,
                                 SymbolRegular.TagError24);
-                            IsEnabled = true;
+                            IsStartedEnabled = true;
                         });
                     });
         }
@@ -136,7 +135,7 @@ public static partial class Items
                 SymbolRegular.Checkmark24);
 
             await Task.Delay(500);
-            await parentViewModel.LoadTunnels(false);
+            parentViewModel.Loaded(null,null);
         }
 
         [RelayCommand]
@@ -160,19 +159,23 @@ public static partial class Items
 
         [RelayCommand]
         private async Task UpdateTunnel()
-        {
-            await new UpdateTunnelContentDialog(
+        => await new UpdateTunnelContentDialog(
                 ContentDialogService.GetDialogHost(),
                 tunnelInfo,
                 parentViewModel
             ).ShowAsync();
-        }
     }
 
-    public partial class NodeItem(Classes.NodeDataClass nodeData) : ObservableObject
+    public partial class NodeItem
+    (
+        NodeDataClass nodeData
+    ) : ObservableObject
     {
-        [ObservableProperty] private string _content = $"{nodeData.name} ({nodeData.nodegroup}，{nodeData.udp}，{nodeData.web})";
+        [ObservableProperty]
+        private string _content = $"{nodeData.name} ({nodeData.nodegroup}，{nodeData.udp}，{nodeData.web})";
+
         [ObservableProperty] private string _name = nodeData.name;
+
         [ObservableProperty] private string _notes = $"{nodeData.notes}";
     }
 }

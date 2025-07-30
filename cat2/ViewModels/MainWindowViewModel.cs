@@ -10,6 +10,51 @@ namespace CAT2.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
+    public async void Loaded(object sender, RoutedEventArgs e)
+    {
+        Init("CAT2");
+
+        if (ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark) ThemesChanged();
+
+        SnackbarService.SetSnackbarPresenter(MainClass.RootSnackbarDialog);
+        ContentDialogService.SetDialogHost(MainClass.RootContentDialogPresenter);
+        MainClass.RootNavigation.Navigate("登录");
+        await AutoLoginAsync(); // 尝试自动登录
+        if (IsLoggedIn)
+        {
+            MainClass.LoginItem.Visibility = Visibility.Collapsed;
+            MainClass.UserItem.Visibility = Visibility.Visible;
+            MainClass.TunnelItem.Visibility = Visibility.Visible;
+            MainClass.RootNavigation.Navigate("用户页");
+        }
+
+        MainClass.Topmost = false;
+
+        if (!File.Exists(SettingsFilePath))
+        {
+            await File.WriteAllTextAsync(SettingsFilePath,
+                JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", true } }));
+            WritingLog("settings.json文件不存在，已创建");
+        }
+
+        var data = File.ReadAllText(SettingsFilePath);
+        var deserialize = JsonSerializer.Deserialize<Dictionary<string, bool>>(data);
+
+        if (deserialize["IsAutoUpdate"])
+        {
+            WritingLog("自动更新已启用");
+            await Task.Delay(2000);
+            await UpdateApp();
+        }
+        else
+        {
+            WritingLog("自动更新已禁用");
+        }
+
+        WritingLog("主窗口加载完成");
+        await SetFrpcAsync();
+    } 
+    
     [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
     [ObservableProperty] private bool _isDarkTheme;
 
@@ -35,51 +80,6 @@ public partial class MainWindowViewModel : ObservableObject
             var theme = ApplicationThemeManager.GetSystemTheme() == SystemTheme.Light;
             ApplicationThemeManager.Apply(theme ? ApplicationTheme.Light : ApplicationTheme.Dark);
             IsDarkTheme = !theme;
-        };
-
-        MainClass.Loaded += async (_, _) =>
-        {
-            Init("CAT2");
-
-            if (ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark) ThemesChanged();
-
-            SnackbarService.SetSnackbarPresenter(MainClass.RootSnackbarDialog);
-            ContentDialogService.SetDialogHost(MainClass.RootContentDialogPresenter);
-            MainClass.RootNavigation.Navigate("登录");
-            await AutoLoginAsync(); // 尝试自动登录
-            if (IsLoggedIn)
-            {
-                MainClass.LoginItem.Visibility = Visibility.Collapsed;
-                MainClass.UserItem.Visibility = Visibility.Visible;
-                MainClass.TunnelItem.Visibility = Visibility.Visible;
-                MainClass.RootNavigation.Navigate("用户页");
-            }
-
-            MainClass.Topmost = false;
-
-            if (!File.Exists(SettingsFilePath))
-            {
-                await File.WriteAllTextAsync(SettingsFilePath,
-                    JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", true } }));
-                WritingLog("settings.json文件不存在，已创建");
-            }
-
-            var data = File.ReadAllText(SettingsFilePath);
-            var deserialize = JsonSerializer.Deserialize<Dictionary<string, bool>>(data);
-
-            if (deserialize["IsAutoUpdate"])
-            {
-                WritingLog("自动更新已启用");
-                await Task.Delay(2000);
-                await UpdateApp();
-            }
-            else
-            {
-                WritingLog("自动更新已禁用");
-            }
-
-            WritingLog("主窗口加载完成");
-            await SetFrpcAsync();
         };
     }
 

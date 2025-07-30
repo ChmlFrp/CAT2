@@ -55,7 +55,6 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
 
     public virtual async void LoadNodes(object sender, RoutedEventArgs e)
     {
-        // 节点数据
         foreach (var nodeData in await NodeActions.GetNodesDataListAsync())
         {
             nodeData.udp = nodeData.udp == "true" ? "允许UDP" : "不允许UDP";

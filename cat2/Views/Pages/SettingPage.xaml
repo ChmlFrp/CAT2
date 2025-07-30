@@ -41,7 +41,7 @@
                     </StackPanel>
 
                     <ui:ToggleSwitch
-                        IsChecked="{Binding IsAutoUpdateEnabled}"
+                        IsChecked="{Binding IsAutoUpdatedEnabled}"
                         OnContent="启用"
                         OffContent="禁用"
                         Margin="0,0,10,0"
@@ -53,9 +53,9 @@
                 Padding="10"
                 FontSize="18"
                 Header="检测软件更新"
-                IsEnabled="{Binding IsUpdateButtonEnabled}"
+                IsEnabled="{Binding IsUpdatedEnabled}"
                 Icon="{ui:SymbolIcon ArrowSync24}"
-                Command="{Binding UpdateCommand}" />
+                Command="{Binding UpdatedCommand}" />
         </ui:CardExpander>
 
         <ui:CardExpander
@@ -92,8 +92,8 @@
                 FontSize="18"
                 Header="清除隧道日志缓存"
                 Icon="{ui:SymbolIcon CommentOff24}"
-                IsEnabled="{Binding IsClearCacheButtonEnabled}"
-                Command="{Binding ClearCacheCommand}" />
+                IsEnabled="{Binding IsClearedEnabled}"
+                Command="{Binding ClearedCommand}" />
         </ui:CardExpander>
 
         <ui:Card>

@@ -3,11 +3,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:vm="clr-namespace:CAT2.ViewModels.Controls"
     xmlns:loacl="clr-namespace:CAT2.Views.Controls"
-
+    
     Title="添加隧道"
     PrimaryButtonText="添加"
     CloseButtonText="取消">
+    
+    <ui:ContentDialog.DataContext>
+        <vm:AddTunnelContentDialogViewModel/>
+    </ui:ContentDialog.DataContext>
 
     <ui:ContentDialog.Resources>
         <Style

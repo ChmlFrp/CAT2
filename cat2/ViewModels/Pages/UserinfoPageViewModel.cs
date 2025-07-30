@@ -1,32 +1,29 @@
-﻿using System.IO;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Media.Imaging;
 using static CSDK.UserActions;
 
 namespace CAT2.ViewModels;
 
 public partial class UserinfoPageViewModel : ObservableObject
 {
+    [RelayCommand] private void Loaded() => Loaded(null,null);
+    
+    // 用户信息
     [ObservableProperty] private string _bandwidth;
     [ObservableProperty] private BitmapImage _currentImage;
     [ObservableProperty] private string _email;
-
-    private bool _first = true;
     [ObservableProperty] private string _group;
     [ObservableProperty] private string _integral;
-    [ObservableProperty] private bool _isEnabled = true;
     [ObservableProperty] private string _name;
     [ObservableProperty] private string _qq;
     [ObservableProperty] private string _term;
     [ObservableProperty] private string _tunnelCount;
-
-    public UserinfoPageViewModel()
+    
+    [ObservableProperty] private bool _isLoadedEnabled = true;
+    private bool _first = true;
+    public async void Loaded(object sender, RoutedEventArgs e)
     {
-        _ = Loading();
-    }
-
-    [RelayCommand]
-    private async Task Loading()
-    {
+        IsLoadedEnabled = false;
+        
         if (_first)
             _first = false;
         else
@@ -52,12 +49,8 @@ public partial class UserinfoPageViewModel : ObservableObject
         TunnelCount = $"隧道使用：{UserInfo.tunnelCount}/{UserInfo.tunnel}";
         Bandwidth = $"带宽限制：国内{UserInfo.bandwidth}m | 国外{UserInfo.bandwidth * 4}m";
         WritingLog("加载用户信息成功");
-
-        ShowSnackbar(
-            "加载用户信息成功",
-            "请查看您的账户信息。",
-            ControlAppearance.Success,
-            SymbolRegular.Tag24);
+        
+        IsLoadedEnabled = true;
 
         if (CurrentImage != null) return;
         CurrentImage = new BitmapImage(new Uri(UserInfo.userimg));
@@ -73,16 +66,17 @@ public partial class UserinfoPageViewModel : ObservableObject
                 "确认",
                 "放弃") != ContentDialogResult.Primary) return;
         LogoutAsync();
+       
         WritingLog("用户已退出登录");
         ShowSnackbar(
             "已退出登录",
             "请重新登录以继续使用。",
             ControlAppearance.Info,
             SymbolRegular.SignOut24);
-        await Task.Delay(1000);
-        WritingLog("正在重启应用程序");
-        Process.Start(Path.Combine(AppContext.BaseDirectory,
-            Path.GetFileName(Process.GetCurrentProcess().MainModule?.FileName)!));
-        Application.Current.Shutdown();
+        
+        MainClass.LoginItem.Visibility = Visibility.Visible;
+        MainClass.TunnelItem.Visibility = Visibility.Collapsed;
+        MainClass.UserItem.Visibility = Visibility.Collapsed;
+        MainClass.RootNavigation.Navigate("登录");
     }
 }

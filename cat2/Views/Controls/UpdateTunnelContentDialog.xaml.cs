@@ -20,10 +20,11 @@ public partial class UpdateTunnelContentDialog
     {
         _tunnelInfo = tunnelInfo;
         _parentViewModel = parentViewModel;
+        InitializeComponent();
+        
         _viewModel = new UpdateTunnelContentDialogViewModel(_tunnelInfo);
         DataContext = _viewModel;
         Loaded += _viewModel.LoadNodes;
-        InitializeComponent();
     }
 
     protected override async void OnButtonClick(ContentDialogButton button)
@@ -61,6 +62,6 @@ public partial class UpdateTunnelContentDialog
                 SymbolRegular.TagError24);
 
         await Task.Delay(500);
-        await _parentViewModel.LoadTunnels(false);
+       _parentViewModel.Loaded(null,null);
     }
 }

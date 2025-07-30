@@ -4,22 +4,21 @@ namespace CAT2.ViewModels;
 
 public partial class LoginPageViewModel : ObservableObject
 {
-    [ObservableProperty] private bool _isButtonEnabled;
-    [ObservableProperty] private string _password;
     [ObservableProperty] private string _username;
-
     partial void OnUsernameChanged(string value)
     {
-        IsButtonEnabled = !string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(Password);
+        IsLoggedInEnabled = !string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(Password);
     }
-
+    
+    [ObservableProperty] private string _password;
     partial void OnPasswordChanged(string value)
     {
-        IsButtonEnabled = !string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(Username);
+        IsLoggedInEnabled = !string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(Username);
     }
 
+    [ObservableProperty] private bool _isLoggedInEnabled;
     [RelayCommand]
-    private async Task LoginClick()
+    private async Task LoggedIn()
     {
         var msg = await LoginAsync(Username, Password);
         WritingLog($"登录提示：{msg}");

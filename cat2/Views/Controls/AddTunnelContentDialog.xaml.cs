@@ -6,8 +6,8 @@ namespace CAT2.Views.Controls;
 
 public partial class AddTunnelContentDialog
 {
-    private readonly AddTunnelContentDialogViewModel _viewModel = new();
     private readonly TunnelPageViewModel _parentViewModel;
+    private readonly AddTunnelContentDialogViewModel _viewModel;
 
     public AddTunnelContentDialog
     (
@@ -16,9 +16,9 @@ public partial class AddTunnelContentDialog
     ) : base(dialogHost)
     {
         _parentViewModel = parentViewModel;
-        DataContext = _viewModel;
-        Loaded += _viewModel.LoadNodes;
         InitializeComponent();
+        _viewModel = (AddTunnelContentDialogViewModel)DataContext;
+        Loaded += _viewModel.LoadNodes;
     }
 
     protected override async void OnButtonClick(ContentDialogButton button)
@@ -55,6 +55,6 @@ public partial class AddTunnelContentDialog
                 SymbolRegular.TagError24);
 
         await Task.Delay(500);
-        await _parentViewModel.LoadTunnels(false);
+        _parentViewModel.Loaded(null,null);
     }
 }
