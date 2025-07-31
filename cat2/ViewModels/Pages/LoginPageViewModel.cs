@@ -9,7 +9,7 @@ public partial class LoginPageViewModel : ObservableObject
     {
         IsLoggedInEnabled = !string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(Password);
     }
-    
+
     [ObservableProperty] private string _password;
     partial void OnPasswordChanged(string value)
     {

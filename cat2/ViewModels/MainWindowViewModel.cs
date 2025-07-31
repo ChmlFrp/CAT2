@@ -54,8 +54,8 @@ public partial class MainWindowViewModel : ObservableObject
 
         WritingLog("主窗口加载完成");
         await SetFrpcAsync();
-    } 
-    
+    }
+
     [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
     [ObservableProperty] private bool _isDarkTheme;
 

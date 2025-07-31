@@ -16,9 +16,10 @@ public static partial class Items
         [ObservableProperty] private string _name = tunnelInfo.name;
         [ObservableProperty] private string _info = $"[节点名称:{tunnelInfo.node}]-[隧道类型:{tunnelInfo.type}]";
         [ObservableProperty] private string _id = $"[隧道ID:{tunnelInfo.id}]";
-        [ObservableProperty] private string _toolTip =
+        [ObservableProperty]
+        private string _toolTip =
             $"[内网端口:{tunnelInfo.nport}]-[外网端口/连接域名:{tunnelInfo.dorp}]-[节点状态:{tunnelInfo.nodestate}]";
-        
+
         [ObservableProperty] private bool _isStartedEnabled = true;
         [ObservableProperty] private bool _isStarted = isStarted;
         async partial void OnIsStartedChanged(bool value)
@@ -135,7 +136,7 @@ public static partial class Items
                 SymbolRegular.Checkmark24);
 
             await Task.Delay(500);
-            parentViewModel.Loaded(null,null);
+            parentViewModel.Loaded(null, null);
         }
 
         [RelayCommand]
@@ -178,7 +179,7 @@ public static partial class Items
 
         [ObservableProperty] private string _notes = $"{nodeData.notes}";
     }
-    
+
     public partial class NodeInfoItem
     (
         NodeInfoClass nodeInfo
@@ -189,6 +190,6 @@ public static partial class Items
         [ObservableProperty] private string _notes = $"IP地址： {nodeInfo.ip}\nCPU： {nodeInfo.cpu_info}\n介绍: {nodeInfo.notes}";
         [ObservableProperty] private string _totalTrafficOut = $"上传流量： {nodeInfo.total_traffic_out / 1024 / 1024 / 1024:0.0}GB";
         [ObservableProperty] private string _totalTrafficIn = $"下载流量： {nodeInfo.total_traffic_in / 1024 / 1024 / 1024:0.0}GB";
-        [ObservableProperty] private string _name = $"{ nodeInfo.name }({(nodeInfo.nodegroup == "vip" ? "VIP" : "普通")},{(nodeInfo.state == "online" ? "在线" : "离线")})";
+        [ObservableProperty] private string _name = $"{nodeInfo.name}({(nodeInfo.nodegroup == "vip" ? "VIP" : "普通")},{(nodeInfo.state == "online" ? "在线" : "离线")})";
     }
 }
