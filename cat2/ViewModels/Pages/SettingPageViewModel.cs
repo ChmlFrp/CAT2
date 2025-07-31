@@ -32,8 +32,8 @@ public partial class SettingPageViewModel : ObservableObject
         };
         timer.Start();
     }
-    
-   [ObservableProperty] private bool _isAutoUpdatedEnabled;
+
+    [ObservableProperty] private bool _isAutoUpdatedEnabled;
     async partial void OnIsAutoUpdatedEnabledChanged(bool value)
     {
         if (value)
@@ -47,7 +47,7 @@ public partial class SettingPageViewModel : ObservableObject
                 JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", false } }));
         }
     }
-    
+
     [ObservableProperty] private bool _isClearedEnabled = true;
     [RelayCommand]
     private void Cleared()

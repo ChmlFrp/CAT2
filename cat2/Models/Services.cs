@@ -24,7 +24,7 @@ public static class Services
             new SymbolIcon(icon) { FontSize = 32 },
             new TimeSpan(0, 0, 0, 2));
     }
-    
+
     public static readonly ContentDialogService ContentDialogService = new();
     public static async Task<ContentDialogResult> ShowConfirm
     (

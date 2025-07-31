@@ -9,14 +9,14 @@ public partial class NodePageViewModel : ObservableObject
     public async void Loaded(object sender, RoutedEventArgs e) => await Loaded();
 
     public ObservableCollection<NodeInfoItem> ListDataContext { get; } = [];
-    
+
     [ObservableProperty] private bool _isLoadedEnabled;
-    
+
     [RelayCommand]
     private async Task Loaded()
     {
         IsLoadedEnabled = false;
-        
+
         ListDataContext.Clear();
         foreach (var nodeData in await NodeActions.GetNodesDataListAsync())
         {
@@ -31,7 +31,7 @@ public partial class NodePageViewModel : ObservableObject
                )
             );
         }
-        
+
         IsLoadedEnabled = true;
     }
 }

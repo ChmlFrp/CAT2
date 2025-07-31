@@ -5,8 +5,8 @@ namespace CAT2.ViewModels;
 
 public partial class UserinfoPageViewModel : ObservableObject
 {
-    [RelayCommand] private void Loaded() => Loaded(null,null);
-    
+    [RelayCommand] private void Loaded() => Loaded(null, null);
+
     // 用户信息
     [ObservableProperty] private string _bandwidth;
     [ObservableProperty] private BitmapImage _currentImage;
@@ -17,13 +17,13 @@ public partial class UserinfoPageViewModel : ObservableObject
     [ObservableProperty] private string _qq;
     [ObservableProperty] private string _term;
     [ObservableProperty] private string _tunnelCount;
-    
+
     [ObservableProperty] private bool _isLoadedEnabled = true;
     private bool _first = true;
     public async void Loaded(object sender, RoutedEventArgs e)
     {
         IsLoadedEnabled = false;
-        
+
         if (_first)
             _first = false;
         else
@@ -49,7 +49,7 @@ public partial class UserinfoPageViewModel : ObservableObject
         TunnelCount = $"隧道使用：{UserInfo.tunnelCount}/{UserInfo.tunnel}";
         Bandwidth = $"带宽限制：国内{UserInfo.bandwidth}m | 国外{UserInfo.bandwidth * 4}m";
         WritingLog("加载用户信息成功");
-        
+
         IsLoadedEnabled = true;
 
         if (CurrentImage != null) return;
@@ -66,14 +66,14 @@ public partial class UserinfoPageViewModel : ObservableObject
                 "确认",
                 "放弃") != ContentDialogResult.Primary) return;
         LogoutAsync();
-       
+
         WritingLog("用户已退出登录");
         ShowSnackbar(
             "已退出登录",
             "请重新登录以继续使用。",
             ControlAppearance.Info,
             SymbolRegular.SignOut24);
-        
+
         MainClass.LoginItem.Visibility = Visibility.Visible;
         MainClass.TunnelItem.Visibility = Visibility.Collapsed;
         MainClass.NodeItem.Visibility = Visibility.Collapsed;
