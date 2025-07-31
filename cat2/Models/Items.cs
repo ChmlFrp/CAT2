@@ -178,4 +178,17 @@ public static partial class Items
 
         [ObservableProperty] private string _notes = $"{nodeData.notes}";
     }
+    
+    public partial class NodeInfoItem
+    (
+        NodeInfoClass nodeInfo
+    ) : ObservableObject
+    {
+        [ObservableProperty] private string _id = $"#{nodeInfo.id}";
+        [ObservableProperty] private float _load15 = nodeInfo.load15 * 100;
+        [ObservableProperty] private string _notes = $"IP地址： {nodeInfo.ip}\nCPU： {nodeInfo.cpu_info}\n介绍: {nodeInfo.notes}";
+        [ObservableProperty] private string _totalTrafficOut = $"上传流量： {nodeInfo.total_traffic_out / 1024 / 1024 / 1024:0.0}GB";
+        [ObservableProperty] private string _totalTrafficIn = $"下载流量： {nodeInfo.total_traffic_in / 1024 / 1024 / 1024:0.0}GB";
+        [ObservableProperty] private string _name = $"{ nodeInfo.name }({(nodeInfo.nodegroup == "vip" ? "VIP" : "普通")},{(nodeInfo.state == "online" ? "在线" : "离线")})";
+    }
 }

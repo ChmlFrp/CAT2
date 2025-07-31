@@ -28,6 +28,7 @@ public partial class LoginPageViewModel : ObservableObject
             MainClass.LoginItem.Visibility = Visibility.Collapsed;
             MainClass.UserItem.Visibility = Visibility.Visible;
             MainClass.TunnelItem.Visibility = Visibility.Visible;
+            MainClass.NodeItem.Visibility = Visibility.Visible;
             MainClass.RootNavigation.Navigate("用户页");
             ShowSnackbar(
                 "登录成功！",

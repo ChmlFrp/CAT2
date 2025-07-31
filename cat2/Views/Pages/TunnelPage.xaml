@@ -10,82 +10,16 @@
         <vm:TunnelPageViewModel />
     </Page.DataContext>
 
-    <Grid>
-        <TabControl>
-            <TabItem
-                IsSelected="True">
-                <TabItem.Header>
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <ui:SymbolIcon
-                            Margin="0,0,6,0"
-                            Symbol="TagMultiple24" />
-
-                        <TextBlock
-                            Text="全部" />
-                    </StackPanel>
-                </TabItem.Header>
-
-                <ui:ListView
-                    Margin="0,10,0,10"
-                    ItemsSource="{Binding ListDataContext}">
-                    <ui:ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ui:Card>
-                                <ui:Card.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem
-                                            Command="{Binding UpdateTunnelCommand}"
-                                            Icon="{ui:SymbolIcon Edit48}"
-                                            Header="修改隧道" />
-                                        <MenuItem
-                                            Command="{Binding DeleteTunnelCommand}"
-                                            Icon="{ui:SymbolIcon Delete48}"
-                                            Header="删除隧道" />
-                                        <MenuItem
-                                            Command="{Binding CopyTunnelCommand}"
-                                            Icon="{ui:SymbolIcon CopyAdd24}"
-                                            Header="复制链接" />
-                                    </ContextMenu>
-                                </ui:Card.ContextMenu>
-
-                                <Grid
-                                    VerticalAlignment="Center">
-                                    <StackPanel
-                                        HorizontalAlignment="Left"
-                                        Orientation="Horizontal">
-                                        <ui:TextBlock
-                                            FontSize="18"
-                                            FontWeight="Bold"
-                                            ToolTip="{Binding Id}"
-                                            Text="{Binding Name}" />
-
-                                        <ui:TextBlock
-                                            FontSize="16"
-                                            Margin="10,0,0,0"
-                                            ToolTip="{Binding ToolTip}"
-                                            Text="{Binding Info}" />
-                                    </StackPanel>
-
-                                    <ui:ToggleSwitch
-                                        HorizontalAlignment="Right"
-                                        Margin="0,0,15,0"
-                                        IsChecked="{Binding IsStarted}"
-                                        IsEnabled="{Binding IsStartedEnabled}"
-                                        OffContent="启动"
-                                        OnContent="关闭" />
-                                </Grid>
-                            </ui:Card>
-                        </DataTemplate>
-                    </ui:ListView.ItemTemplate>
-                </ui:ListView>
-            </TabItem>
-        </TabControl>
+    <Grid
+        VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
         <StackPanel
             Orientation="Horizontal"
-            Margin="0,2,15,0"
-            VerticalAlignment="Top"
+            Margin="0,10,10,5"
             HorizontalAlignment="Right">
             <ui:Button
                 Content="添加隧道"
@@ -103,5 +37,58 @@
                 IsEnabled="{Binding IsLoadedEnabled}"
                 Command="{Binding LoadedCommand}" />
         </StackPanel>
+
+        <ui:ListView
+            Grid.Row="1"
+            ItemsSource="{Binding ListDataContext}">
+            <ui:ListView.ItemTemplate>
+                <DataTemplate>
+                    <ui:Card>
+                        <ui:Card.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem
+                                    Command="{Binding UpdateTunnelCommand}"
+                                    Icon="{ui:SymbolIcon Edit48}"
+                                    Header="修改隧道" />
+                                <MenuItem
+                                    Command="{Binding DeleteTunnelCommand}"
+                                    Icon="{ui:SymbolIcon Delete48}"
+                                    Header="删除隧道" />
+                                <MenuItem
+                                    Command="{Binding CopyTunnelCommand}"
+                                    Icon="{ui:SymbolIcon CopyAdd24}"
+                                    Header="复制链接" />
+                            </ContextMenu>
+                        </ui:Card.ContextMenu>
+
+                        <Grid>
+                            <StackPanel
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                                <ui:TextBlock
+                                    FontSize="18"
+                                    FontWeight="Bold"
+                                    ToolTip="{Binding Id}"
+                                    Text="{Binding Name}" />
+
+                                <ui:TextBlock
+                                    FontSize="16"
+                                    Margin="10,0,0,0"
+                                    ToolTip="{Binding ToolTip}"
+                                    Text="{Binding Info}" />
+                            </StackPanel>
+
+                            <ui:ToggleSwitch
+                                HorizontalAlignment="Right"
+                                Margin="0,0,15,0"
+                                IsChecked="{Binding IsStarted}"
+                                IsEnabled="{Binding IsStartedEnabled}"
+                                OffContent="启动"
+                                OnContent="关闭" />
+                        </Grid>
+                    </ui:Card>
+                </DataTemplate>
+            </ui:ListView.ItemTemplate>
+        </ui:ListView>
     </Grid>
 </Page>

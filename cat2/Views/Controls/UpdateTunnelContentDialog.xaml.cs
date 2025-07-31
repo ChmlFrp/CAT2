@@ -21,7 +21,7 @@ public partial class UpdateTunnelContentDialog
         _tunnelInfo = tunnelInfo;
         _parentViewModel = parentViewModel;
         InitializeComponent();
-        
+
         _viewModel = new UpdateTunnelContentDialogViewModel(_tunnelInfo);
         DataContext = _viewModel;
         Loaded += _viewModel.LoadNodes;
@@ -62,6 +62,6 @@ public partial class UpdateTunnelContentDialog
                 SymbolRegular.TagError24);
 
         await Task.Delay(500);
-       _parentViewModel.Loaded(null,null);
+        _parentViewModel.Loaded(null, null);
     }
 }

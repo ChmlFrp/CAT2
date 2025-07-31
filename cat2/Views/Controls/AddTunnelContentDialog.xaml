@@ -5,13 +5,13 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vm="clr-namespace:CAT2.ViewModels.Controls"
     xmlns:loacl="clr-namespace:CAT2.Views.Controls"
-    
+
     Title="添加隧道"
     PrimaryButtonText="添加"
     CloseButtonText="取消">
-    
+
     <ui:ContentDialog.DataContext>
-        <vm:AddTunnelContentDialogViewModel/>
+        <vm:AddTunnelContentDialogViewModel />
     </ui:ContentDialog.DataContext>
 
     <ui:ContentDialog.Resources>

@@ -76,6 +76,7 @@ public partial class UserinfoPageViewModel : ObservableObject
         
         MainClass.LoginItem.Visibility = Visibility.Visible;
         MainClass.TunnelItem.Visibility = Visibility.Collapsed;
+        MainClass.NodeItem.Visibility = Visibility.Collapsed;
         MainClass.UserItem.Visibility = Visibility.Collapsed;
         MainClass.RootNavigation.Navigate("登录");
     }

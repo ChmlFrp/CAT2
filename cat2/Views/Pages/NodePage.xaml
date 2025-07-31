@@ -1,0 +1,62 @@
+﻿<Page x:Class="CAT2.Views.Pages.NodePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:vm="clr-namespace:CAT2.ViewModels">
+
+    <Page.DataContext>
+        <vm:NodePageViewModel />
+    </Page.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+
+        <ui:Button
+            Content="刷新信息"
+            Icon="{ui:SymbolIcon ArrowClockwise24}"
+            Padding="6"
+            FontSize="16"
+            Margin="0,10,10,5"
+            HorizontalAlignment="Right"
+            IsEnabled="{Binding IsLoadedEnabled}"
+            Command="{Binding LoadedCommand}" />
+
+        <ui:ListView
+            ItemsSource="{Binding ListDataContext}"
+            Grid.Row="1">
+            <ui:ListView.ItemTemplate>
+                <DataTemplate>
+                    <ui:Card
+                        ToolTip="{Binding Notes}">
+                        <Grid
+                            Margin="10,0,10,0">
+                            <TextBlock
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Text="{Binding Name}"
+                                ToolTip="{Binding Id}" />
+
+                            <TextBlock
+                                Foreground="{ui:ThemeResource TextFillColorDisabledBrush}"
+                                HorizontalAlignment="Right">
+                                <Run
+                                    Text="{Binding TotalTrafficOut}" />
+                                <Run
+                                    Text="{Binding TotalTrafficIn}" />
+                            </TextBlock>
+
+                            <ProgressBar
+                                Margin="0,25,0,0"
+                                Value="{Binding Load15}" />
+                        </Grid>
+                    </ui:Card>
+                </DataTemplate>
+            </ui:ListView.ItemTemplate>
+        </ui:ListView>
+    </Grid>
+</Page>

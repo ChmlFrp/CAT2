@@ -55,6 +55,6 @@ public partial class AddTunnelContentDialog
                 SymbolRegular.TagError24);
 
         await Task.Delay(500);
-        _parentViewModel.Loaded(null,null);
+        _parentViewModel.Loaded(null, null);
     }
 }
