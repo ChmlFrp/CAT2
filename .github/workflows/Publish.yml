@@ -2,6 +2,8 @@ name: Project Publishing
 on:
   push:
     paths: ['cat2/**','**/*.yml']
+permissions:
+  contents: read
 jobs:
   publish:
     runs-on: windows-latest
