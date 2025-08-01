@@ -1,11 +1,9 @@
 ﻿name: Code format check
 permissions:
   contents: write
-  pull-requests: write
 on:
   push:
-    branches:
-      - main
+    paths: ['cat2/**','**/Format.yml']
 jobs:
   dotnet-format:
     runs-on: windows-latest
@@ -14,18 +12,7 @@ jobs:
       - run: |
           dotnet tool install -g dotnet-format
           dotnet format
-          git config --local user.name "github-actions-dotnet-formatter[bot]"
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "Qianyiaz"
+          git config --local user.password "${{ secrets.GITHUB_TOKEN }}"
           git commit -a -m 'Automated dotnet-format update'
-        continue-on-error: true
-
-      - uses: peter-evans/create-pull-request@v3
-        with:
-          title: '[Bot] Automated PR to fix formatting errors'
-          body: |
-            Automated PR to fix formatting errors
-          committer: GitHub <noreply@github.com>
-          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-          assignees: Qianyiaz
-          reviewers: Qianyiaz
-          branch: t/bot/fix-codeformatting
+          git push origin main
