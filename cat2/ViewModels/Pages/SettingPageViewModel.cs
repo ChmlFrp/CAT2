@@ -9,15 +9,11 @@ namespace CAT2.ViewModels;
 public partial class SettingPageViewModel : ObservableObject
 {
     [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
-
     [ObservableProperty] private string _context = "正在检测...";
     [ObservableProperty] private string _copyright = Constants.Copyright;
     [ObservableProperty] private string _fileVersion = $"文件版本：{Constants.FileVersion}";
-
     [ObservableProperty] private bool _isAutoUpdatedEnabled;
-
     [ObservableProperty] private bool _isClearedEnabled = true;
-
     [ObservableProperty] private bool _isUpdatedEnabled = true;
     [ObservableProperty] private string _version = Constants.Version;
 

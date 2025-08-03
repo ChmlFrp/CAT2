@@ -67,7 +67,7 @@ public partial class UserinfoPageViewModel : ObservableObject
     {
         if (await ShowConfirm(
                 "你确定要退出登录吗?",
-                "退出登录后将重启软件。",
+                "退出登录后你的用户Token将删除。",
                 "确认",
                 "放弃") != ContentDialogResult.Primary) return;
         LogoutAsync();
