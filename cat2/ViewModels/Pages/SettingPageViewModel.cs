@@ -9,11 +9,18 @@ namespace CAT2.ViewModels;
 public partial class SettingPageViewModel : ObservableObject
 {
     [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
-    [ObservableProperty] private string _copyright = Constants.Copyright;
-    [ObservableProperty] private string _fileVersion = $"文件版本：{Constants.FileVersion}";
-    [ObservableProperty] private string _version = Constants.Version;
 
     [ObservableProperty] private string _context = "正在检测...";
+    [ObservableProperty] private string _copyright = Constants.Copyright;
+    [ObservableProperty] private string _fileVersion = $"文件版本：{Constants.FileVersion}";
+
+    [ObservableProperty] private bool _isAutoUpdatedEnabled;
+
+    [ObservableProperty] private bool _isClearedEnabled = true;
+
+    [ObservableProperty] private bool _isUpdatedEnabled = true;
+    [ObservableProperty] private string _version = Constants.Version;
+
     public async void Loaded(object sender, RoutedEventArgs e)
     {
         var data = await File.ReadAllTextAsync(SettingsFilePath);
@@ -33,22 +40,16 @@ public partial class SettingPageViewModel : ObservableObject
         timer.Start();
     }
 
-    [ObservableProperty] private bool _isAutoUpdatedEnabled;
     async partial void OnIsAutoUpdatedEnabledChanged(bool value)
     {
         if (value)
-        {
             await File.WriteAllTextAsync(SettingsFilePath,
                 JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", true } }));
-        }
         else
-        {
             await File.WriteAllTextAsync(SettingsFilePath,
                 JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", false } }));
-        }
     }
 
-    [ObservableProperty] private bool _isClearedEnabled = true;
     [RelayCommand]
     private void Cleared()
     {
@@ -71,7 +72,6 @@ public partial class SettingPageViewModel : ObservableObject
         IsClearedEnabled = true;
     }
 
-    [ObservableProperty] private bool _isUpdatedEnabled = true;
     [RelayCommand]
     private async Task Updated()
     {

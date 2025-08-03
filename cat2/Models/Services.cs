@@ -9,6 +9,9 @@ namespace CAT2.Models;
 public static class Services
 {
     public static readonly SnackbarService SnackbarService = new();
+
+    public static readonly ContentDialogService ContentDialogService = new();
+
     public static void ShowSnackbar
     (
         string title,
@@ -25,7 +28,6 @@ public static class Services
             new TimeSpan(0, 0, 0, 2));
     }
 
-    public static readonly ContentDialogService ContentDialogService = new();
     public static async Task<ContentDialogResult> ShowConfirm
     (
         string title,

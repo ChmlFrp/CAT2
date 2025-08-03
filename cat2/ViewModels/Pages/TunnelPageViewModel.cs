@@ -7,13 +7,20 @@ namespace CAT2.ViewModels;
 
 public partial class TunnelPageViewModel : ObservableObject
 {
-    public async void Loaded(object sender, RoutedEventArgs e) => await Loaded();
+    [ObservableProperty] private bool _isLoadedEnabled;
 
     public ObservableCollection<TunnelItem> ListDataContext { get; } = [];
 
-    [ObservableProperty] private bool _isLoadedEnabled;
+    public async void Loaded(object sender, RoutedEventArgs e)
+    {
+        await Loaded();
+    }
 
-    [RelayCommand] private async Task ShowDialog() => await new AddTunnelContentDialog(ContentDialogService.GetDialogHost(), this).ShowAsync();
+    [RelayCommand]
+    private async Task ShowDialog()
+    {
+        await new AddTunnelContentDialog(ContentDialogService.GetDialogHost(), this).ShowAsync();
+    }
 
     [RelayCommand]
     private async Task Loaded()
@@ -43,7 +50,8 @@ public partial class TunnelPageViewModel : ObservableObject
 
         ListDataContext.Clear();
 
-        foreach (var item in tunnelsData.Select(tunnelData => new TunnelItem(this, tunnelData, tunnelsRunning[tunnelData.name])))
+        foreach (var item in tunnelsData.Select(tunnelData =>
+                     new TunnelItem(this, tunnelData, tunnelsRunning[tunnelData.name])))
             ListDataContext.Add(item);
 
         IsLoadedEnabled = true;

@@ -5,21 +5,26 @@ namespace CAT2.ViewModels;
 
 public partial class UserinfoPageViewModel : ObservableObject
 {
-    [RelayCommand] private void Loaded() => Loaded(null, null);
-
     // 用户信息
     [ObservableProperty] private string _bandwidth;
     [ObservableProperty] private BitmapImage _currentImage;
     [ObservableProperty] private string _email;
+    private bool _first = true;
     [ObservableProperty] private string _group;
     [ObservableProperty] private string _integral;
+
+    [ObservableProperty] private bool _isLoadedEnabled = true;
     [ObservableProperty] private string _name;
     [ObservableProperty] private string _qq;
     [ObservableProperty] private string _term;
     [ObservableProperty] private string _tunnelCount;
 
-    [ObservableProperty] private bool _isLoadedEnabled = true;
-    private bool _first = true;
+    [RelayCommand]
+    private void Loaded()
+    {
+        Loaded(null, null);
+    }
+
     public async void Loaded(object sender, RoutedEventArgs e)
     {
         IsLoadedEnabled = false;

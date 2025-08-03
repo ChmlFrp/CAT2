@@ -51,7 +51,7 @@
                             </TextBlock>
 
                             <ProgressBar
-                                Margin="0,25,0,0"
+                                Margin="0,20,0,0"
                                 Value="{Binding Load15}" />
                         </Grid>
                     </ui:Card>

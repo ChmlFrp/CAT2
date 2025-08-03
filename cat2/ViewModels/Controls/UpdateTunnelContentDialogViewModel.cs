@@ -2,8 +2,7 @@
 
 namespace CAT2.ViewModels.Controls;
 
-public class UpdateTunnelContentDialogViewModel
-(
+public class UpdateTunnelContentDialogViewModel(
     Classes.TunnelInfoClass tunnelInfo
 ) : AddTunnelContentDialogViewModel
 {

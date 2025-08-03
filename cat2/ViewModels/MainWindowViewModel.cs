@@ -10,6 +10,34 @@ namespace CAT2.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
+    [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
+    [ObservableProperty] private bool _isDarkTheme;
+
+    public MainWindowViewModel()
+    {
+        AppDomain.CurrentDomain.UnhandledException += (_, args) =>
+        {
+            if (args.ExceptionObject is not Exception ex) return;
+
+            WritingLog(ex.Message.Contains("拒绝访问")
+                ? "请以管理员身份运行本程序"
+                : $"请将此日志反馈给开发者\n联系方式：\n1.QQ：2976779544\n2.Email：Qusay_Diaz@outlook.com\n3.GitHub：Qianyiaz/CAT2\n版本号：{Constants.Version}次版本号：{FileVersion}\n异常信息：\n{ex}");
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = LogFilePath,
+                UseShellExecute = true
+            });
+        };
+
+        SystemEvents.UserPreferenceChanged += (_, _) =>
+        {
+            var theme = ApplicationThemeManager.GetSystemTheme() == SystemTheme.Light;
+            ApplicationThemeManager.Apply(theme ? ApplicationTheme.Light : ApplicationTheme.Dark);
+            IsDarkTheme = !theme;
+        };
+    }
+
     public async void Loaded(object sender, RoutedEventArgs e)
     {
         Init("CAT2");
@@ -54,34 +82,6 @@ public partial class MainWindowViewModel : ObservableObject
 
         WritingLog("主窗口加载完成");
         await SetFrpcAsync();
-    }
-
-    [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
-    [ObservableProperty] private bool _isDarkTheme;
-
-    public MainWindowViewModel()
-    {
-        AppDomain.CurrentDomain.UnhandledException += (_, args) =>
-        {
-            if (args.ExceptionObject is not Exception ex) return;
-
-            WritingLog(ex.Message.Contains("拒绝访问")
-                ? "请以管理员身份运行本程序"
-                : $"请将此日志反馈给开发者\n联系方式：\n1.QQ：2976779544\n2.Email：Qusay_Diaz@outlook.com\n3.GitHub：Qianyiaz/CAT2\n版本号：{Constants.Version}次版本号：{FileVersion}\n异常信息：\n{ex}");
-
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = LogFilePath,
-                UseShellExecute = true
-            });
-        };
-
-        SystemEvents.UserPreferenceChanged += (_, _) =>
-        {
-            var theme = ApplicationThemeManager.GetSystemTheme() == SystemTheme.Light;
-            ApplicationThemeManager.Apply(theme ? ApplicationTheme.Light : ApplicationTheme.Dark);
-            IsDarkTheme = !theme;
-        };
     }
 
     [RelayCommand]

@@ -6,22 +6,22 @@ namespace CAT2.Models;
 
 public static partial class Items
 {
-    public partial class TunnelItem
-    (
+    public partial class TunnelItem(
         TunnelPageViewModel parentViewModel,
         TunnelInfoClass tunnelInfo,
         bool isStarted
     ) : ObservableObject
     {
-        [ObservableProperty] private string _name = tunnelInfo.name;
-        [ObservableProperty] private string _info = $"[节点名称:{tunnelInfo.node}]-[隧道类型:{tunnelInfo.type}]";
         [ObservableProperty] private string _id = $"[隧道ID:{tunnelInfo.id}]";
-        [ObservableProperty]
-        private string _toolTip =
-            $"[内网端口:{tunnelInfo.nport}]-[外网端口/连接域名:{tunnelInfo.dorp}]-[节点状态:{tunnelInfo.nodestate}]";
+        [ObservableProperty] private string _info = $"[节点名称:{tunnelInfo.node}]-[隧道类型:{tunnelInfo.type}]";
+        [ObservableProperty] private bool _isStarted = isStarted;
 
         [ObservableProperty] private bool _isStartedEnabled = true;
-        [ObservableProperty] private bool _isStarted = isStarted;
+        [ObservableProperty] private string _name = tunnelInfo.name;
+
+        [ObservableProperty] private string _toolTip =
+            $"[内网端口:{tunnelInfo.nport}]-[外网端口/连接域名:{tunnelInfo.dorp}]-[节点状态:{tunnelInfo.nodestate}]";
+
         async partial void OnIsStartedChanged(bool value)
         {
             IsStartedEnabled = false;
@@ -160,15 +160,16 @@ public static partial class Items
 
         [RelayCommand]
         private async Task UpdateTunnel()
-        => await new UpdateTunnelContentDialog(
+        {
+            await new UpdateTunnelContentDialog(
                 ContentDialogService.GetDialogHost(),
                 tunnelInfo,
                 parentViewModel
             ).ShowAsync();
+        }
     }
 
-    public partial class NodeItem
-    (
+    public partial class NodeItem(
         NodeDataClass nodeData
     ) : ObservableObject
     {
@@ -180,16 +181,23 @@ public static partial class Items
         [ObservableProperty] private string _notes = $"{nodeData.notes}";
     }
 
-    public partial class NodeInfoItem
-    (
+    public partial class NodeInfoItem(
         NodeInfoClass nodeInfo
     ) : ObservableObject
     {
         [ObservableProperty] private string _id = $"#{nodeInfo.id}";
         [ObservableProperty] private float _load15 = nodeInfo.load15 * 100;
-        [ObservableProperty] private string _notes = $"IP地址： {nodeInfo.ip}\nCPU： {nodeInfo.cpu_info}\n介绍: {nodeInfo.notes}";
-        [ObservableProperty] private string _totalTrafficOut = $"上传流量： {nodeInfo.total_traffic_out / 1024 / 1024 / 1024:0.0}GB";
-        [ObservableProperty] private string _totalTrafficIn = $"下载流量： {nodeInfo.total_traffic_in / 1024 / 1024 / 1024:0.0}GB";
-        [ObservableProperty] private string _name = $"{nodeInfo.name}({(nodeInfo.nodegroup == "vip" ? "VIP" : "普通")},{(nodeInfo.state == "online" ? "在线" : "离线")})";
+
+        [ObservableProperty] private string _name =
+            $"{nodeInfo.name}({(nodeInfo.nodegroup == "vip" ? "VIP" : "普通")},{(nodeInfo.state == "online" ? "在线" : "离线")})";
+
+        [ObservableProperty]
+        private string _notes = $"IP地址： {nodeInfo.ip}\nCPU： {nodeInfo.cpu_info}\n介绍: {nodeInfo.notes}";
+
+        [ObservableProperty]
+        private string _totalTrafficIn = $"下载流量： {nodeInfo.total_traffic_in / 1024 / 1024 / 1024:0.0}GB";
+
+        [ObservableProperty]
+        private string _totalTrafficOut = $"上传流量： {nodeInfo.total_traffic_out / 1024 / 1024 / 1024:0.0}GB";
     }
 }

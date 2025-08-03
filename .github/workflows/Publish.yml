@@ -1,7 +1,7 @@
 name: Project Publishing
 on:
   push:
-    paths: ['cat2/**','**/Publish.yml']
+    paths: [ 'cat2/**','**/Publish.yml' ]
 permissions:
   contents: read
 jobs:
@@ -13,7 +13,7 @@ jobs:
         with:
           path: ~/.nuget/packages
           key: nuget-cache
-      - run: dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained false
+      - run: dotnet publish -r win-x64 -p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:SatelliteResourceLanguages=.
       - uses: actions/upload-artifact@main
         with:
           name: Release
