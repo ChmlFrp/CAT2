@@ -59,7 +59,7 @@ public partial class MainWindowViewModel : ObservableObject
         }
 
         MainClass.Topmost = false;
-        
+
         if (!File.Exists(SettingsFilePath))
         {
             await File.WriteAllTextAsync(SettingsFilePath,
@@ -67,7 +67,7 @@ public partial class MainWindowViewModel : ObservableObject
             WritingLog("settings.json文件不存在，已创建");
         }
         var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
-        
+
         if ((bool)deserialize!["IsAutoUpdate"])
         {
             WritingLog("自动更新已启用");
