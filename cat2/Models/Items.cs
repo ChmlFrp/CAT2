@@ -19,8 +19,7 @@ public static partial class Items
         [ObservableProperty] private bool _isStartedEnabled = true;
         [ObservableProperty] private string _name = tunnelInfo.name;
 
-        [ObservableProperty]
-        private string _toolTip =
+        [ObservableProperty] private string _toolTip =
             $"[内网端口:{tunnelInfo.nport}]-[外网端口/连接域名:{tunnelInfo.dorp}]-[节点状态:{tunnelInfo.nodestate}]";
 
         async partial void OnIsStartedChanged(bool value)
@@ -189,8 +188,7 @@ public static partial class Items
         [ObservableProperty] private string _id = $"#{nodeInfo.id}";
         [ObservableProperty] private float _load15 = nodeInfo.load15 * 100;
 
-        [ObservableProperty]
-        private string _name =
+        [ObservableProperty] private string _name =
             $"{nodeInfo.name}({(nodeInfo.nodegroup == "vip" ? "VIP" : "普通")},{(nodeInfo.state == "online" ? "在线" : "离线")})";
 
         [ObservableProperty]
@@ -201,5 +199,15 @@ public static partial class Items
 
         [ObservableProperty]
         private string _totalTrafficOut = $"上传流量： {nodeInfo.total_traffic_out / 1024 / 1024 / 1024:0.0}GB";
+    }
+
+    public partial class StartedItem(
+        TunnelInfoClass tunnelInfo,
+        bool isStarted
+    ) : ObservableObject
+    {
+        [ObservableProperty] private bool _isStarted = isStarted;
+
+        [ObservableProperty] private string _name = $"{tunnelInfo.name}({tunnelInfo.type.ToUpper()})";
     }
 }

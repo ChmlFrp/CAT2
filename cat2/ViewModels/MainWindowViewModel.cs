@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using CAT2.Models;
 using Microsoft.Win32;
 using Wpf.Ui.Appearance;
@@ -58,21 +59,18 @@ public partial class MainWindowViewModel : ObservableObject
         }
 
         MainClass.Topmost = false;
-
+        
         if (!File.Exists(SettingsFilePath))
         {
             await File.WriteAllTextAsync(SettingsFilePath,
                 JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", true } }));
             WritingLog("settings.json文件不存在，已创建");
         }
-
-        var data = File.ReadAllText(SettingsFilePath);
-        var deserialize = JsonSerializer.Deserialize<Dictionary<string, bool>>(data);
-
-        if (deserialize["IsAutoUpdate"])
+        var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
+        
+        if ((bool)deserialize!["IsAutoUpdate"])
         {
             WritingLog("自动更新已启用");
-            await Task.Delay(2000);
             await UpdateApp();
         }
         else

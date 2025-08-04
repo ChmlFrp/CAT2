@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using CSDK;
 using static CAT2.Models.Items;
 
@@ -20,18 +21,16 @@ public partial class NodePageViewModel : ObservableObject
     {
         IsLoadedEnabled = false;
 
-        ListDataContext.Clear();
+        List<Classes.NodeInfoClass> nodeInfoList = [];
         foreach (var nodeData in await NodeActions.GetNodesDataListAsync())
-            ListDataContext.Add
+            nodeInfoList.Add(await NodeActions.GetNodeInfoAsync
             (
-                new NodeInfoItem
-                (
-                    await NodeActions.GetNodeInfoAsync
-                    (
-                        nodeData.name
-                    )
-                )
-            );
+                nodeData.name
+            ));
+        ListDataContext.Clear();
+
+        foreach (var nodeInfo in nodeInfoList)
+            ListDataContext.Add(new(nodeInfo));
 
         IsLoadedEnabled = true;
     }

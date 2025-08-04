@@ -96,6 +96,54 @@
                 Command="{Binding ClearedCommand}" />
         </ui:CardExpander>
 
+        <ui:CardExpander
+            Margin="0,0,0,5">
+            <ui:CardExpander.Header>
+                <Grid>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <ui:SymbolIcon
+                            FontSize="25"
+                            Margin="10,0,10,0"
+                            Symbol="DocumentTextExtract24" />
+                        <TextBlock>
+                            <Run
+                                Text="隧道自启动" />
+                            <LineBreak />
+                            <Run
+                                FontSize="14"
+                                Text="当转到管理隧道页时自启动选好的隧道。"
+                                Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
+                        </TextBlock>
+                    </StackPanel>
+
+                    <Button
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding WriteSettingsCommand}"
+                        Content="保存配置" />
+                </Grid>
+            </ui:CardExpander.Header>
+
+            <ui:ListView
+                ItemsSource="{Binding AutoStartedItems}">
+                <ui:ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Text="{Binding Name}"
+                                HorizontalAlignment="Left" />
+
+                            <CheckBox
+                                HorizontalAlignment="Right"
+                                IsChecked="{Binding IsStarted}" />
+                        </Grid>
+                    </DataTemplate>
+                </ui:ListView.ItemTemplate>
+            </ui:ListView>
+        </ui:CardExpander>
+
         <ui:Card>
             <Grid>
                 <StackPanel

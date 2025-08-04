@@ -42,6 +42,7 @@ public partial class UserinfoPageViewModel : ObservableObject
                 "请检查网络连接或稍后重试。",
                 ControlAppearance.Danger,
                 SymbolRegular.TagError24);
+            IsLoadedEnabled = true;
             return;
         }
 

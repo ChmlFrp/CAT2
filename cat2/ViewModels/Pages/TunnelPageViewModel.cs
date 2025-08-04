@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
+using System.IO;
+using System.Text.Json.Nodes;
 using CAT2.Views.Controls;
 using static CAT2.Models.Items;
 
@@ -36,12 +37,15 @@ public partial class TunnelPageViewModel : ObservableObject
                 "请检查网络连接或稍后重试。",
                 ControlAppearance.Danger,
                 SymbolRegular.TagError24);
+            IsLoadedEnabled = true;
             return;
         }
 
         if (tunnelsData.Count == 0)
         {
             WritingLog("没有隧道信息");
+            ListDataContext.Clear();
+            IsLoadedEnabled = true;
             return;
         }
 
@@ -50,9 +54,22 @@ public partial class TunnelPageViewModel : ObservableObject
 
         ListDataContext.Clear();
 
-        foreach (var item in tunnelsData.Select(tunnelData =>
-                     new TunnelItem(this, tunnelData, tunnelsRunning[tunnelData.name])))
+        var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
+        foreach (var tunnelData in tunnelsData)
+        {
+            var item = new TunnelItem(this, tunnelData, tunnelsRunning[tunnelData.name]);
             ListDataContext.Add(item);
+            if (tunnelsRunning[tunnelData.name])
+                continue;
+            try
+            {
+                item.IsStarted = (bool)deserialize!["StartedItems"]![$"{tunnelData.name}({tunnelData.type.ToUpper()})"];
+            }
+            catch
+            {
+                // ignored
+            }
+        }
 
         IsLoadedEnabled = true;
     }
