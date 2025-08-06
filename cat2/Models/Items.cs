@@ -1,6 +1,6 @@
 ﻿using CAT2.ViewModels;
 using CAT2.Views.Controls;
-using static CSDK.Classes;
+using static ChmlFrp.SDK.Classes;
 
 namespace CAT2.Models;
 
@@ -15,7 +15,6 @@ public static partial class Items
         [ObservableProperty] private string _id = $"[隧道ID:{tunnelInfo.id}]";
         [ObservableProperty] private string _info = $"[节点名称:{tunnelInfo.node}]-[隧道类型:{tunnelInfo.type}]";
         [ObservableProperty] private bool _isStarted = isStarted;
-
         [ObservableProperty] private bool _isStartedEnabled = true;
         [ObservableProperty] private string _name = tunnelInfo.name;
 
@@ -23,12 +22,13 @@ public static partial class Items
         private string _toolTip =
             $"[内网端口:{tunnelInfo.nport}]-[外网端口/连接域名:{tunnelInfo.dorp}]-[节点状态:{tunnelInfo.nodestate}]";
 
-        async partial void OnIsStartedChanged(bool value)
+        [RelayCommand]
+        public void TunnelClick()
         {
             IsStartedEnabled = false;
-            if (value)
-                await StartTunnelAsync(
-                    tunnelInfo.name,
+            if (IsStarted)
+                StartTunnel(
+                    tunnelInfo,
                     () =>
                     {
                         Application.Current.Dispatcher.Invoke(() =>
@@ -58,32 +58,6 @@ public static partial class Items
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             ShowSnackbar(
-                                "隧道启动数据获取失败",
-                                "请检查网络状态，或查看API状态。",
-                                ControlAppearance.Danger,
-                                SymbolRegular.TagError24);
-                            IsStarted = false;
-                            IsStartedEnabled = true;
-                        });
-                    },
-                    () =>
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            ShowSnackbar(
-                                "FRPC 暂未安装",
-                                "请等待一会，或重新启动。（软件会自动安装）",
-                                ControlAppearance.Danger,
-                                SymbolRegular.TagError24);
-                            IsStarted = false;
-                            IsStartedEnabled = true;
-                        });
-                    },
-                    () =>
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            ShowSnackbar(
                                 "隧道已在运行",
                                 $"隧道 {tunnelInfo.name} 已在运行中。",
                                 ControlAppearance.Danger,
@@ -93,30 +67,10 @@ public static partial class Items
                     }
                 );
             else
-                await StopTunnelAsync(
-                    tunnelInfo.name,
-                    () =>
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            ShowSnackbar("隧道关闭成功",
-                                $"隧道 {tunnelInfo.name} 已成功关闭。",
-                                ControlAppearance.Success,
-                                SymbolRegular.Checkmark24);
-                            IsStartedEnabled = true;
-                        });
-                    },
-                    () =>
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            ShowSnackbar("隧道关闭失败",
-                                $"隧道 {tunnelInfo.name} 已退出。",
-                                ControlAppearance.Danger,
-                                SymbolRegular.TagError24);
-                            IsStartedEnabled = true;
-                        });
-                    });
+                StopTunnel(
+                    tunnelInfo.id,
+                    () => { Application.Current.Dispatcher.Invoke(() => { IsStartedEnabled = true; }); },
+                    () => { Application.Current.Dispatcher.Invoke(() => { IsStartedEnabled = true; }); });
         }
 
         [RelayCommand]
@@ -128,16 +82,22 @@ public static partial class Items
                     "下定决心",
                     "就此罢手") != ContentDialogResult.Primary) return;
 
-            await DeleteTunnelAsync(tunnelInfo.name);
-            WritingLog($"删除隧道请求：{tunnelInfo.name}");
-
-            ShowSnackbar("隧道删除成功",
-                $"隧道 {tunnelInfo.name} 已成功删除。",
-                ControlAppearance.Success,
-                SymbolRegular.Checkmark24);
-
-            await Task.Delay(500);
-            parentViewModel.Loaded(null, null);
+            if (await DeleteTunnelAsync(tunnelInfo.id))
+            {
+                ShowSnackbar("隧道删除成功",
+                    $"隧道 {tunnelInfo.name} 已成功删除。",
+                    ControlAppearance.Success,
+                    SymbolRegular.Checkmark24);
+                await Task.Delay(500);
+                parentViewModel.Loaded(null, null);
+            }
+            else
+            {
+                ShowSnackbar("隧道删除失败",
+                    $"隧道 {tunnelInfo.name} 删除失败，请稍后再试。",
+                    ControlAppearance.Danger,
+                    SymbolRegular.TagError24);
+            }
         }
 
         [RelayCommand]
@@ -209,7 +169,6 @@ public static partial class Items
     ) : ObservableObject
     {
         [ObservableProperty] private bool _isStarted = isStarted;
-
-        [ObservableProperty] private string _name = $"{tunnelInfo.name}({tunnelInfo.type.ToUpper()})";
+        [ObservableProperty] private string _name = $"{tunnelInfo.name}({tunnelInfo.type.ToUpperInvariant()})";
     }
 }

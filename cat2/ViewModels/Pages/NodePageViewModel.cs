@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using CSDK;
+using System.Linq;
+using ChmlFrp.SDK;
 using static CAT2.Models.Items;
 
 namespace CAT2.ViewModels;
@@ -29,7 +30,7 @@ public partial class NodePageViewModel : ObservableObject
             ));
         ListDataContext.Clear();
 
-        foreach (var nodeInfo in nodeInfoList)
+        foreach (var nodeInfo in nodeInfoList.Where(nodeInfo => nodeInfo != null))
             ListDataContext.Add(new(nodeInfo));
 
         IsLoadedEnabled = true;

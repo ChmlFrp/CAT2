@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using CSDK;
+using ChmlFrp.SDK;
 using static CAT2.Models.Items;
 
 namespace CAT2.ViewModels.Controls;

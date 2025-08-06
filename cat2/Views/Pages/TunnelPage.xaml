@@ -43,8 +43,8 @@
             ItemsSource="{Binding ListDataContext}">
             <ui:ListView.ItemTemplate>
                 <DataTemplate>
-                    <ui:Card>
-                        <ui:Card.ContextMenu>
+                    <ui:CardControl>
+                        <ui:CardControl.ContextMenu>
                             <ContextMenu>
                                 <MenuItem
                                     Command="{Binding UpdateTunnelCommand}"
@@ -59,34 +59,36 @@
                                     Icon="{ui:SymbolIcon CopyAdd24}"
                                     Header="复制链接" />
                             </ContextMenu>
-                        </ui:Card.ContextMenu>
+                        </ui:CardControl.ContextMenu>
 
-                        <Grid>
+                        <ui:CardControl.Header>
                             <StackPanel
-                                HorizontalAlignment="Left"
                                 Orientation="Horizontal">
                                 <ui:TextBlock
+                                    FontTypography="BodyStrong"
                                     FontSize="18"
                                     FontWeight="Bold"
+                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                     ToolTip="{Binding Id}"
-                                    Text="{Binding Name}" />
-
+                                    Text="{Binding Name}"
+                                    TextWrapping="WrapWithOverflow" />
                                 <ui:TextBlock
+                                    Appearance="Secondary"
                                     FontSize="16"
-                                    Margin="10,0,0,0"
+                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                     ToolTip="{Binding ToolTip}"
-                                    Text="{Binding Info}" />
+                                    Text="{Binding Info}"
+                                    TextWrapping="WrapWithOverflow" />
                             </StackPanel>
+                        </ui:CardControl.Header>
 
-                            <ui:ToggleSwitch
-                                HorizontalAlignment="Right"
-                                Margin="0,0,15,0"
-                                IsChecked="{Binding IsStarted}"
-                                IsEnabled="{Binding IsStartedEnabled}"
-                                OffContent="启动"
-                                OnContent="关闭" />
-                        </Grid>
-                    </ui:Card>
+                        <ui:ToggleSwitch
+                            IsChecked="{Binding IsStarted}"
+                            IsEnabled="{Binding IsStartedEnabled}"
+                            Command="{Binding TunnelClickCommand}"
+                            OffContent="启动"
+                            OnContent="关闭" />
+                    </ui:CardControl>
                 </DataTemplate>
             </ui:ListView.ItemTemplate>
         </ui:ListView>

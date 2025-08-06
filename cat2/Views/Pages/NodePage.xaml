@@ -31,17 +31,22 @@
             Grid.Row="1">
             <ui:ListView.ItemTemplate>
                 <DataTemplate>
-                    <ui:Card
-                        ToolTip="{Binding Notes}">
-                        <Grid
-                            Margin="10,0,10,0">
-                            <TextBlock
+                    <ui:CardControl>
+                        <ui:CardControl.Header>
+                            <ui:TextBlock
+                                FontTypography="BodyStrong"
                                 FontSize="16"
                                 FontWeight="Bold"
+                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                 Text="{Binding Name}"
-                                ToolTip="{Binding Id}" />
-
+                                ToolTip="{Binding Id}"
+                                TextWrapping="WrapWithOverflow" />
+                        </ui:CardControl.Header>
+                        <Grid
+                            ToolTip="{Binding Notes}"
+                            Margin="10,0,10,0">
                             <TextBlock
+                                TextWrapping="WrapWithOverflow"
                                 Foreground="{ui:ThemeResource TextFillColorDisabledBrush}"
                                 HorizontalAlignment="Right">
                                 <Run
@@ -54,7 +59,7 @@
                                 Margin="0,20,0,0"
                                 Value="{Binding Load15}" />
                         </Grid>
-                    </ui:Card>
+                    </ui:CardControl>
                 </DataTemplate>
             </ui:ListView.ItemTemplate>
         </ui:ListView>

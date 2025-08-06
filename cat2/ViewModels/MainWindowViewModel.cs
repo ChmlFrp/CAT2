@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using CAT2.Models;
 using Microsoft.Win32;
 using Wpf.Ui.Appearance;
-using static CSDK.UserActions;
+using static ChmlFrp.SDK.UserActions;
 
 namespace CAT2.ViewModels;
 
@@ -41,45 +40,51 @@ public partial class MainWindowViewModel : ObservableObject
 
     public async void Loaded(object sender, RoutedEventArgs e)
     {
-        Init("CAT2");
-
-        if (ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark) ThemesChanged();
-
-        SnackbarService.SetSnackbarPresenter(MainClass.RootSnackbarDialog);
-        ContentDialogService.SetDialogHost(MainClass.RootContentDialogPresenter);
-        MainClass.RootNavigation.Navigate("登录");
-        await AutoLoginAsync(); // 尝试自动登录
-        if (IsLoggedIn)
+        try
         {
-            MainClass.LoginItem.Visibility = Visibility.Collapsed;
-            MainClass.UserItem.Visibility = Visibility.Visible;
-            MainClass.TunnelItem.Visibility = Visibility.Visible;
-            MainClass.NodeItem.Visibility = Visibility.Visible;
-            MainClass.RootNavigation.Navigate("用户信息");
+            Init("CAT2");
+
+            if (ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark) ThemesChanged();
+
+            var uiSetupTask = Task.Run(() =>
+            {
+                SnackbarService.SetSnackbarPresenter(MainClass.RootSnackbarDialog);
+                ContentDialogService.SetDialogHost(MainClass.RootContentDialogPresenter);
+            });
+
+            MainClass.RootNavigation.Navigate("登录");
+
+            await Task.WhenAll(uiSetupTask, LoginAsyncFromToken(), CheckAndCreateSettingsFileAsync());
+
+            UpdateUiForLoggedInUser();
+
+            MainClass.Topmost = false;
+            WritingLog("主窗口加载完成");
         }
+        catch (Exception ex)
+        {
+            WritingLog($"加载过程中发生错误: {ex.Message}");
+        }
+    }
 
-        MainClass.Topmost = false;
-
+    private async Task CheckAndCreateSettingsFileAsync()
+    {
         if (!File.Exists(SettingsFilePath))
         {
-            await File.WriteAllTextAsync(SettingsFilePath,
-                JsonSerializer.Serialize(new Dictionary<string, bool> { { "IsAutoUpdate", true } }));
+            var defaultSettings = new Dictionary<string, bool> { { "IsAutoUpdate", true } };
+            await File.WriteAllTextAsync(SettingsFilePath, JsonSerializer.Serialize(defaultSettings));
             WritingLog("settings.json文件不存在，已创建");
         }
-        var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
+    }
 
-        if ((bool)deserialize!["IsAutoUpdate"])
-        {
-            WritingLog("自动更新已启用");
-            await UpdateApp();
-        }
-        else
-        {
-            WritingLog("自动更新已禁用");
-        }
-
-        WritingLog("主窗口加载完成");
-        await SetFrpcAsync();
+    private void UpdateUiForLoggedInUser()
+    {
+        if (!IsLoggedIn) return;
+        MainClass.LoginItem.Visibility = Visibility.Collapsed;
+        MainClass.UserItem.Visibility = Visibility.Visible;
+        MainClass.TunnelItem.Visibility = Visibility.Visible;
+        MainClass.NodeItem.Visibility = Visibility.Visible;
+        MainClass.RootNavigation.Navigate("用户信息");
     }
 
     [RelayCommand]

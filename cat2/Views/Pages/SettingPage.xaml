@@ -28,45 +28,6 @@
                         <ui:SymbolIcon
                             FontSize="25"
                             Margin="10,0,10,0"
-                            Symbol="DualScreenUpdate24" />
-                        <TextBlock>
-                            <Run
-                                Text="软件更新设置" />
-                            <LineBreak />
-                            <Run
-                                FontSize="14"
-                                Text="启用或禁用自动更新和检测更新。"
-                                Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
-                        </TextBlock>
-                    </StackPanel>
-
-                    <ui:ToggleSwitch
-                        IsChecked="{Binding IsAutoUpdatedEnabled}"
-                        OnContent="启用"
-                        OffContent="禁用"
-                        Margin="0,0,10,0"
-                        HorizontalAlignment="Right" />
-                </Grid>
-            </ui:CardExpander.Header>
-
-            <MenuItem
-                Padding="10"
-                FontSize="18"
-                Header="检测软件更新"
-                IsEnabled="{Binding IsUpdatedEnabled}"
-                Icon="{ui:SymbolIcon ArrowSync24}"
-                Command="{Binding UpdatedCommand}" />
-        </ui:CardExpander>
-
-        <ui:CardExpander
-            Margin="0,0,0,5">
-            <ui:CardExpander.Header>
-                <Grid>
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <ui:SymbolIcon
-                            FontSize="25"
-                            Margin="10,0,10,0"
                             Symbol="DocumentTextClock24" />
                         <TextBlock>
                             <Run
@@ -125,51 +86,33 @@
                 </Grid>
             </ui:CardExpander.Header>
 
-            <ui:ListView
-                ItemsSource="{Binding AutoStartedItems}">
-                <ui:ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Text="{Binding Name}"
-                                HorizontalAlignment="Left" />
-
-                            <CheckBox
-                                HorizontalAlignment="Right"
-                                IsChecked="{Binding IsStarted}" />
-                        </Grid>
-                    </DataTemplate>
-                </ui:ListView.ItemTemplate>
-            </ui:ListView>
-        </ui:CardExpander>
-
-        <ui:Card>
             <Grid>
-                <StackPanel
-                    Orientation="Horizontal">
-                    <ui:SymbolIcon
-                        FontSize="25"
-                        Margin="10,0,10,0"
-                        Symbol="ArrowDownload48" />
-                    <TextBlock>
-                        <Run
-                            Text="下载FRPC" />
-                        <LineBreak />
-                        <Run
-                            FontSize="14"
-                            Text="启动时会自动检测下载这里只做展示。"
-                            Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
-                    </TextBlock>
-                </StackPanel>
+                <Label
+                    Visibility="{Binding LabelVisibility}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Content="暂无隧道请注册。" />
 
-                <Button
-                    IsEnabled="False"
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Right"
-                    Content="{Binding Context}" />
+                <ui:ListView
+                    Visibility="{Binding ListVisibility}"
+                    ItemsSource="{Binding AutoStartedItems}">
+                    <ui:ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Name}"
+                                    HorizontalAlignment="Left" />
+
+                                <CheckBox
+                                    HorizontalAlignment="Right"
+                                    IsChecked="{Binding IsStarted}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ui:ListView.ItemTemplate>
+                </ui:ListView>
             </Grid>
-        </ui:Card>
+        </ui:CardExpander>
 
         <Label
             Margin="0,20,0,5"

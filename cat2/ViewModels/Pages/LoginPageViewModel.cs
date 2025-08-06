@@ -1,4 +1,4 @@
-﻿using static CSDK.UserActions;
+﻿using static ChmlFrp.SDK.UserActions;
 
 namespace CAT2.ViewModels;
 

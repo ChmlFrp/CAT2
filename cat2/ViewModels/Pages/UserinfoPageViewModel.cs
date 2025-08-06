@@ -1,5 +1,5 @@
 ﻿using System.Windows.Media.Imaging;
-using static CSDK.UserActions;
+using static ChmlFrp.SDK.UserActions;
 
 namespace CAT2.ViewModels;
 
@@ -32,7 +32,7 @@ public partial class UserinfoPageViewModel : ObservableObject
         if (_first)
             _first = false;
         else
-            await AutoLoginAsync();
+            await LoginAsyncFromToken();
 
         if (UserInfo == null)
         {
@@ -71,7 +71,7 @@ public partial class UserinfoPageViewModel : ObservableObject
                 "退出登录后你的用户Token将删除。",
                 "确认",
                 "放弃") != ContentDialogResult.Primary) return;
-        LogoutAsync();
+        Logout();
 
         WritingLog("用户已退出登录");
         ShowSnackbar(

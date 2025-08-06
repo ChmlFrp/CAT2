@@ -50,25 +50,24 @@ public partial class TunnelPageViewModel : ObservableObject
         }
 
         WritingLog($"加载到 {tunnelsData.Count} 个隧道信息");
-        var tunnelsRunning = await IsTunnelRunningAsync(tunnelsData);
-
+        var tunnelsRunning = IsTunnelRunning(tunnelsData);
+        var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
         ListDataContext.Clear();
 
-        var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
         foreach (var tunnelData in tunnelsData)
         {
-            var item = new TunnelItem(this, tunnelData, tunnelsRunning[tunnelData.name]);
+            var isRunning = tunnelsRunning[tunnelData.id.ToString()];
+            var item = new TunnelItem(this, tunnelData, isRunning);
             ListDataContext.Add(item);
-            if (tunnelsRunning[tunnelData.name])
-                continue;
-            try
-            {
-                item.IsStarted = (bool)deserialize!["StartedItems"]![$"{tunnelData.name}({tunnelData.type.ToUpper()})"];
-            }
-            catch
-            {
-                // ignored
-            }
+            if (isRunning) continue;
+
+            if (deserialize?["StartedItems"]?[$"{tunnelData.name}({tunnelData.type.ToUpperInvariant()})"] is not
+                    JsonValue
+                    startedValue ||
+                !startedValue.TryGetValue<bool>(out var isStarted)) continue;
+            item.IsStarted = isStarted;
+            if (isStarted)
+                item.TunnelClick();
         }
 
         IsLoadedEnabled = true;
