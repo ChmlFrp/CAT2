@@ -17,6 +17,7 @@
         <PackageReference Include="WPF-UI" Version="*"/>
         <PackageReference Include="ChmlFrp.SDK" Version="*"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="*"/>
+        <None Include="frpc.exe" Pack="true" PackagePath="\" CopyToOutputDirectory="PreserveNewest"/>
     </ItemGroup>
 
 </Project>
