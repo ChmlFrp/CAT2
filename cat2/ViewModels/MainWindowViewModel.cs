@@ -71,8 +71,10 @@ public partial class MainWindowViewModel : ObservableObject
     {
         if (!File.Exists(SettingsFilePath))
         {
-            var defaultSettings = new Dictionary<string, bool> { { "IsAutoUpdate", true } };
-            await File.WriteAllTextAsync(SettingsFilePath, JsonSerializer.Serialize(defaultSettings));
+            await File.WriteAllTextAsync(SettingsFilePath, JsonSerializer.Serialize(new
+            {
+                StartedItems = new Dictionary<string, bool>()
+            }));
             WritingLog("settings.json文件不存在，已创建");
         }
     }
