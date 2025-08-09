@@ -28,7 +28,7 @@ public static partial class Items
             IsStartedEnabled = false;
             if (IsStarted)
                 StartTunnel(
-                    tunnelInfo,
+                    tunnelInfo.id,
                     () =>
                     {
                         Application.Current.Dispatcher.Invoke(() =>

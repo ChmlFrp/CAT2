@@ -56,7 +56,7 @@ public partial class TunnelPageViewModel : ObservableObject
 
         foreach (var tunnelData in tunnelsData)
         {
-            var isRunning = tunnelsRunning[tunnelData.id.ToString()];
+            var isRunning = tunnelsRunning[tunnelData.id];
             var item = new TunnelItem(this, tunnelData, isRunning);
             ListDataContext.Add(item);
             if (isRunning) continue;

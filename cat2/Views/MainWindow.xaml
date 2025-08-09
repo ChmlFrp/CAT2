@@ -8,8 +8,9 @@
     Title="{Binding AssemblyName}"
     ExtendsContentIntoTitleBar="True"
     x:Class="CAT2.Views.MainWindow"
+    MinHeight="500" MinWidth="850"
     Height="550" Width="1050"
-    WindowBackdropType="Acrylic"
+    WindowBackdropType="Mica"
     Topmost="True">
 
     <ui:FluentWindow.DataContext>
