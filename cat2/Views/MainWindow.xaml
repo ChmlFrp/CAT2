@@ -8,9 +8,8 @@
     Title="{Binding AssemblyName}"
     ExtendsContentIntoTitleBar="True"
     x:Class="CAT2.Views.MainWindow"
-    MinHeight="500" MinWidth="850"
     Height="550" Width="1050"
-    WindowBackdropType="Mica"
+    WindowBackdropType="Acrylic"
     Topmost="True">
 
     <ui:FluentWindow.DataContext>
@@ -39,8 +38,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         BorderThickness="0"
-                        IsChecked="{Binding IsDarkTheme,Mode=TwoWay}"
-                        Command="{Binding ThemesChangedCommand}">
+                        IsChecked="{Binding IsDarkTheme,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
                         <ui:SymbolIcon Symbol="DarkTheme24" />
                     </ToggleButton>
                 </ui:TitleBar.TrailingContent>
@@ -57,14 +55,6 @@
                         Name="LoginItem"
                         Icon="{ui:SymbolIcon NoteAdd48}"
                         TargetPageType="{x:Type pages:LoginPage}" />
-
-                    <ui:NavigationViewItem
-                        Content="用户信息"
-                        Name="UserItem"
-                        Visibility="Collapsed"
-                        NavigationCacheMode="Required"
-                        Icon="{ui:SymbolIcon ContactCard48}"
-                        TargetPageType="{x:Type pages:UserinfoPage}" />
 
                     <ui:NavigationViewItem
                         Content="管理隧道"

@@ -15,17 +15,11 @@
         Margin="65,75,65,75">
         <StackPanel
             Orientation="Vertical">
-            <TextBlock
-                FontSize="28"
+            <ui:TextBlock
+                FontTypography="TitleLarge"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Top">
-                <Run
-                    Text="登录" />
-                <Run
-                    FontSize="25"
-                    FontWeight="Bold"
-                    Text="ChmlFrp" />
-            </TextBlock>
+                VerticalAlignment="Top"
+                Text="登录ChmlFrp" />
 
             <ui:TextBox
                 FontSize="16"

@@ -10,7 +10,12 @@ namespace CAT2.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
+#if DEBUG
+    [ObservableProperty] private string _assemblyName = $"{Constants.AssemblyName} Dev";
+#else
     [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
+#endif
+
     [ObservableProperty] private bool _isDarkTheme;
 
     public MainWindowViewModel()
@@ -30,70 +35,51 @@ public partial class MainWindowViewModel : ObservableObject
             });
         };
 
-        SystemEvents.UserPreferenceChanged += (_, _) =>
-        {
-            var theme = ApplicationThemeManager.GetSystemTheme() == SystemTheme.Light;
-            ApplicationThemeManager.Apply(theme ? ApplicationTheme.Light : ApplicationTheme.Dark);
-            IsDarkTheme = !theme;
-        };
-    }
-
-    public async void Loaded(object sender, RoutedEventArgs e)
-    {
-        try
+        MainClass.Loaded += async (_, _) =>
         {
             Init("CAT2");
 
-            if (ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark) ThemesChanged();
-
-            var uiSetupTask = Task.Run(() =>
-            {
-                SnackbarService.SetSnackbarPresenter(MainClass.RootSnackbarDialog);
-                ContentDialogService.SetDialogHost(MainClass.RootContentDialogPresenter);
-            });
+            IsDarkTheme = ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark;
+            await Task.WhenAll(
+                Task.Run(() =>
+                {
+                    SnackbarService.SetSnackbarPresenter(MainClass.RootSnackbarDialog);
+                    ContentDialogService.SetDialogHost(MainClass.RootContentDialogPresenter);
+                }),
+                LoginAsyncFromToken(),
+                Task.Run(async () =>
+                {
+                    if (File.Exists(SettingsFilePath)) return;
+                    await File.WriteAllTextAsync(SettingsFilePath, JsonSerializer.Serialize(new
+                    {
+                        StartedItems = new Dictionary<string, bool>()
+                    }));
+                    WritingLog("settings.json文件不存在，已创建");
+                }));
 
             MainClass.RootNavigation.Navigate("登录");
-
-            await Task.WhenAll(uiSetupTask, LoginAsyncFromToken(), CheckAndCreateSettingsFileAsync());
-
-            UpdateUiForLoggedInUser();
+            if (IsLoggedIn)
+            {
+                MainClass.LoginItem.Visibility = Visibility.Collapsed;
+                MainClass.TunnelItem.Visibility = Visibility.Visible;
+                MainClass.NodeItem.Visibility = Visibility.Visible;
+                MainClass.RootNavigation.Navigate("管理隧道");
+            }
 
             MainClass.Topmost = false;
             WritingLog("主窗口加载完成");
-        }
-        catch (Exception ex)
+        };
+
+        SystemEvents.UserPreferenceChanged += (_, _) =>
         {
-            WritingLog($"加载过程中发生错误: {ex.Message}");
-        }
+            ApplicationThemeManager.Apply(ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark
+                ? ApplicationTheme.Dark
+                : ApplicationTheme.Light);
+        };
     }
 
-    private async Task CheckAndCreateSettingsFileAsync()
+    partial void OnIsDarkThemeChanged(bool value)
     {
-        if (!File.Exists(SettingsFilePath))
-        {
-            await File.WriteAllTextAsync(SettingsFilePath, JsonSerializer.Serialize(new
-            {
-                StartedItems = new Dictionary<string, bool>()
-            }));
-            WritingLog("settings.json文件不存在，已创建");
-        }
-    }
-
-    private void UpdateUiForLoggedInUser()
-    {
-        if (!IsLoggedIn) return;
-        MainClass.LoginItem.Visibility = Visibility.Collapsed;
-        MainClass.UserItem.Visibility = Visibility.Visible;
-        MainClass.TunnelItem.Visibility = Visibility.Visible;
-        MainClass.NodeItem.Visibility = Visibility.Visible;
-        MainClass.RootNavigation.Navigate("用户信息");
-    }
-
-    [RelayCommand]
-    private void ThemesChanged()
-    {
-        var theme = ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Light;
-        ApplicationThemeManager.Apply(theme ? ApplicationTheme.Dark : ApplicationTheme.Light);
-        IsDarkTheme = theme;
+        ApplicationThemeManager.Apply(value ? ApplicationTheme.Dark : ApplicationTheme.Light);
     }
 }
