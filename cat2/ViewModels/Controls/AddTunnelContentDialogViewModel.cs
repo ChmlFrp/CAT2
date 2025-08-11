@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using ChmlFrp.SDK;
 using static CAT2.Models.Items;
 
@@ -55,13 +56,16 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
 
     public virtual async void LoadNodes(object sender, RoutedEventArgs e)
     {
-        foreach (var nodeData in await NodeActions.GetNodesDataListAsync())
+        var nodeData = await NodeActions.GetNodesDataListAsync();
+
+        await Task.WhenAll(nodeData.Select(node =>
         {
-            nodeData.udp = nodeData.udp == "true" ? "允许UDP" : "不允许UDP";
-            nodeData.web = nodeData.web == "yes" ? "允许建站" : "不允许建站";
-            nodeData.nodegroup = nodeData.nodegroup == "vip" ? "VIP节点" : "免费节点";
-            NodeDataContext.Add(new NodeItem(nodeData));
-        }
+            node.udp = node.udp == "true" ? "允许UDP" : "不允许UDP";
+            node.web = node.web == "yes" ? "允许建站" : "不允许建站";
+            node.nodegroup = node.nodegroup == "vip" ? "VIP节点" : "免费节点";
+            NodeDataContext.Add(new(node));
+            return Task.CompletedTask;
+        }));
 
         WritingLog(NodeDataContext.Count != 0 ? "节点数据加载成功" : "节点数据加载失败");
     }

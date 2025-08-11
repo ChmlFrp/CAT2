@@ -4,6 +4,7 @@ global using System;
 global using System.Diagnostics;
 global using System.Threading.Tasks;
 global using System.Windows;
+global using CAT2.ViewModels;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
 global using Wpf.Ui.Controls;

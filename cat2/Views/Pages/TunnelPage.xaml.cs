@@ -1,6 +1,4 @@
-﻿using CAT2.ViewModels;
-
-namespace CAT2.Views.Pages;
+﻿namespace CAT2.Views.Pages;
 
 public partial class TunnelPage
 {

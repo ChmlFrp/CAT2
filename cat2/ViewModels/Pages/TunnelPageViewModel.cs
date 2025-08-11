@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text.Json.Nodes;
+using System.Windows.Controls;
 using CAT2.Views.Controls;
 using static CAT2.Models.Items;
 
@@ -9,6 +12,7 @@ namespace CAT2.ViewModels;
 public partial class TunnelPageViewModel : ObservableObject
 {
     [ObservableProperty] private bool _isLoadedEnabled;
+    [ObservableProperty] private SelectionMode _selectionMode;
 
     public ObservableCollection<TunnelItem> ListDataContext { get; } = [];
 
@@ -50,26 +54,51 @@ public partial class TunnelPageViewModel : ObservableObject
         }
 
         WritingLog($"加载到 {tunnelsData.Count} 个隧道信息");
-        var tunnelsRunning = IsTunnelRunning(tunnelsData);
-        var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
-        ListDataContext.Clear();
 
-        foreach (var tunnelData in tunnelsData)
+        var runningTunnels = await IsTunnelRunningAsync(tunnelsData);
+        var settings = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath))?["StartedItems"];
+        
+        var existingItems = ListDataContext.ToDictionary(item => item.Id);
+
+        await Task.WhenAll(tunnelsData.Select(tunnel =>
         {
-            var isRunning = tunnelsRunning[tunnelData.id];
-            var item = new TunnelItem(this, tunnelData, isRunning);
-            ListDataContext.Add(item);
-            if (isRunning) continue;
+            var tunnelId = $"[隧道ID:{tunnel.id}]";
+            var isRunning = runningTunnels[tunnel.id];
 
-            if (deserialize?["StartedItems"]?[$"{tunnelData.name}({tunnelData.type.ToUpperInvariant()})"] is not
-                    JsonValue
-                    startedValue ||
-                !startedValue.TryGetValue<bool>(out var isStarted)) continue;
-            item.IsStarted = isStarted;
-            if (isStarted)
-                item.TunnelClick();
-        }
+            if (existingItems.TryGetValue(tunnelId, out var existingItem))
+            {
+                existingItem.IsStarted = isRunning;
+                if (isRunning ||
+                    settings?[$"{tunnel.name}({tunnel.type.ToUpperInvariant()})"] is not JsonValue value ||
+                    !value.TryGetValue<bool>(out var isStarted) ||
+                    !isStarted) return Task.CompletedTask;
+                existingItem.IsStarted = true;
+                existingItem.TunnelClick();
+            }
+            else
+            {
+                var newItem = new TunnelItem(this, tunnel, isRunning);
+                if (!isRunning && 
+                    settings?[$"{tunnel.name}({tunnel.type.ToUpperInvariant()})"] is JsonValue value &&
+                    value.TryGetValue<bool>(out var isStarted) && 
+                    isStarted)
+                {
+                    newItem.IsStarted = true;
+                    newItem.TunnelClick();
+                }
+        
+                ListDataContext.Add(newItem);
+            }
 
+            return Task.CompletedTask;
+        }));
+     
+        var validIds = new HashSet<string>(tunnelsData.Select(t => $"[隧道ID:{t.id}]"));
+        foreach (var item in ListDataContext
+                     .Where(item => !validIds.Contains(item.Id))
+                     .ToList())
+            ListDataContext.Remove(item);
+        
         IsLoadedEnabled = true;
     }
 }

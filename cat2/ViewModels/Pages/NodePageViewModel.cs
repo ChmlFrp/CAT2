@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using ChmlFrp.SDK;
 using static CAT2.Models.Items;
 
@@ -19,20 +20,21 @@ public partial class NodePageViewModel : ObservableObject
     private async Task Loaded()
     {
         IsLoadedEnabled = false;
-
+        
+        var nodesData = await NodeActions.GetNodesDataListAsync();
         ListDataContext.Clear();
-        foreach (var nodeData in await NodeActions.GetNodesDataListAsync())
+        await Task.WhenAll(nodesData.Select(async nodeData =>
+        {
             try
             {
-                ListDataContext.Add(new(await NodeActions.GetNodeInfoAsync
-                (
-                    nodeData.name
-                )));
+                var nodeInfo = await NodeActions.GetNodeInfoAsync(nodeData.name);
+                ListDataContext.Add(new(nodeInfo));
             }
             catch
             {
                 // ignored
             }
+        }));
 
         IsLoadedEnabled = true;
     }

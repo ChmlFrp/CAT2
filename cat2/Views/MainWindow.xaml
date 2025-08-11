@@ -8,7 +8,7 @@
     Title="{Binding AssemblyName}"
     ExtendsContentIntoTitleBar="True"
     x:Class="CAT2.Views.MainWindow"
-    MinHeight="500" MinWidth="850"
+    MinHeight="500" MinWidth="960"
     Height="550" Width="1050"
     WindowBackdropType="Mica"
     Topmost="True">
@@ -72,6 +72,14 @@
                         NavigationCacheMode="Required"
                         Icon="{ui:SymbolIcon AppsListDetail24}"
                         TargetPageType="{x:Type pages:NodePage}" />
+                    
+                    <ui:NavigationViewItem
+                        Content="用户信息"
+                        Name="UserItem"
+                        Visibility="Collapsed"
+                        NavigationCacheMode="Required"
+                        Icon="{ui:SymbolIcon BookContacts32}"
+                        TargetPageType="{x:Type pages:UserPage}" />
                 </ui:NavigationView.MenuItems>
 
                 <ui:NavigationView.FooterMenuItems>

@@ -1,11 +1,11 @@
 ﻿namespace CAT2.Views.Pages;
 
-public partial class NodePage
+public partial class UserPage
 {
-    public NodePage()
+    public UserPage()
     {
         InitializeComponent();
-        var viewModel = (NodePageViewModel)DataContext;
+        var viewModel = (UserPageViewModel)DataContext;
         Loaded += viewModel.Loaded;
     }
 }

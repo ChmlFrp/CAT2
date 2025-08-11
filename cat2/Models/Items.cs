@@ -1,5 +1,4 @@
-﻿using CAT2.ViewModels;
-using CAT2.Views.Controls;
+﻿using CAT2.Views.Controls;
 using static ChmlFrp.SDK.Classes;
 
 namespace CAT2.Models;
@@ -27,7 +26,7 @@ public static partial class Items
         {
             IsStartedEnabled = false;
             if (IsStarted)
-                StartTunnel(
+                StartTunnelFromId(
                     tunnelInfo.id,
                     () =>
                     {
@@ -67,7 +66,7 @@ public static partial class Items
                     }
                 );
             else
-                StopTunnel(
+                StopTunnelFromId(
                     tunnelInfo.id,
                     () => { Application.Current.Dispatcher.Invoke(() => { IsStartedEnabled = true; }); },
                     () => { Application.Current.Dispatcher.Invoke(() => { IsStartedEnabled = true; }); });

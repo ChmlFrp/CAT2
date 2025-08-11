@@ -15,16 +15,26 @@
             <RowDefinition
                 Height="*" />
         </Grid.RowDefinitions>
-
-        <ui:Button
-            Content="刷新信息"
-            Icon="{ui:SymbolIcon ArrowClockwise24}"
-            Padding="6"
-            FontSize="16"
-            Margin="0,10,10,5"
-            HorizontalAlignment="Right"
-            IsEnabled="{Binding IsLoadedEnabled}"
-            Command="{Binding LoadedCommand}" />
+        
+        <ui:CardControl
+            Margin="5">
+            <ui:CardControl.Header>
+                <ui:TextBlock
+                    FontTypography="Title"
+                    Text="节点列表"/>
+            </ui:CardControl.Header>
+            <StackPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
+                <ui:Button
+                    Content="刷新信息"
+                    Icon="{ui:SymbolIcon ArrowClockwise24}"
+                    Padding="6"
+                    FontSize="16"
+                    IsEnabled="{Binding IsLoadedEnabled}"
+                    Command="{Binding LoadedCommand}" />
+            </StackPanel>
+        </ui:CardControl>
 
         <ui:ListView
             ItemsSource="{Binding ListDataContext}"

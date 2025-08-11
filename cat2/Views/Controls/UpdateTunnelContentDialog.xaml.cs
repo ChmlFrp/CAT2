@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using CAT2.ViewModels;
 using CAT2.ViewModels.Controls;
 using ChmlFrp.SDK;
 
