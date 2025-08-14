@@ -1,6 +1,4 @@
-﻿// global using 指令
-
-global using System;
+﻿global using System;
 global using System.Diagnostics;
 global using System.Threading.Tasks;
 global using System.Windows;

@@ -103,7 +103,6 @@
                                     VerticalAlignment="Center"
                                     Text="{Binding Name}"
                                     HorizontalAlignment="Left" />
-
                                 <CheckBox
                                     HorizontalAlignment="Right"
                                     IsChecked="{Binding IsStarted}" />
@@ -125,7 +124,6 @@
                     <StackPanel
                         Orientation="Horizontal"
                         VerticalAlignment="Center">
-
                         <ui:ImageIcon
                             Height="30"
                             Margin="10,0,10,0"
@@ -140,7 +138,6 @@
                                 Text="{Binding Copyright}"
                                 FontSize="14" />
                         </ui:TextBlock>
-
                     </StackPanel>
 
                     <Label
@@ -152,15 +149,14 @@
                 </Grid>
             </ui:CardExpander.Header>
 
-            <StackPanel
-                Orientation="Vertical">
+            <StackPanel>
                 <TextBlock
+                    Margin="0,0,0,8"
                     TextWrapping="WrapWithOverflow"
                     Text="我是Qusay，目前是一名初中生，正在编写此应用程序。QQ:2976779544" />
 
                 <StackPanel
                     Orientation="Horizontal">
-
                     <ui:HyperlinkButton
                         Icon="{ui:SymbolIcon Link48}"
                         Content="查看作者BiliBili首页"

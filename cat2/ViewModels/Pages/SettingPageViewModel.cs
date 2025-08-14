@@ -68,7 +68,7 @@ public partial class SettingPageViewModel : ObservableObject
                 // ignored
             }
 
-        ShowSnackbar(
+        ShowSnackBar(
             "缓存已清理",
             "所有缓存文件已被删除。",
             ControlAppearance.Success,

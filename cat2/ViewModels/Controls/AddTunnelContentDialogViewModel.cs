@@ -23,7 +23,7 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
     partial void OnTunnelTypeChanged(string value)
     {
         RemotePort = string.Empty;
-        if (value is "http" or "https")
+        if (value is "HTTP" or "HTTPS")
         {
             NumberBoxVisibility = Visibility.Collapsed;
             TextBoxVisibility = Visibility.Visible;

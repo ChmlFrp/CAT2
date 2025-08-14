@@ -13,6 +13,6 @@ public class UpdateTunnelContentDialogViewModel(
         LocalIp = tunnelInfo.localip;
         LocalPort = tunnelInfo.nport.ToString();
         RemotePort = tunnelInfo.dorp;
-        TunnelType = tunnelInfo.type;
+        TunnelType = tunnelInfo.type.ToUpperInvariant();
     }
 }

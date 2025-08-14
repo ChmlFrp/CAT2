@@ -20,7 +20,7 @@ public partial class NodePageViewModel : ObservableObject
     private async Task Loaded()
     {
         IsLoadedEnabled = false;
-        
+
         var nodesData = await NodeActions.GetNodesDataListAsync();
         ListDataContext.Clear();
         await Task.WhenAll(nodesData.Select(async nodeData =>

@@ -5,22 +5,23 @@ namespace CAT2.ViewModels;
 
 public partial class UserPageViewModel : ObservableObject
 {
+    [ObservableProperty] private string _bandwidth;
     [ObservableProperty] private BitmapImage _currentImage;
     [ObservableProperty] private string _email;
-    [ObservableProperty] private string _name;
-    [ObservableProperty] private string _usergroup;
-    [ObservableProperty] private string _qq;
+
+    private bool _first = true;
     [ObservableProperty] private string _integral;
-    [ObservableProperty] private string _bandwidth;
-    [ObservableProperty] private string _tunnelCount;
     [ObservableProperty] private bool _isLoadedEnabled;
+    [ObservableProperty] private string _name;
+    [ObservableProperty] private string _qq;
+    [ObservableProperty] private string _tunnelCount;
+    [ObservableProperty] private string _usergroup;
 
     public async void Loaded(object sender, RoutedEventArgs e)
     {
         await Loaded();
     }
 
-    private bool _first = true;
     [RelayCommand]
     private async Task Loaded()
     {
@@ -36,7 +37,7 @@ public partial class UserPageViewModel : ObservableObject
         }
 
         Name = UserInfo.username;
-        Email = UserInfo.email;
+        Email = $"邮箱：{UserInfo.email}";
         Usergroup = $"用户组：{UserInfo.usergroup}";
         Name = $"Hi,{UserInfo.username}👋";
         Integral = $"积分：{UserInfo.integral}";
@@ -45,7 +46,7 @@ public partial class UserPageViewModel : ObservableObject
         Bandwidth = $"带宽限制：国内{UserInfo.bandwidth}m | 国外{UserInfo.bandwidth * 4}m";
         IsLoadedEnabled = true;
     }
-    
+
     [RelayCommand]
     private static async Task OnSignOut()
     {
@@ -57,7 +58,7 @@ public partial class UserPageViewModel : ObservableObject
         Logout();
 
         WritingLog("用户已退出登录");
-        ShowSnackbar(
+        ShowSnackBar(
             "已退出登录",
             "请重新登录以继续使用。",
             ControlAppearance.Info,

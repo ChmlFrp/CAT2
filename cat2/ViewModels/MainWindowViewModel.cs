@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text.Json;
 using CAT2.Models;
-using Microsoft.Win32;
 using Wpf.Ui.Appearance;
 using static ChmlFrp.SDK.UserActions;
 
@@ -34,16 +33,27 @@ public partial class MainWindowViewModel : ObservableObject
                 UseShellExecute = true
             });
         };
+        
+        ApplicationThemeManager.Changed += (theme, _) =>
+        {
+            IsDarkTheme = theme == ApplicationTheme.Dark;
+        };
+        ApplicationThemeManager.ApplySystemTheme();
+        
+        MainClass.SizeChanged += (_, e) =>
+        {
+            MainClass.RootNavigation.SetCurrentValue(NavigationView.IsPaneOpenProperty, e.NewSize.Width > 875);
+        };
 
         MainClass.Loaded += async (_, _) =>
         {
             Init("CAT2");
-
-            IsDarkTheme = ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark;
+            SystemThemeWatcher.Watch(MainClass);
+            
             await Task.WhenAll(
                 Task.Run(() =>
                 {
-                    SnackbarService.SetSnackbarPresenter(MainClass.RootSnackbarDialog);
+                    SnackBarService.SetSnackbarPresenter(MainClass.RootSnackbarDialog);
                     ContentDialogService.SetDialogHost(MainClass.RootContentDialogPresenter);
                 }),
                 LoginAsyncFromToken(),
@@ -70,17 +80,9 @@ public partial class MainWindowViewModel : ObservableObject
             MainClass.Topmost = false;
             WritingLog("主窗口加载完成");
         };
-
-        SystemEvents.UserPreferenceChanged += (_, _) =>
-        {
-            ApplicationThemeManager.Apply(ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark
-                ? ApplicationTheme.Dark
-                : ApplicationTheme.Light);
-        };
     }
 
-    partial void OnIsDarkThemeChanged(bool value)
-    {
-        ApplicationThemeManager.Apply(value ? ApplicationTheme.Dark : ApplicationTheme.Light);
-    }
+    [RelayCommand]
+    private void ChangeTheme() =>
+        ApplicationThemeManager.Apply(ApplicationThemeManager.GetAppTheme() == ApplicationTheme.Dark ? ApplicationTheme.Light : ApplicationTheme.Dark);
 }

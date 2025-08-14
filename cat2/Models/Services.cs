@@ -5,11 +5,11 @@ namespace CAT2.Models;
 
 public static class Services
 {
-    public static readonly SnackbarService SnackbarService = new();
+    public static readonly SnackbarService SnackBarService = new();
 
     public static readonly ContentDialogService ContentDialogService = new();
 
-    public static void ShowSnackbar
+    public static void ShowSnackBar
     (
         string title,
         string content,
@@ -17,12 +17,12 @@ public static class Services
         SymbolRegular icon
     )
     {
-        SnackbarService.Show(
+        SnackBarService.Show(
             title,
             content,
             appearance,
-            new SymbolIcon(icon) { FontSize = 32 },
-            new TimeSpan(0, 0, 0, 2));
+            new SymbolIcon(icon) { FontSize = 35 },
+            TimeSpan.FromSeconds(2));
     }
 
     public static async Task<ContentDialogResult> ShowConfirm

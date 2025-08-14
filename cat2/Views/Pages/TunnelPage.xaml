@@ -14,7 +14,7 @@
         VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition   />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <ui:CardControl
@@ -22,7 +22,7 @@
             <ui:CardControl.Header>
                 <ui:TextBlock
                     FontTypography="Title"
-                    Text="隧道列表"/>
+                    Text="隧道列表" />
             </ui:CardControl.Header>
             <StackPanel
                 Orientation="Horizontal"
@@ -74,25 +74,29 @@
                                 Orientation="Horizontal">
                                 <ui:TextBlock
                                     FontTypography="BodyStrong"
+                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                    TextWrapping="WrapWithOverflow"
                                     FontSize="18"
                                     FontWeight="Bold"
-                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                    ToolTip="{Binding Id}"
-                                    Text="{Binding Name}"
-                                    TextWrapping="WrapWithOverflow" />
+                                    Text="{Binding Name}" />
                                 <ui:TextBlock
                                     Appearance="Secondary"
-                                    FontSize="16"
                                     Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                    ToolTip="{Binding ToolTip}"
-                                    Text="{Binding Info}"
-                                    TextWrapping="WrapWithOverflow" />
+                                    TextWrapping="WrapWithOverflow"
+                                    ToolTip="{Binding ToolTip}">
+                                    <Run
+                                        FontSize="16"
+                                        Text="{Binding Info}"/>
+                                    <Run
+                                        FontWeight="Light"
+                                        FontSize="14"
+                                        Text="{Binding Id}"/>
+                                </ui:TextBlock>
                             </StackPanel>
                         </ui:CardControl.Header>
 
                         <ui:ToggleSwitch
                             IsChecked="{Binding IsStarted}"
-                            IsEnabled="{Binding IsStartedEnabled}"
                             Command="{Binding TunnelClickCommand}"
                             OffContent="启动"
                             OnContent="关闭" />

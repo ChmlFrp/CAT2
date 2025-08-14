@@ -14,13 +14,8 @@
         VerticalAlignment="Center"
         HorizontalAlignment="Stretch">
         <ui:CardControl.Header>
-            <StackPanel
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Margin="45,0,0,0"
-                Orientation="Vertical">
+            <StackPanel>
                 <ui:Image
-                    VerticalContentAlignment="Center"
                     Width="200" Height="200"
                     Source="{Binding CurrentImage}"
                     CornerRadius="100"
@@ -29,49 +24,40 @@
                         <DropShadowEffect BlurRadius="10" Opacity="0.1" ShadowDepth="2" />
                     </ui:Image.Effect>
                 </ui:Image>
-
                 <ui:TextBlock
                     Text="{Binding Name}"
                     FontTypography="Title"
                     HorizontalAlignment="Center"
                     Margin="0,25,0,0" />
             </StackPanel>
-
         </ui:CardControl.Header>
 
-        <StackPanel
-            Margin="20,10,20,30"
-            VerticalAlignment="Top">
+        <StackPanel>
+            <ui:CardControl
+                Padding="8,8,10,8"
+                Header="{Binding  Bandwidth}"
+                Icon="{ui:SymbolIcon  TextGrammarArrowLeft24}" />
             <ui:CardControl
                 Padding="8,8,10,8"
                 Header="{Binding Email}"
                 Icon="{ui:SymbolIcon Mail48}" />
-            
             <ui:CardControl
                 Padding="8,8,10,8"
                 Header="{Binding Qq}"
                 Icon="{ui:SymbolIcon QrCode28}" />
-
             <ui:CardControl
                 Padding="8,8,10,8"
                 Header="{Binding Usergroup}"
                 Icon="{ui:SymbolIcon ContactCard48}" />
-            
             <ui:CardControl
                 Padding="8,8,10,8"
                 Header="{Binding  TunnelCount}"
                 Icon="{ui:SymbolIcon TextGrammarArrowRight24}" />
-            
             <ui:CardControl
                 Padding="8,8,10,8"
                 Header="{Binding  Integral}"
                 Icon="{ui:SymbolIcon BoxMultiple24}" />
 
-            <ui:CardControl
-                Padding="8,8,10,8"
-                Header="{Binding  Bandwidth}"
-                Icon="{ui:SymbolIcon  TextGrammarArrowLeft24}" />
-            
             <StackPanel
                 Margin="0,20,0,0"
                 Orientation="Horizontal">
@@ -82,14 +68,14 @@
                     Padding="20,8"
                     Margin="0,0,8,0"
                     IsEnabled="{Binding IsLoadedEnabled}"
-                    Command="{Binding LoadedCommand}"/>
+                    Command="{Binding LoadedCommand}" />
                 <ui:Button
                     Appearance="Primary"
                     Icon="{ui:SymbolIcon ArrowCircleUpLeft24}"
                     Content="退出登录"
                     HorizontalAlignment="Center"
                     Padding="20,8"
-                    Command="{Binding SignOutCommand}"/>
+                    Command="{Binding SignOutCommand}" />
             </StackPanel>
         </StackPanel>
     </ui:CardControl>

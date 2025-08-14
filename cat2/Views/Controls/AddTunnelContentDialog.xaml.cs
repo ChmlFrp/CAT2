@@ -28,7 +28,7 @@ public partial class AddTunnelContentDialog
         var msg = await CreateTunnelAsync
         (
             _viewModel.NodeName.Name,
-            _viewModel.TunnelType,
+            _viewModel.TunnelType.ToLowerInvariant(),
             _viewModel.LocalIp,
             _viewModel.LocalPort,
             _viewModel.RemotePort
@@ -37,18 +37,18 @@ public partial class AddTunnelContentDialog
         WritingLog($"创建隧道返回：{msg}");
 
         if (string.IsNullOrEmpty(msg))
-            ShowSnackbar(
+            ShowSnackBar(
                 "隧道创建失败",
                 "请检查网络状态，或查看API状态。",
                 ControlAppearance.Danger,
                 SymbolRegular.TagError24);
         else if (msg.Contains("成功"))
-            ShowSnackbar("隧道创建成功",
+            ShowSnackBar("隧道创建成功",
                 "已添加至隧道列表。",
                 ControlAppearance.Success,
                 SymbolRegular.Checkmark24);
         else
-            ShowSnackbar("隧道创建失败",
+            ShowSnackBar("隧道创建失败",
                 $"{msg}",
                 ControlAppearance.Danger,
                 SymbolRegular.TagError24);

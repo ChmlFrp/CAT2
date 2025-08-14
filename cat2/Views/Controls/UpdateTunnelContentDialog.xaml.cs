@@ -35,7 +35,7 @@ public partial class UpdateTunnelContentDialog
         (
             _tunnelInfo,
             _viewModel.NodeName.Name,
-            _viewModel.TunnelType,
+            _viewModel.TunnelType.ToLowerInvariant(),
             _viewModel.LocalIp,
             _viewModel.LocalPort,
             _viewModel.RemotePort
@@ -44,18 +44,18 @@ public partial class UpdateTunnelContentDialog
         WritingLog($"更新隧道返回：{msg}");
 
         if (string.IsNullOrEmpty(msg))
-            ShowSnackbar(
+            ShowSnackBar(
                 "隧道更新失败",
                 "请检查网络状态，或查看API状态。",
                 ControlAppearance.Danger,
                 SymbolRegular.TagError24);
         else if (msg.Contains("成功"))
-            ShowSnackbar("隧道更新成功",
+            ShowSnackBar("隧道更新成功",
                 $"{_tunnelInfo.name}已更新至隧道列表。",
                 ControlAppearance.Success,
                 SymbolRegular.Checkmark24);
         else
-            ShowSnackbar("隧道创建失败",
+            ShowSnackBar("隧道创建失败",
                 $"{msg}",
                 ControlAppearance.Danger,
                 SymbolRegular.TagError24);

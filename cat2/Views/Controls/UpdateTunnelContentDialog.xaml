@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:loacl="clr-namespace:CAT2.Views.Controls"
+    xmlns:local="clr-namespace:CAT2.Views.Controls"
 
     Title="修改隧道"
     PrimaryButtonText="更新"
@@ -11,8 +11,11 @@
 
     <ui:ContentDialog.Resources>
         <Style
-            BasedOn="{StaticResource {x:Type ui:ContentDialog}}"
-            TargetType="{x:Type loacl:UpdateTunnelContentDialog}" />
+            TargetType="{x:Type local:UpdateTunnelContentDialog}">
+            <Style.BasedOn>
+                <StaticResource ResourceKey="{x:Type ui:ContentDialog}" />
+            </Style.BasedOn>
+        </Style>
     </ui:ContentDialog.Resources>
 
     <ui:ContentDialog.IsPrimaryButtonEnabled>
@@ -55,13 +58,13 @@
             Text="{Binding TunnelType}"
             SelectedIndex="0">
             <ComboBoxItem
-                Content="tcp" />
+                Content="TCP" />
             <ComboBoxItem
-                Content="udp" />
+                Content="UDP" />
             <ComboBoxItem
-                Content="http" />
+                Content="HTTP" />
             <ComboBoxItem
-                Content="https" />
+                Content="HTTPS" />
         </ComboBox>
 
         <ui:TextBox
