@@ -33,13 +33,13 @@ public partial class MainWindowViewModel : ObservableObject
                 UseShellExecute = true
             });
         };
-        
+
         ApplicationThemeManager.Changed += (theme, _) =>
         {
             IsDarkTheme = theme == ApplicationTheme.Dark;
         };
         ApplicationThemeManager.ApplySystemTheme();
-        
+
         MainClass.SizeChanged += (_, e) =>
         {
             MainClass.RootNavigation.SetCurrentValue(NavigationView.IsPaneOpenProperty, e.NewSize.Width > 875);
@@ -49,7 +49,7 @@ public partial class MainWindowViewModel : ObservableObject
         {
             Init("CAT2");
             SystemThemeWatcher.Watch(MainClass);
-            
+
             await Task.WhenAll(
                 Task.Run(() =>
                 {
