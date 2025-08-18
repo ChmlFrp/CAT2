@@ -63,11 +63,5 @@ public partial class UserPageViewModel : ObservableObject
             "请重新登录以继续使用。",
             ControlAppearance.Info,
             SymbolRegular.SignOut24);
-
-        MainClass.LoginItem.Visibility = Visibility.Visible;
-        MainClass.TunnelItem.Visibility = Visibility.Collapsed;
-        MainClass.NodeItem.Visibility = Visibility.Collapsed;
-        MainClass.UserItem.Visibility = Visibility.Collapsed;
-        MainClass.RootNavigation.Navigate("登录");
     }
 }
