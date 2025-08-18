@@ -39,7 +39,7 @@ public partial class MainWindow
             RootNavigation.SetCurrentValue(NavigationView.IsPaneOpenProperty, args.NewSize.Width > 875);
 
         Init("CAT2");
-        
+
         SnackBarService.SetSnackbarPresenter(RootSnackbarDialog);
         ContentDialogService.SetDialogHost(RootContentDialogPresenter);
         if (!File.Exists(SettingsFilePath))
@@ -56,10 +56,10 @@ public partial class MainWindow
         {
             if (value)
             {
-                LoginItem.SetValue(VisibilityProperty, Visibility.Collapsed );
-                TunnelItem.SetValue(VisibilityProperty,Visibility.Visible);
+                LoginItem.SetValue(VisibilityProperty, Visibility.Collapsed);
+                TunnelItem.SetValue(VisibilityProperty, Visibility.Visible);
                 NodeItem.SetValue(VisibilityProperty, Visibility.Visible);
-                UserItem.SetValue(VisibilityProperty,Visibility.Visible);
+                UserItem.SetValue(VisibilityProperty, Visibility.Visible);
 
                 if (first)
                     RootNavigation.Navigate("管理隧道");
@@ -68,10 +68,10 @@ public partial class MainWindow
             else
             {
                 LoginItem.SetValue(VisibilityProperty, Visibility.Visible);
-                TunnelItem.SetValue(VisibilityProperty,Visibility.Collapsed);
-                NodeItem.SetValue(VisibilityProperty,Visibility.Collapsed);
+                TunnelItem.SetValue(VisibilityProperty, Visibility.Collapsed);
+                NodeItem.SetValue(VisibilityProperty, Visibility.Collapsed);
                 UserItem.SetValue(VisibilityProperty, Visibility.Collapsed);
-                
+
                 RootNavigation.Navigate("登录");
                 first = true;
             }
