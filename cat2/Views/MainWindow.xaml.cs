@@ -76,7 +76,7 @@ public partial class MainWindow
                 first = true;
             }
         };
-        await LoginAsyncFromToken();
+        await AutoLoginAsync();
         WritingLog("主窗口加载完成");
     }
 }

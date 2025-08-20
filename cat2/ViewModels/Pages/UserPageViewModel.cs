@@ -33,7 +33,7 @@ public partial class UserPageViewModel : ObservableObject
         }
         else
         {
-            await LoginAsyncFromToken();
+            await AutoLoginAsync();
         }
 
         Name = UserInfo.username;

@@ -22,33 +22,19 @@ public partial class LoginPageViewModel : ObservableObject
     [RelayCommand]
     private async Task LoggedIn()
     {
-        var msg = await LoginAsync(Username, Password);
-        WritingLog($"登录提示：{msg}");
-
-        if (IsLoggedIn)
-        {
+        if (await LoginWithCredentialsAsync(Username, Password, msg =>
+            {
+                ShowSnackBar(
+                    "登录错误",
+                    msg == null ? "网络错误，请稍后再试。" : $"{msg}",
+                    ControlAppearance.Danger,
+                    SymbolRegular.TagError24);
+            }))
             ShowSnackBar(
                 "登录成功！",
                 $"欢迎回来，{Username}！",
                 ControlAppearance.Success,
                 SymbolRegular.PresenceAvailable24);
-        }
-        else if (msg == null)
-        {
-            ShowSnackBar(
-                "登录错误",
-                "网络错误，请稍后再试。",
-                ControlAppearance.Danger,
-                SymbolRegular.TagError24);
-        }
-        else
-        {
-            ShowSnackBar(
-                "登录错误",
-                $"{msg}",
-                ControlAppearance.Danger,
-                SymbolRegular.TagError24);
-        }
     }
 
     [RelayCommand]
