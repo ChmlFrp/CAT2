@@ -60,8 +60,8 @@ public partial class SettingPageViewModel : ObservableObject
     {
         IsClearedEnabled = false;
         foreach (var cacheFile in Directory.GetFiles(DataPath, "*.log"))
-                File.Delete(cacheFile);
-        
+            File.Delete(cacheFile);
+
         ShowSnackBar(
             "缓存已清理",
             "所有缓存文件已被删除。",
