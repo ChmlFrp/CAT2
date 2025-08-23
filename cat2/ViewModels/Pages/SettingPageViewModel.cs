@@ -25,21 +25,22 @@ public partial class SettingPageViewModel : ObservableObject
         {
             LabelVisibility = Visibility.Visible;
             ListVisibility = Visibility.Collapsed;
-            return;
         }
+        else
+        {
+            LabelVisibility = Visibility.Collapsed;
+            ListVisibility = Visibility.Visible;
 
-        LabelVisibility = Visibility.Collapsed;
-        ListVisibility = Visibility.Visible;
-
-        AutoStartedItems.Clear();
-        var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
-        foreach (var tunnelData in tunnelsData)
-            if (deserialize?["StartedItems"]?[$"{tunnelData.name}({tunnelData.type.ToUpperInvariant()})"] is JsonValue
-                    startedValue &&
-                startedValue.TryGetValue<bool>(out var isStarted))
-                AutoStartedItems.Add(new(tunnelData, isStarted));
-            else
-                AutoStartedItems.Add(new(tunnelData, false));
+            AutoStartedItems.Clear();
+            var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
+            foreach (var tunnelData in tunnelsData)
+                if (deserialize?["StartedItems"]?[$"{tunnelData.name}({tunnelData.type.ToUpperInvariant()})"] is JsonValue
+                        startedValue &&
+                    startedValue.TryGetValue<bool>(out var isStarted))
+                    AutoStartedItems.Add(new(tunnelData, isStarted));
+                else
+                    AutoStartedItems.Add(new(tunnelData, false));
+        }
     }
 
     [RelayCommand]
@@ -59,15 +60,8 @@ public partial class SettingPageViewModel : ObservableObject
     {
         IsClearedEnabled = false;
         foreach (var cacheFile in Directory.GetFiles(DataPath, "*.log"))
-            try
-            {
                 File.Delete(cacheFile);
-            }
-            catch
-            {
-                // ignored
-            }
-
+        
         ShowSnackBar(
             "缓存已清理",
             "所有缓存文件已被删除。",

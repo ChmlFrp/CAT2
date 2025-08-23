@@ -25,7 +25,7 @@ public static class Services
             TimeSpan.FromSeconds(2));
     }
 
-    public static async Task<ContentDialogResult> ShowConfirm
+    public static async Task<bool> ShowConfirm
     (
         string title,
         string content,
@@ -41,6 +41,6 @@ public static class Services
                 PrimaryButtonText = primaryButtonText,
                 CloseButtonText = closeButtonText
             }
-        );
+        ) == ContentDialogResult.Primary;
     }
 }

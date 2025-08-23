@@ -33,7 +33,15 @@ public partial class UserPageViewModel : ObservableObject
         }
         else
         {
-            await AutoLoginAsync();
+            if (!await AutoLoginAsync())
+            {
+                ShowSnackBar(
+                    "自动登录失败",
+                    "网络错误，请稍后再试。",
+                    ControlAppearance.Danger,
+                    SymbolRegular.TagError24);
+                return;
+            }
         }
 
         Name = UserInfo.username;
@@ -50,11 +58,15 @@ public partial class UserPageViewModel : ObservableObject
     [RelayCommand]
     private static async Task OnSignOut()
     {
-        if (await ShowConfirm(
+        if (
+            !await ShowConfirm
+            (
                 "你确定要退出登录吗?",
                 "退出登录后你的用户Token将删除。",
                 "确认",
-                "放弃") != ContentDialogResult.Primary) return;
+                "放弃"
+            )
+        ) return;
         Logout();
 
         WritingLog("用户已退出登录");

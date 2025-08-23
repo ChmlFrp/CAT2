@@ -47,7 +47,6 @@
 
         <ui:ListView
             Grid.Row="1"
-            SelectionMode="{Binding SelectionMode}"
             ItemsSource="{Binding ListDataContext}">
             <ui:ListView.ItemTemplate>
                 <DataTemplate>

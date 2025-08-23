@@ -16,8 +16,7 @@ public static partial class Items
         [ObservableProperty] private bool _isStarted = isStarted;
         [ObservableProperty] private string _name = tunnelInfo.name;
 
-        [ObservableProperty]
-        private string _toolTip =
+        [ObservableProperty] private string _toolTip =
             $"[内网端口:{tunnelInfo.nport}]-[外网端口/连接域名:{tunnelInfo.dorp}]-[节点状态:{tunnelInfo.nodestate}]";
 
         [RelayCommand]
@@ -71,11 +70,15 @@ public static partial class Items
         [RelayCommand]
         private async Task DeleteTunnel()
         {
-            if (await ShowConfirm(
+            if (
+                !await ShowConfirm
+                (
                     "你确定要删除吗?",
                     "在删除前，问一个问题：你到底有多少力量?\no(￣┰￣*)ゞ",
                     "下定决心",
-                    "就此罢手") != ContentDialogResult.Primary) return;
+                    "就此罢手"
+                )
+            ) return;
 
             if (await DeleteTunnelAsync(tunnelInfo.id))
             {
@@ -143,8 +146,7 @@ public static partial class Items
         [ObservableProperty] private string _id = $"#{nodeInfo.id}";
         [ObservableProperty] private float _load15 = nodeInfo.load15 * 100;
 
-        [ObservableProperty]
-        private string _name =
+        [ObservableProperty] private string _name =
             $"{nodeInfo.name}({(nodeInfo.nodegroup == "vip" ? "VIP" : "普通")},{(nodeInfo.state == "online" ? "在线" : "离线")})";
 
         [ObservableProperty]

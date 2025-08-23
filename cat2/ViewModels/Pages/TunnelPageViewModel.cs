@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
-using System.Windows.Controls;
 using CAT2.Views.Controls;
 using static CAT2.Models.Items;
 
@@ -11,7 +10,6 @@ namespace CAT2.ViewModels;
 public partial class TunnelPageViewModel : ObservableObject
 {
     [ObservableProperty] private bool _isLoadedEnabled;
-    [ObservableProperty] private SelectionMode _selectionMode;
 
     public ObservableCollection<TunnelItem> ListDataContext { get; } = [];
 
@@ -32,21 +30,8 @@ public partial class TunnelPageViewModel : ObservableObject
         IsLoadedEnabled = false;
         var tunnelsData = await GetTunnelListAsync();
 
-        if (tunnelsData == null)
-        {
-            WritingLog("隧道信息加载失败");
-            ShowSnackBar(
-                "加载隧道信息失败",
-                "请检查网络连接或稍后重试。",
-                ControlAppearance.Danger,
-                SymbolRegular.TagError24);
-            IsLoadedEnabled = true;
-            return;
-        }
-
         if (tunnelsData.Count == 0)
         {
-            WritingLog("没有隧道信息");
             ListDataContext.Clear();
             IsLoadedEnabled = true;
             return;
@@ -64,7 +49,7 @@ public partial class TunnelPageViewModel : ObservableObject
             ListDataContext.Add(newItem);
             if (settings?[$"{tunnel.name}({tunnel.type.ToUpperInvariant()})"] is not JsonValue value ||
                 !value.TryGetValue<bool>(out var isStarted) ||
-                !isStarted) return Task.CompletedTask;
+                !isStarted || newItem.IsStarted) return Task.CompletedTask;
             newItem.IsStarted = true;
             newItem.TunnelClick();
             return Task.CompletedTask;
