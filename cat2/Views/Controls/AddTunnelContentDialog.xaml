@@ -44,7 +44,7 @@
         <ComboBox
             Margin="0,0,0,8"
             ItemsSource="{Binding NodeDataContext}"
-            SelectedValue="{Binding NodeName}"
+            SelectedItem="{Binding SelectedItem}"
             SelectedIndex="0">
             <ComboBox.ItemTemplate>
                 <DataTemplate>

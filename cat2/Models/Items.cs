@@ -159,6 +159,12 @@ public static partial class Items
 
         [ObservableProperty]
         private string _totalTrafficOut = $"[上传流量： {nodeInfo.total_traffic_out / 1024 / 1024 / 1024:0.0}GB]";
+
+        [RelayCommand]
+        private async Task ShowDialog()
+        {
+            await new AddTunnelContentDialog(ContentDialogService.GetDialogHost()).ShowAsync();
+        }
     }
 
     public partial class StartedItem(

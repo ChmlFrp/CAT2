@@ -42,6 +42,14 @@
             <ui:ListView.ItemTemplate>
                 <DataTemplate>
                     <ui:CardControl>
+                        <ui:CardControl.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem
+                                    Header="添加隧道"
+                                    Icon="{ui:SymbolIcon Add48}"
+                                    Command="{Binding ShowDialogCommand}" />
+                            </ContextMenu>
+                        </ui:CardControl.ContextMenu>
                         <ui:CardControl.Header>
                             <ui:TextBlock
                                 FontTypography="BodyStrong"

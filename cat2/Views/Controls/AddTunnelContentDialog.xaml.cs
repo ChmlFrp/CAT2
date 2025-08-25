@@ -11,7 +11,7 @@ public partial class AddTunnelContentDialog
     public AddTunnelContentDialog
     (
         ContentPresenter dialogHost,
-        TunnelPageViewModel parentViewModel
+        TunnelPageViewModel parentViewModel = null
     ) : base(dialogHost)
     {
         _parentViewModel = parentViewModel;
@@ -27,7 +27,7 @@ public partial class AddTunnelContentDialog
 
         var msg = await CreateTunnelAsync
         (
-            _viewModel.NodeName.Name,
+            _viewModel.SelectedItem.Name,
             _viewModel.TunnelType.ToLowerInvariant(),
             _viewModel.LocalIp,
             _viewModel.LocalPort,
@@ -54,6 +54,6 @@ public partial class AddTunnelContentDialog
                 SymbolRegular.TagError24);
 
         await Task.Delay(500);
-        _parentViewModel.Loaded(null, null);
+        _parentViewModel?.Loaded(null, null);
     }
 }

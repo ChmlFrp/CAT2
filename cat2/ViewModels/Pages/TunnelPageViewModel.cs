@@ -25,6 +25,14 @@ public partial class TunnelPageViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task ClearFrpc()
+    {
+        var processes = Process.GetProcessesByName("frpc");
+        processes.ToList().ForEach(x => x.Kill());
+        await Loaded();
+    }
+
+    [RelayCommand]
     private async Task Loaded()
     {
         IsLoadedEnabled = false;

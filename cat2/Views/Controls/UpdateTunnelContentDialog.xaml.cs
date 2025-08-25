@@ -34,7 +34,7 @@ public partial class UpdateTunnelContentDialog
         var msg = await UpdateTunnelAsync
         (
             _tunnelInfo,
-            _viewModel.NodeName.Name,
+            _viewModel.SelectedItem.Name,
             _viewModel.TunnelType.ToLowerInvariant(),
             _viewModel.LocalIp,
             _viewModel.LocalPort,

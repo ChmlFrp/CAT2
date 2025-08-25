@@ -6,13 +6,14 @@ public class UpdateTunnelContentDialogViewModel(
     Classes.TunnelInfoClass tunnelInfo
 ) : AddTunnelContentDialogViewModel
 {
-    public override void LoadNodes(object sender, RoutedEventArgs e)
+    public async override void LoadNodes(object sender, RoutedEventArgs e)
     {
-        base.LoadNodes(sender, e);
-
         LocalIp = tunnelInfo.localip;
         LocalPort = tunnelInfo.nport.ToString();
-        RemotePort = tunnelInfo.dorp;
         TunnelType = tunnelInfo.type.ToUpperInvariant();
+        RemotePort = tunnelInfo.dorp;
+        var nodeData = await LoadNodesAsync();
+        if (nodeData.Count == 0) return;
+        SelectedItem = NodeDataContext[nodeData.FindIndex(node => node.name == tunnelInfo.node)];
     }
 }
