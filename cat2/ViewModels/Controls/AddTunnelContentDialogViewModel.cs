@@ -56,23 +56,23 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
     }
 
     public virtual async void LoadNodes(object sender, RoutedEventArgs e)
-    { 
+    {
         await LoadNodesAsync();
     }
 
     protected async Task<List<Classes.NodeDataClass>> LoadNodesAsync()
+    {
+        var nodeData = await NodeActions.GetNodesDataListAsync();
+        // 处理nodeData
+        await Task.WhenAll(nodeData.Select(node =>
         {
-            var nodeData = await NodeActions.GetNodesDataListAsync();
-            // 处理nodeData
-            await Task.WhenAll(nodeData.Select(node =>
-            {
-                node.udp = node.udp == "true" ? "允许UDP" : "不允许UDP";
-                node.web = node.web == "yes" ? "允许建站" : "不允许建站";
-                node.nodegroup = node.nodegroup == "vip" ? "VIP节点" : "免费节点";
-                NodeDataContext.Add(new(node));
-                return Task.CompletedTask;
-            }));
-            WritingLog(NodeDataContext.Count != 0 ? "节点数据加载成功" : "节点数据加载失败");
-            return nodeData;
-        }
+            node.udp = node.udp == "true" ? "允许UDP" : "不允许UDP";
+            node.web = node.web == "yes" ? "允许建站" : "不允许建站";
+            node.nodegroup = node.nodegroup == "vip" ? "VIP节点" : "免费节点";
+            NodeDataContext.Add(new(node));
+            return Task.CompletedTask;
+        }));
+        WritingLog(NodeDataContext.Count != 0 ? "节点数据加载成功" : "节点数据加载失败");
+        return nodeData;
+    }
 }
