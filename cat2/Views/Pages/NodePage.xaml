@@ -41,29 +41,31 @@
             Grid.Row="1">
             <ui:ListView.ItemTemplate>
                 <DataTemplate>
-                    <ui:CardControl>
-                        <ui:CardControl.ContextMenu>
+                    <ui:Card>
+                        <ui:Card.ContextMenu>
                             <ContextMenu>
                                 <MenuItem
                                     Header="添加隧道"
                                     Icon="{ui:SymbolIcon Add48}"
                                     Command="{Binding ShowDialogCommand}" />
                             </ContextMenu>
-                        </ui:CardControl.ContextMenu>
-                        <ui:CardControl.Header>
+                        </ui:Card.ContextMenu>
+                        <Grid
+                            ToolTip="{Binding Notes}"
+                            Margin="10,0,10,0">
                             <ui:TextBlock
                                 FontTypography="BodyStrong"
                                 FontSize="16"
                                 FontWeight="Bold"
+                                HorizontalAlignment="Left"
+                                Margin="5,0,0,0"
                                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                 Text="{Binding Name}"
                                 ToolTip="{Binding Id}"
                                 TextWrapping="WrapWithOverflow" />
-                        </ui:CardControl.Header>
-                        <Grid
-                            ToolTip="{Binding Notes}"
-                            Margin="10,0,10,0">
+                            
                             <TextBlock
+                                Margin="0,0,0,5"
                                 TextWrapping="WrapWithOverflow"
                                 Foreground="{ui:ThemeResource TextFillColorDisabledBrush}"
                                 HorizontalAlignment="Right">
@@ -74,10 +76,10 @@
                             </TextBlock>
 
                             <ProgressBar
-                                Margin="0,20,0,0"
+                                VerticalAlignment="Bottom"
                                 Value="{Binding Load15}" />
                         </Grid>
-                    </ui:CardControl>
+                    </ui:Card>
                 </DataTemplate>
             </ui:ListView.ItemTemplate>
         </ui:ListView>

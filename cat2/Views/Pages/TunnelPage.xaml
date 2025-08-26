@@ -86,8 +86,8 @@
                                     FontSize="18"
                                     FontWeight="Bold"
                                     Text="{Binding Name}" />
+                                
                                 <ui:TextBlock
-                                    Appearance="Secondary"
                                     Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                     TextWrapping="WrapWithOverflow"
                                     ToolTip="{Binding ToolTip}">

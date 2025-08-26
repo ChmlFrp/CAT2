@@ -13,32 +13,29 @@
     <StackPanel
         Margin="15"
         Orientation="Vertical">
-
         <Label
-            Margin="0,5,0,5"
+            Margin="5"
             FontWeight="Bold"
             Content="设置" />
 
         <ui:CardExpander
+            Padding="14"
             Margin="0,0,0,5">
+            <ui:CardExpander.Icon>
+                <ui:SymbolIcon
+                    Symbol="DocumentTextClock24" />
+            </ui:CardExpander.Icon>
             <ui:CardExpander.Header>
                 <Grid>
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <ui:SymbolIcon
-                            FontSize="25"
-                            Margin="10,0,10,0"
-                            Symbol="DocumentTextClock24" />
-                        <TextBlock>
-                            <Run
-                                Text="隧道日志记录" />
-                            <LineBreak />
-                            <Run
-                                FontSize="14"
-                                Text="查看日志记录或清除它。"
-                                Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
-                        </TextBlock>
-                    </StackPanel>
+                    <TextBlock>
+                        <Run
+                            Text="隧道日志记录" />
+                        <LineBreak />
+                        <Run
+                            FontSize="14"
+                            Text="查看日志记录或清除它。"
+                            Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
+                    </TextBlock>
 
                     <Button
                         Margin="0,0,10,0"
@@ -49,34 +46,31 @@
             </ui:CardExpander.Header>
 
             <MenuItem
-                Padding="10"
                 FontSize="18"
                 Header="清除隧道日志缓存"
                 Icon="{ui:SymbolIcon CommentOff24}"
                 IsEnabled="{Binding IsClearedEnabled}"
                 Command="{Binding ClearedCommand}" />
         </ui:CardExpander>
-
+        
         <ui:CardExpander
+            Padding="14"
             Margin="0,0,0,5">
+            <ui:CardExpander.Icon>
+                <ui:SymbolIcon
+                    Symbol="DocumentTextExtract24" />
+            </ui:CardExpander.Icon>
             <ui:CardExpander.Header>
                 <Grid>
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <ui:SymbolIcon
-                            FontSize="25"
-                            Margin="10,0,10,0"
-                            Symbol="DocumentTextExtract24" />
-                        <TextBlock>
-                            <Run
-                                Text="隧道自启动" />
-                            <LineBreak />
-                            <Run
-                                FontSize="14"
-                                Text="当转到管理隧道页时自启动选好的隧道。"
-                                Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
-                        </TextBlock>
-                    </StackPanel>
+                    <ui:TextBlock>
+                        <Run
+                            Text="隧道自启动" />
+                        <LineBreak />
+                        <Run
+                            FontSize="14"
+                            Text="当转到管理隧道页时自启动选好的隧道。"
+                            Foreground="{ui:ThemeResource TextFillColorDisabledBrush}" />
+                    </ui:TextBlock>
 
                     <Button
                         Margin="0,0,10,0"
@@ -114,31 +108,29 @@
         </ui:CardExpander>
 
         <Label
-            Margin="0,20,0,5"
+            Margin="5"
             FontWeight="Bold"
             Content="关于" />
 
-        <ui:CardExpander>
+        <ui:CardExpander
+            Padding="14">
+            <ui:CardExpander.Icon>
+                <ui:ImageIcon
+                    Height="25"
+                    Source="pack://application:,,,/logo.ico" />
+            </ui:CardExpander.Icon>
             <ui:CardExpander.Header>
                 <Grid>
-                    <StackPanel
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center">
-                        <ui:ImageIcon
-                            Height="30"
-                            Margin="10,0,10,0"
-                            Source="pack://application:,,,/logo.ico" />
-
-                        <ui:TextBlock>
-                            <Run
-                                Text="{Binding AssemblyName}" />
-                            <LineBreak />
-                            <Run
-                                Foreground="{ui:ThemeResource TextFillColorDisabledBrush}"
-                                Text="{Binding Copyright}"
-                                FontSize="14" />
-                        </ui:TextBlock>
-                    </StackPanel>
+                    <ui:TextBlock
+                        TextWrapping="WrapWithOverflow">
+                        <Run
+                            Text="{Binding AssemblyName}" />
+                        <LineBreak />
+                        <Run
+                            Foreground="{ui:ThemeResource TextFillColorDisabledBrush}"
+                            Text="{Binding Copyright}"
+                            FontSize="14" />
+                    </ui:TextBlock>
 
                     <Label
                         Margin="10"
