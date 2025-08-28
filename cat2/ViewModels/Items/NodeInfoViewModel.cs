@@ -8,13 +8,13 @@ public partial class NodeInfoViewModel(
     Classes.NodeInfoClass nodeInfo
 ) : ObservableObject
 {
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _id = $"#{nodeInfo.id}";
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private float _load15 = nodeInfo.load15 * 100;
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _name = $"{nodeInfo.name}({(nodeInfo.nodegroup == "vip" ? "VIP" : "普通")},{(nodeInfo.state == "online" ? "在线" : "离线")})";
 
     [ObservableProperty]

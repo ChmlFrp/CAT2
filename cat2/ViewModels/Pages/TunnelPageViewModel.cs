@@ -13,7 +13,7 @@ namespace CAT2.ViewModels;
 
 public partial class TunnelPageViewModel : ObservableObject
 {
-    [ObservableProperty] 
+    [ObservableProperty]
     private bool _isLoadedEnabled;
 
     public ObservableCollection<TunnelViewModel> ListDataContext { get; } = [];

@@ -42,11 +42,11 @@ public partial class MainWindow
                 first = true;
             }
         };
-        
+
         await AutoLoginAsync();
         WritingLog("主窗口加载完成");
     }
-    
+
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
         RootNavigation.SetCurrentValue(NavigationView.IsPaneOpenProperty, e.NewSize.Width > 875);

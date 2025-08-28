@@ -9,9 +9,9 @@ public partial class NodeViewModel(
     [ObservableProperty]
     private string _content = $"{nodeData.name} ({nodeData.nodegroup}，{nodeData.udp}，{nodeData.web})";
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _name = nodeData.name;
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _notes = $"{nodeData.notes}";
 }

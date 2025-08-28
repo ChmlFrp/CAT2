@@ -14,27 +14,27 @@ namespace CAT2.ViewModels;
 
 public partial class SettingPageViewModel : ObservableObject
 {
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _assemblyName = Constants.AssemblyName;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _copyright = Constants.Copyright;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _fileVersion = $"文件版本：{Constants.FileVersion}";
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private bool _isClearedEnabled = true;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private Visibility _labelVisibility = Visibility.Visible;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private Visibility _listVisibility = Visibility.Collapsed;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _version = Constants.Version;
-    
+
     public ObservableCollection<TunnelStartedViewModel> AutoStartedItems { get; } = [];
 
     public async Task Loaded()

@@ -7,9 +7,9 @@ public partial class TunnelStartedViewModel(
     bool isStarted
 ) : ObservableObject
 {
-    [ObservableProperty] 
+    [ObservableProperty]
     private bool _isStarted = isStarted;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _name = $"{tunnelInfo.name}({tunnelInfo.type.ToUpperInvariant()})";
 }

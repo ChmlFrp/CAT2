@@ -11,19 +11,19 @@ public partial class TunnelViewModel(
     bool isStarted
 ) : ObservableObject
 {
-    [ObservableProperty] 
-        private string _id = $"#{tunnelInfo.id}";
+    [ObservableProperty]
+    private string _id = $"#{tunnelInfo.id}";
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _info = $"({tunnelInfo.node},{tunnelInfo.type.ToUpperInvariant()})";
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private bool _isStarted = isStarted;
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _name = tunnelInfo.name;
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _toolTip =
         $"[内网端口:{tunnelInfo.nport}]-[外网端口/连接域名:{tunnelInfo.dorp}]-[节点状态:{tunnelInfo.nodestate}]";
 

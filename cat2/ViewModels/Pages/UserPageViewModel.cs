@@ -6,31 +6,31 @@ namespace CAT2.ViewModels;
 
 public partial class UserPageViewModel : ObservableObject
 {
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _bandwidth;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private BitmapImage _currentImage;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _email;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _integral;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private bool _isLoadedEnabled;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _name;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _qq;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _tunnelCount;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _usergroup;
 
     private bool _first = true;

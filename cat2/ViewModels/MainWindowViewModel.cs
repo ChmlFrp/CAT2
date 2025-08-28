@@ -15,7 +15,7 @@ public partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel()
     {
         Init("CAT2");
-        
+
         AppDomain.CurrentDomain.UnhandledException += (_, args) =>
         {
             WritingLog(
@@ -36,15 +36,15 @@ public partial class MainWindowViewModel : ObservableObject
         }));
         WritingLog("settings.json文件不存在，已创建");
     }
-    
+
 #if DEBUG
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _assemblyName = $"{Constants.AssemblyName} Dev";
 #else
     [ObservableProperty] 
 private string _assemblyName = Constants.AssemblyName;
 #endif
-    [ObservableProperty] 
+    [ObservableProperty]
     private bool _isDarkTheme;
 
     [RelayCommand]

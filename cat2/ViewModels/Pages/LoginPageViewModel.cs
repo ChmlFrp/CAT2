@@ -5,13 +5,13 @@ namespace CAT2.ViewModels;
 
 public partial class LoginPageViewModel : ObservableObject
 {
-    [ObservableProperty] 
+    [ObservableProperty]
     private bool _isLoggedInEnabled;
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private string _password;
-    
-    [ObservableProperty] 
+
+    [ObservableProperty]
     private string _username;
 
     partial void OnUsernameChanged(string value)
