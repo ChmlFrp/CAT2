@@ -6,7 +6,7 @@ public class UpdateTunnelContentDialogViewModel(
     Classes.TunnelInfoClass tunnelInfo
 ) : AddTunnelContentDialogViewModel
 {
-    public async override void LoadNodes(object sender, RoutedEventArgs e)
+    public override async void LoadNodes(object sender, RoutedEventArgs e)
     {
         LocalIp = tunnelInfo.localip;
         LocalPort = tunnelInfo.nport.ToString();

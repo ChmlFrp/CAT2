@@ -1,29 +1,41 @@
 ﻿using System.Windows.Media.Imaging;
+using CommunityToolkit.Mvvm.Input;
 using static ChmlFrp.SDK.UserActions;
 
 namespace CAT2.ViewModels;
 
 public partial class UserPageViewModel : ObservableObject
 {
-    [ObservableProperty] private string _bandwidth;
-    [ObservableProperty] private BitmapImage _currentImage;
-    [ObservableProperty] private string _email;
+    [ObservableProperty] 
+    private string _bandwidth;
+    
+    [ObservableProperty] 
+    private BitmapImage _currentImage;
+    
+    [ObservableProperty] 
+    private string _email;
+    
+    [ObservableProperty] 
+    private string _integral;
+    
+    [ObservableProperty] 
+    private bool _isLoadedEnabled;
+    
+    [ObservableProperty] 
+    private string _name;
+    
+    [ObservableProperty] 
+    private string _qq;
+    
+    [ObservableProperty] 
+    private string _tunnelCount;
+    
+    [ObservableProperty] 
+    private string _usergroup;
 
     private bool _first = true;
-    [ObservableProperty] private string _integral;
-    [ObservableProperty] private bool _isLoadedEnabled;
-    [ObservableProperty] private string _name;
-    [ObservableProperty] private string _qq;
-    [ObservableProperty] private string _tunnelCount;
-    [ObservableProperty] private string _usergroup;
-
-    public async void Loaded(object sender, RoutedEventArgs e)
-    {
-        await Loaded();
-    }
-
     [RelayCommand]
-    private async Task Loaded()
+    public async Task Loaded()
     {
         IsLoadedEnabled = false;
         if (_first)

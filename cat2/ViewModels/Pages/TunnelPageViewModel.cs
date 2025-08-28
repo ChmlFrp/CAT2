@@ -1,22 +1,22 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
+using CAT2.ViewModels.Items;
 using CAT2.Views.Controls;
-using static CAT2.Models.Items;
+using CommunityToolkit.Mvvm.Input;
+using static CAT2.Common.Constants;
+using static ChmlFrp.SDK.TunnelActions;
 
 namespace CAT2.ViewModels;
 
 public partial class TunnelPageViewModel : ObservableObject
 {
-    [ObservableProperty] private bool _isLoadedEnabled;
+    [ObservableProperty] 
+    private bool _isLoadedEnabled;
 
-    public ObservableCollection<TunnelItem> ListDataContext { get; } = [];
-
-    public async void Loaded(object sender, RoutedEventArgs e)
-    {
-        await Loaded();
-    }
+    public ObservableCollection<TunnelViewModel> ListDataContext { get; } = [];
 
     [RelayCommand]
     private async Task ShowDialog()
@@ -33,7 +33,7 @@ public partial class TunnelPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task Loaded()
+    public async Task Loaded()
     {
         IsLoadedEnabled = false;
         var tunnelsData = await GetTunnelListAsync();
@@ -53,13 +53,13 @@ public partial class TunnelPageViewModel : ObservableObject
         ListDataContext.Clear();
         await Task.WhenAll(tunnelsData.Select(tunnel =>
         {
-            var newItem = new TunnelItem(this, tunnel, runningTunnels[tunnel.id]);
+            var newItem = new TunnelViewModel(this, tunnel, runningTunnels[tunnel.id]);
             ListDataContext.Add(newItem);
             if (settings?[$"{tunnel.name}({tunnel.type.ToUpperInvariant()})"] is not JsonValue value ||
                 !value.TryGetValue<bool>(out var isStarted) ||
                 !isStarted || newItem.IsStarted) return Task.CompletedTask;
             newItem.IsStarted = true;
-            newItem.TunnelClick();
+            newItem.OnTunnelClick();
             return Task.CompletedTask;
         }));
 

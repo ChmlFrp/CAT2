@@ -5,7 +5,7 @@ public partial class NodePage
     public NodePage()
     {
         InitializeComponent();
-        var viewModel = (NodePageViewModel)DataContext;
-        Loaded += viewModel.Loaded;
+        var vm = (NodePageViewModel)DataContext;
+        Loaded += async (_, _) => await vm.Loaded();
     }
 }

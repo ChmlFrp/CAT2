@@ -1,9 +1,10 @@
-﻿using Wpf.Ui;
+﻿using System;
+using Wpf.Ui;
 using Wpf.Ui.Extensions;
 
-namespace CAT2.Models;
+namespace CAT2.Common;
 
-public static class Services
+public static class DialogService
 {
     public static readonly SnackbarService SnackBarService = new();
 

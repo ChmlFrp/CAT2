@@ -47,7 +47,7 @@
                                 <MenuItem
                                     Header="添加隧道"
                                     Icon="{ui:SymbolIcon Add48}"
-                                    Command="{Binding ShowDialogCommand}" />
+                                    Command="{Binding ShowAddTunnelDialogCommand}" />
                             </ContextMenu>
                         </ui:Card.ContextMenu>
                         <Grid
@@ -63,7 +63,7 @@
                                 Text="{Binding Name}"
                                 ToolTip="{Binding Id}"
                                 TextWrapping="WrapWithOverflow" />
-                            
+
                             <TextBlock
                                 Margin="0,0,0,5"
                                 TextWrapping="WrapWithOverflow"

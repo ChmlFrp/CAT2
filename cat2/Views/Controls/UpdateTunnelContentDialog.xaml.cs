@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using CAT2.ViewModels.Controls;
 using ChmlFrp.SDK;
+using static ChmlFrp.SDK.TunnelActions;
 
 namespace CAT2.Views.Controls;
 
@@ -61,6 +62,6 @@ public partial class UpdateTunnelContentDialog
                 SymbolRegular.TagError24);
 
         await Task.Delay(500);
-        _parentViewModel.Loaded(null, null);
+        await _parentViewModel.Loaded();
     }
 }

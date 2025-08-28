@@ -52,7 +52,7 @@
                 IsEnabled="{Binding IsClearedEnabled}"
                 Command="{Binding ClearedCommand}" />
         </ui:CardExpander>
-        
+
         <ui:CardExpander
             Padding="14"
             Margin="0,0,0,5">

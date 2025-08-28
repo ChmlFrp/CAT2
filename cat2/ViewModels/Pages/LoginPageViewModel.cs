@@ -1,13 +1,18 @@
-﻿using static ChmlFrp.SDK.UserActions;
+﻿using CommunityToolkit.Mvvm.Input;
+using static ChmlFrp.SDK.UserActions;
 
 namespace CAT2.ViewModels;
 
 public partial class LoginPageViewModel : ObservableObject
 {
-    [ObservableProperty] private bool _isLoggedInEnabled;
+    [ObservableProperty] 
+    private bool _isLoggedInEnabled;
 
-    [ObservableProperty] private string _password;
-    [ObservableProperty] private string _username;
+    [ObservableProperty] 
+    private string _password;
+    
+    [ObservableProperty] 
+    private string _username;
 
     partial void OnUsernameChanged(string value)
     {

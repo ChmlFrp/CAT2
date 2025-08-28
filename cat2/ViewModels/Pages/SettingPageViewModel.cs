@@ -1,24 +1,43 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using CAT2.Models;
+using CAT2.Common;
+using CAT2.ViewModels.Items;
+using CommunityToolkit.Mvvm.Input;
+using static CAT2.Common.Constants;
+using static ChmlFrp.SDK.TunnelActions;
 
 namespace CAT2.ViewModels;
 
 public partial class SettingPageViewModel : ObservableObject
 {
-    [ObservableProperty] private string _assemblyName = Constants.AssemblyName;
-    [ObservableProperty] private string _copyright = Constants.Copyright;
-    [ObservableProperty] private string _fileVersion = $"文件版本：{Constants.FileVersion}";
-    [ObservableProperty] private bool _isClearedEnabled = true;
-    [ObservableProperty] private Visibility _labelVisibility = Visibility.Visible;
-    [ObservableProperty] private Visibility _listVisibility = Visibility.Collapsed;
-    [ObservableProperty] private string _version = Constants.Version;
-    public ObservableCollection<Items.StartedItem> AutoStartedItems { get; } = [];
+    [ObservableProperty] 
+    private string _assemblyName = Constants.AssemblyName;
+    
+    [ObservableProperty] 
+    private string _copyright = Constants.Copyright;
+    
+    [ObservableProperty] 
+    private string _fileVersion = $"文件版本：{Constants.FileVersion}";
+    
+    [ObservableProperty] 
+    private bool _isClearedEnabled = true;
+    
+    [ObservableProperty] 
+    private Visibility _labelVisibility = Visibility.Visible;
+    
+    [ObservableProperty] 
+    private Visibility _listVisibility = Visibility.Collapsed;
+    
+    [ObservableProperty] 
+    private string _version = Constants.Version;
+    
+    public ObservableCollection<TunnelStartedViewModel> AutoStartedItems { get; } = [];
 
-    public async void Loaded(object sender, RoutedEventArgs e)
+    public async Task Loaded()
     {
         var tunnelsData = await GetTunnelListAsync();
         if (tunnelsData.Count == 0)
@@ -34,7 +53,8 @@ public partial class SettingPageViewModel : ObservableObject
             AutoStartedItems.Clear();
             var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
             foreach (var tunnelData in tunnelsData)
-                if (deserialize?["StartedItems"]?[$"{tunnelData.name}({tunnelData.type.ToUpperInvariant()})"] is JsonValue
+                if (deserialize?["StartedItems"]?[$"{tunnelData.name}({tunnelData.type.ToUpperInvariant()})"] is
+                        JsonValue
                         startedValue &&
                     startedValue.TryGetValue<bool>(out var isStarted))
                     AutoStartedItems.Add(new(tunnelData, isStarted));

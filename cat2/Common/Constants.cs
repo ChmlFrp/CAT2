@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 
-namespace CAT2.Models;
+namespace CAT2.Common;
 
 public static class Constants
 {

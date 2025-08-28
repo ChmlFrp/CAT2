@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using CAT2.ViewModels.Items;
 using ChmlFrp.SDK;
-using static CAT2.Models.Items;
 
 namespace CAT2.ViewModels.Controls;
 
@@ -13,11 +13,11 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
     [ObservableProperty] private string _localPort;
     [ObservableProperty] private int _maximum;
     [ObservableProperty] private int _minimum;
-    [ObservableProperty] private ObservableCollection<NodeItem> _nodeDataContext = [];
-    [ObservableProperty] private NodeItem _selectedItem;
+    [ObservableProperty] private ObservableCollection<NodeViewModel> _nodeDataContext = [];
 
     [ObservableProperty] private Visibility _numberBoxVisibility = Visibility.Visible;
     [ObservableProperty] private string _remotePort;
+    [ObservableProperty] private NodeViewModel _selectedItem;
     [ObservableProperty] private Visibility _textBoxVisibility = Visibility.Collapsed;
     [ObservableProperty] private string _tunnelType = "tcp";
 
@@ -36,7 +36,7 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
         }
     }
 
-    async partial void OnSelectedItemChanged(NodeItem value)
+    async partial void OnSelectedItemChanged(NodeViewModel value)
     {
         var nodeInfo = await NodeActions.GetNodeInfoAsync(value.Name);
         if (nodeInfo == null) return;

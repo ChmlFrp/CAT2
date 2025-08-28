@@ -1,23 +1,20 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using CAT2.ViewModels.Items;
 using ChmlFrp.SDK;
-using static CAT2.Models.Items;
+using CommunityToolkit.Mvvm.Input;
 
 namespace CAT2.ViewModels;
 
 public partial class NodePageViewModel : ObservableObject
 {
-    [ObservableProperty] private bool _isLoadedEnabled;
+    [ObservableProperty] 
+    private bool _isLoadedEnabled;
 
-    public ObservableCollection<NodeInfoItem> ListDataContext { get; } = [];
-
-    public async void Loaded(object sender, RoutedEventArgs e)
-    {
-        await Loaded();
-    }
+    public ObservableCollection<NodeInfoViewModel> ListDataContext { get; } = [];
 
     [RelayCommand]
-    private async Task Loaded()
+    public async Task Loaded()
     {
         IsLoadedEnabled = false;
 

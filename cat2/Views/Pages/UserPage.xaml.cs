@@ -5,7 +5,7 @@ public partial class UserPage
     public UserPage()
     {
         InitializeComponent();
-        var viewModel = (UserPageViewModel)DataContext;
-        Loaded += viewModel.Loaded;
+        var vm = (UserPageViewModel)DataContext;
+        Loaded += async (_, _) => await vm.Loaded();
     }
 }
