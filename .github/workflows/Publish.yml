@@ -1,9 +1,9 @@
 name: Project Publishing
+permissions:
+  contents: read
 on:
   push:
     paths: [ 'cat2/**','**/Publish.yml' ]
-permissions:
-  contents: read
 jobs:
   publish:
     strategy:
