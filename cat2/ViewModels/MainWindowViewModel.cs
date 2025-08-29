@@ -42,8 +42,8 @@ public partial class MainWindowViewModel : ObservableObject
     private string _assemblyName = $"{Constants.AssemblyName} Dev";
 #else
     [ObservableProperty] 
-private string _assemblyName = Constants.AssemblyName;
-#endif
+    private string _assemblyName = Constants.AssemblyName;
+#endif                                                 
     [ObservableProperty]
     private bool _isDarkTheme;
 

@@ -2,6 +2,7 @@
 using ChmlFrp.SDK;
 using CommunityToolkit.Mvvm.Input;
 using static ChmlFrp.SDK.TunnelActions;
+using static ChmlFrp.SDK.TunnelActions.TunnelStatus;
 
 namespace CAT2.ViewModels.Items;
 
@@ -28,51 +29,55 @@ public partial class TunnelViewModel(
         $"[内网端口:{tunnelInfo.nport}]-[外网端口/连接域名:{tunnelInfo.dorp}]-[节点状态:{tunnelInfo.nodestate}]";
 
     [RelayCommand]
-    public void OnTunnelClick()
+    public async Task OnTunnelClick()
     {
         if (IsStarted)
-            StartTunnelFromId(
-                tunnelInfo.id,
-                () =>
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        ShowSnackBar(
-                            "隧道已在运行",
-                            $"隧道 {tunnelInfo.name} 已在运行中。",
-                            ControlAppearance.Danger,
-                            SymbolRegular.Warning24);
-                    });
-                }, isStart =>
-                {
-                    if (isStart)
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            ShowSnackBar("隧道启动成功",
-                                $"隧道 {tunnelInfo.name} 已成功启动，链接已复制到剪切板。",
-                                ControlAppearance.Success,
-                                SymbolRegular.Checkmark24);
-                            try
-                            {
-                                Clipboard.SetDataObject($"{tunnelInfo.ip}:{tunnelInfo.dorp}");
-                            }
-                            catch
-                            {
-                                // ignored
-                            }
-                        });
-                    else
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            ShowSnackBar("隧道启动失败",
-                                $"隧道 {tunnelInfo.name} 启动失败，具体请看日志。",
-                                ControlAppearance.Danger,
-                                SymbolRegular.TagError24);
-                            IsStarted = false;
-                        });
-                });
+            await tunnelInfo.StartAsync(
+             isStart =>
+             {
+                 Application.Current.Dispatcher.Invoke(() =>
+                 {
+                     switch (isStart)
+                     {
+                         case Started:
+                             {
+                                 ShowSnackBar("隧道启动成功",
+                                     $"隧道 {tunnelInfo.name} 已成功启动，链接已复制到剪切板。",
+                                     ControlAppearance.Success,
+                                     SymbolRegular.Checkmark24);
+                                 try
+                                 {
+                                     Clipboard.SetDataObject($"{tunnelInfo.ip}:{tunnelInfo.dorp}");
+                                 }
+                                 catch
+                                 {
+                                     // ignored
+                                 }
+                             }
+                             break;
+                         case Failed:
+                             {
+                                 ShowSnackBar("隧道启动失败",
+                                     $"隧道 {tunnelInfo.name} 启动失败，具体请看日志。",
+                                     ControlAppearance.Danger,
+                                     SymbolRegular.TagError24);
+                                 IsStarted = false;
+                                 break;
+                             }
+                         case AlreadyRunning:
+                             {
+                                 ShowSnackBar(
+                                     "隧道已在运行",
+                                     $"隧道 {tunnelInfo.name} 已在运行中。",
+                                     ControlAppearance.Danger,
+                                     SymbolRegular.Warning24);
+                                 break;
+                             }
+                     }
+                 });
+             });
         else
-            StopTunnelFromId(tunnelInfo.id);
+            await tunnelInfo.StopAsync();
     }
 
     [RelayCommand]

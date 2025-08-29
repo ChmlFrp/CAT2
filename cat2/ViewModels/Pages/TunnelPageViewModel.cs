@@ -51,7 +51,7 @@ public partial class TunnelPageViewModel : ObservableObject
         var settings = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath))?["StartedItems"];
 
         ListDataContext.Clear();
-        await Task.WhenAll(tunnelsData.Select(tunnel =>
+        await Task.WhenAll(tunnelsData.Select(async tunnel =>
         {
             var newItem = new TunnelViewModel(this, tunnel, runningTunnels[tunnel.id]);
             ListDataContext.Add(newItem);
@@ -59,7 +59,7 @@ public partial class TunnelPageViewModel : ObservableObject
                 !value.TryGetValue<bool>(out var isStarted) ||
                 !isStarted || newItem.IsStarted) return Task.CompletedTask;
             newItem.IsStarted = true;
-            newItem.OnTunnelClick();
+            await newItem.OnTunnelClick();
             return Task.CompletedTask;
         }));
 
