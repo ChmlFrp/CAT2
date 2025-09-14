@@ -10,7 +10,7 @@ jobs:
       matrix:
         config:
           - name: "single-file"
-            args: "-p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:SatelliteResourceLanguages=."
+            args: "-p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=true -p:SatelliteResourceLanguages=."
           - name: "ready-to-run"
             args: "-p:PublishReadyToRun=true -p:PublishReadyToRunComposite=true"
     runs-on: windows-latest
@@ -24,4 +24,6 @@ jobs:
       - uses: actions/upload-artifact@main
         with:
           name: Release-${{ matrix.config.name }}
-          path: '**/publish'
+          path: |
+             **/publish
+             !**/*.pdb
