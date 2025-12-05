@@ -20,7 +20,7 @@ jobs:
         with:
           path: ~/.nuget/packages
           key: nuget-cache
-      - run: dotnet publish -r win-x64 ${{ matrix.config.args }}
+      - run: dotnet publish -r win-x64 ${{ matrix.config.args }} -p:EnableWindowsTargeting=true
       - uses: actions/upload-artifact@main
         with:
           name: Release-${{ matrix.config.name }}
