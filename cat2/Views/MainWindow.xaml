@@ -9,7 +9,6 @@
     ExtendsContentIntoTitleBar="True"
     x:Class="CAT2.Views.MainWindow"
     MinHeight="450" MinWidth="600"
-    Height="525" Width="950"
     SizeChanged="OnSizeChanged"
     WindowBackdropType="Mica"
     Loaded="OnLoaded">

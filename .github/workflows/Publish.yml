@@ -13,7 +13,7 @@ jobs:
             args: "-p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=true -p:SatelliteResourceLanguages=."
           - name: "ready-to-run"
             args: "-p:PublishReadyToRun=true -p:PublishReadyToRunComposite=true"
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
       - uses: actions/cache@main

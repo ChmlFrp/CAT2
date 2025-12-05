@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using CAT2.Common;
 using CAT2.ViewModels.Items;
 using CommunityToolkit.Mvvm.Input;
 using static CAT2.Common.Constants;
@@ -15,15 +14,6 @@ namespace CAT2.ViewModels;
 public partial class SettingPageViewModel : ObservableObject
 {
     [ObservableProperty]
-    private string _assemblyName = Constants.AssemblyName;
-
-    [ObservableProperty]
-    private string _copyright = Constants.Copyright;
-
-    [ObservableProperty]
-    private string _fileVersion = $"文件版本：{Constants.FileVersion}";
-
-    [ObservableProperty]
     private bool _isClearedEnabled = true;
 
     [ObservableProperty]
@@ -31,10 +21,7 @@ public partial class SettingPageViewModel : ObservableObject
 
     [ObservableProperty]
     private Visibility _listVisibility = Visibility.Collapsed;
-
-    [ObservableProperty]
-    private string _version = Constants.Version;
-
+    
     public ObservableCollection<TunnelStartedViewModel> AutoStartedItems { get; } = [];
 
     public async Task Loaded()

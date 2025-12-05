@@ -42,14 +42,6 @@
             <ui:ListView.ItemTemplate>
                 <DataTemplate>
                     <ui:Card>
-                        <ui:Card.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem
-                                    Header="添加隧道"
-                                    Icon="{ui:SymbolIcon Add48}"
-                                    Command="{Binding ShowAddTunnelDialogCommand}" />
-                            </ContextMenu>
-                        </ui:Card.ContextMenu>
                         <Grid
                             ToolTip="{Binding Notes}"
                             Margin="10,0,10,0">

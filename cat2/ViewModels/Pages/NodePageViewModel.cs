@@ -18,8 +18,8 @@ public partial class NodePageViewModel : ObservableObject
     {
         IsLoadedEnabled = false;
 
+        var list = ListDataContext.ToList();
         var nodesData = await NodeActions.GetNodesDataListAsync();
-        ListDataContext.Clear();
         await Task.WhenAll(nodesData.Select(async nodeData =>
         {
             try
@@ -32,6 +32,8 @@ public partial class NodePageViewModel : ObservableObject
                 // ignored
             }
         }));
+        foreach (var item in list)
+            ListDataContext.Remove(item);
 
         IsLoadedEnabled = true;
     }

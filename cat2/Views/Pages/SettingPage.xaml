@@ -3,7 +3,6 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="clr-namespace:CAT2.ViewModels"
-
     x:Class="CAT2.Views.Pages.SettingPage">
 
     <Page.DataContext>
@@ -19,7 +18,6 @@
             Content="设置" />
 
         <ui:CardExpander
-            Padding="14"
             Margin="0,0,0,5">
             <ui:CardExpander.Icon>
                 <ui:SymbolIcon
@@ -54,7 +52,6 @@
         </ui:CardExpander>
 
         <ui:CardExpander
-            Padding="14"
             Margin="0,0,0,5">
             <ui:CardExpander.Icon>
                 <ui:SymbolIcon
@@ -105,65 +102,6 @@
                     </ui:ListView.ItemTemplate>
                 </ui:ListView>
             </Grid>
-        </ui:CardExpander>
-
-        <Label
-            Margin="5"
-            FontWeight="Bold"
-            Content="关于" />
-
-        <ui:CardExpander
-            Padding="14">
-            <ui:CardExpander.Icon>
-                <ui:ImageIcon
-                    Height="25"
-                    Source="pack://application:,,,/logo.ico" />
-            </ui:CardExpander.Icon>
-            <ui:CardExpander.Header>
-                <Grid>
-                    <ui:TextBlock
-                        TextWrapping="WrapWithOverflow">
-                        <Run
-                            Text="{Binding AssemblyName}" />
-                        <LineBreak />
-                        <Run
-                            Foreground="{ui:ThemeResource TextFillColorDisabledBrush}"
-                            Text="{Binding Copyright}"
-                            FontSize="14" />
-                    </ui:TextBlock>
-
-                    <Label
-                        Margin="10"
-                        Foreground="{ui:ThemeResource TextFillColorDisabledBrush}"
-                        HorizontalAlignment="Right"
-                        ToolTip="{Binding FileVersion}"
-                        Content="{Binding Version}" />
-                </Grid>
-            </ui:CardExpander.Header>
-
-            <StackPanel>
-                <TextBlock
-                    Margin="0,0,0,8"
-                    TextWrapping="WrapWithOverflow"
-                    Text="我是Qusay，目前是一名初中生，正在编写此应用程序。QQ:2976779544" />
-
-                <StackPanel
-                    Orientation="Horizontal">
-                    <ui:HyperlinkButton
-                        Icon="{ui:SymbolIcon Link48}"
-                        Content="查看作者BiliBili首页"
-                        Padding="8"
-                        NavigateUri="https://space.bilibili.com/1582404131"
-                        Margin="0,0,10,0" />
-
-                    <ui:HyperlinkButton
-                        Icon="{ui:SymbolIcon Link48}"
-                        Content="查看Github项目"
-                        Padding="8"
-                        NavigateUri="https://cat2.chmlfrp.com"
-                        ToolTip="Github可能访问不上(⊙﹏⊙)" />
-                </StackPanel>
-            </StackPanel>
         </ui:CardExpander>
     </StackPanel>
 </Page>
