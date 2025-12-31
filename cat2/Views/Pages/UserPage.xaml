@@ -67,7 +67,6 @@
                     Icon="{ui:SymbolIcon ArrowClockwise48}"
                     Padding="20,8"
                     Margin="0,0,8,0"
-                    IsEnabled="{Binding IsLoadedEnabled}"
                     Command="{Binding LoadedCommand}" />
                 <ui:Button
                     Appearance="Primary"

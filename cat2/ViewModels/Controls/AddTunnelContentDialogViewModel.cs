@@ -8,11 +8,14 @@ namespace CAT2.ViewModels.Controls;
 
 public partial class AddTunnelContentDialogViewModel : ObservableObject
 {
+    public AddTunnelContentDialogViewModel()
+    {
+        _ = LoadNodesAsync();
+    }
+    
     [ObservableProperty] private bool _isTunnelEnabled;
     [ObservableProperty] private string _localIp = "127.0.0.1";
     [ObservableProperty] private string _localPort;
-    [ObservableProperty] private int _maximum;
-    [ObservableProperty] private int _minimum;
     [ObservableProperty] private ObservableCollection<NodeViewModel> _nodeDataContext = [];
 
     [ObservableProperty] private Visibility _numberBoxVisibility = Visibility.Visible;
@@ -36,15 +39,6 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
         }
     }
 
-    async partial void OnSelectedItemChanged(NodeViewModel value)
-    {
-        var nodeInfo = await NodeActions.GetNodeInfoAsync(value.Name);
-        if (nodeInfo == null) return;
-        var sArray = nodeInfo.rport.Split('-');
-        Minimum = int.Parse(sArray[0]);
-        Maximum = int.Parse(sArray[1]);
-    }
-
     partial void OnRemotePortChanged(string value)
     {
         IsTunnelEnabled = !string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(LocalPort);
@@ -53,11 +47,6 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
     partial void OnLocalPortChanged(string value)
     {
         IsTunnelEnabled = !string.IsNullOrEmpty(RemotePort) && !string.IsNullOrEmpty(value);
-    }
-
-    public virtual async void LoadNodes(object sender, RoutedEventArgs e)
-    {
-        await LoadNodesAsync();
     }
 
     protected async Task<List<Classes.NodeDataClass>> LoadNodesAsync()
@@ -72,7 +61,7 @@ public partial class AddTunnelContentDialogViewModel : ObservableObject
             NodeDataContext.Add(new(node));
             return Task.CompletedTask;
         }));
-        WritingLog(NodeDataContext.Count != 0 ? "节点数据加载成功" : "节点数据加载失败");
+
         return nodeData;
     }
 }

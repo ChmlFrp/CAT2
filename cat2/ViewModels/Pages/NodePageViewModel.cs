@@ -8,17 +8,16 @@ namespace CAT2.ViewModels;
 
 public partial class NodePageViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private bool _isLoadedEnabled;
-
+    public NodePageViewModel()
+    {
+        // _ = Loaded();
+    }
+    
     public ObservableCollection<NodeInfoViewModel> ListDataContext { get; } = [];
 
     [RelayCommand]
     public async Task Loaded()
     {
-        IsLoadedEnabled = false;
-
-        var list = ListDataContext.ToList();
         var nodesData = await NodeActions.GetNodesDataListAsync();
         await Task.WhenAll(nodesData.Select(async nodeData =>
         {
@@ -32,9 +31,5 @@ public partial class NodePageViewModel : ObservableObject
                 // ignored
             }
         }));
-        foreach (var item in list)
-            ListDataContext.Remove(item);
-
-        IsLoadedEnabled = true;
     }
 }

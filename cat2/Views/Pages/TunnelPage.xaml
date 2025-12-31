@@ -48,7 +48,6 @@
                     Icon="{ui:SymbolIcon ArrowClockwise24}"
                     Padding="6"
                     FontSize="16"
-                    IsEnabled="{Binding IsLoadedEnabled}"
                     Command="{Binding LoadedCommand}" />
             </StackPanel>
         </ui:CardControl>

@@ -8,43 +8,28 @@ public partial class MainWindow
 {
     public MainWindow()
     {
+        App.MainWindw = this;
         InitializeComponent();
         ApplicationThemeManager.ApplySystemTheme();
         SystemThemeWatcher.Watch(this);
-        SnackBarService.SetSnackbarPresenter(RootSnackbarDialog);
-        ContentDialogService.SetDialogHost(RootContentDialogPresenter);
+        App.SnackBarService.SetSnackbarPresenter(RootSnackbarDialog);
+        App.ContentDialogService.SetDialogHost(RootContentDialogPresenter);
     }
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        var first = true;
-        OnIsLoggedInChange += value =>
+        if (await AutoLoginAsync())
         {
-            if (value)
-            {
-                LoginItem.Visibility = Collapsed;
-                TunnelItem.Visibility = Visible;
-                NodeItem.Visibility = Visible;
-                UserItem.Visibility = Visible;
-
-                if (first)
-                    RootNavigation.Navigate("管理隧道");
-                first = false;
-            }
-            else
-            {
-                LoginItem.Visibility = Visible;
-                TunnelItem.Visibility = Collapsed;
-                NodeItem.Visibility = Collapsed;
-                UserItem.Visibility = Collapsed;
-
-                RootNavigation.Navigate("登录");
-                first = true;
-            }
-        };
-
-        await AutoLoginAsync();
-        WritingLog("主窗口加载完成");
+            LoginItem.Visibility = Collapsed;
+            TunnelItem.Visibility = Visible;
+            NodeItem.Visibility = Visible;
+            UserItem.Visibility = Visible; 
+            RootNavigation.Navigate("用户信息");
+        }
+        else
+        {
+            RootNavigation.Navigate("登录");
+        }
     }
 
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)

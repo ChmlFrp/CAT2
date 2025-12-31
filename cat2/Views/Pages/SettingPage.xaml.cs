@@ -2,10 +2,5 @@
 
 public partial class SettingPage
 {
-    public SettingPage()
-    {
-        InitializeComponent();
-        var vm = (SettingPageViewModel)DataContext;
-        Loaded += async (_, _) => await vm.Loaded();
-    }
+    public SettingPage() => InitializeComponent();
 }

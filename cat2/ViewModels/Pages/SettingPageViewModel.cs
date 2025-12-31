@@ -6,15 +6,16 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using CAT2.ViewModels.Items;
 using CommunityToolkit.Mvvm.Input;
-using static CAT2.Common.Constants;
 using static ChmlFrp.SDK.TunnelActions;
 
 namespace CAT2.ViewModels;
 
 public partial class SettingPageViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private bool _isClearedEnabled = true;
+    public SettingPageViewModel()
+    {
+        _ = Loaded();
+    }
 
     [ObservableProperty]
     private Visibility _labelVisibility = Visibility.Visible;
@@ -38,7 +39,7 @@ public partial class SettingPageViewModel : ObservableObject
             ListVisibility = Visibility.Visible;
 
             AutoStartedItems.Clear();
-            var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
+            var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(App.SettingsFilePath));
             foreach (var tunnelData in tunnelsData)
                 if (deserialize?["StartedItems"]?[$"{tunnelData.name}({tunnelData.type.ToUpperInvariant()})"] is
                         JsonValue
@@ -53,28 +54,26 @@ public partial class SettingPageViewModel : ObservableObject
     [RelayCommand]
     private async Task WriteSettings()
     {
-        var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath));
+        var deserialize = JsonNode.Parse(await File.ReadAllTextAsync(App.SettingsFilePath));
         Dictionary<string, bool> items = [];
         foreach (var item in AutoStartedItems)
             if (item.IsStarted)
                 items.Add(item.Name, true);
         deserialize!["StartedItems"] = JsonSerializer.SerializeToNode(items);
-        await File.WriteAllTextAsync(SettingsFilePath, deserialize!.ToJsonString());
+        await File.WriteAllTextAsync(App.SettingsFilePath, deserialize!.ToJsonString());
     }
 
     [RelayCommand]
     private void Cleared()
     {
-        IsClearedEnabled = false;
         foreach (var cacheFile in Directory.GetFiles(DataPath, "*.log"))
             File.Delete(cacheFile);
 
-        ShowSnackBar(
+        App.ShowSnackBar(
             "缓存已清理",
             "所有缓存文件已被删除。",
             ControlAppearance.Success,
             SymbolRegular.PresenceAvailable24);
-        IsClearedEnabled = true;
     }
 
     [RelayCommand]

@@ -6,13 +6,6 @@ on:
     paths: [ 'cat2/**','**/Publish.yml' ]
 jobs:
   publish:
-    strategy:
-      matrix:
-        config:
-          - name: "single-file"
-            args: "-p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=true -p:SatelliteResourceLanguages=."
-          - name: "ready-to-run"
-            args: "-p:PublishReadyToRun=true -p:PublishReadyToRunComposite=true"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
@@ -20,10 +13,10 @@ jobs:
         with:
           path: ~/.nuget/packages
           key: nuget-cache
-      - run: dotnet publish -r win-x64 ${{ matrix.config.args }} -p:EnableWindowsTargeting=true
+      - run: dotnet publish -r win-x64 -p:PublishSingleFile=true -p:IncludeAllContentForSelfExtract=true -p:InvariantGlobalization=true -p:EnableWindowsTargeting=true
       - uses: actions/upload-artifact@main
         with:
-          name: Release-${{ matrix.config.name }}
+          name: Release
           path: |
              **/publish
              !**/*.pdb

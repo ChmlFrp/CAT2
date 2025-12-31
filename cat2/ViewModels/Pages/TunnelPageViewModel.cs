@@ -6,22 +6,23 @@ using System.Text.Json.Nodes;
 using CAT2.ViewModels.Items;
 using CAT2.Views.Controls;
 using CommunityToolkit.Mvvm.Input;
-using static CAT2.Common.Constants;
 using static ChmlFrp.SDK.TunnelActions;
 
 namespace CAT2.ViewModels;
 
 public partial class TunnelPageViewModel : ObservableObject
 {
-    [ObservableProperty]
-    private bool _isLoadedEnabled;
+    public TunnelPageViewModel()
+    {
+        // _ = Loaded();
+    }
 
     public ObservableCollection<TunnelViewModel> ListDataContext { get; } = [];
 
     [RelayCommand]
     private async Task ShowDialog()
     {
-        await new AddTunnelContentDialog(ContentDialogService.GetDialogHost(), this).ShowAsync();
+        await new AddTunnelContentDialog(App.ContentDialogService.GetDialogHost(), this).ShowAsync();
     }
 
     [RelayCommand]
@@ -35,20 +36,16 @@ public partial class TunnelPageViewModel : ObservableObject
     [RelayCommand]
     public async Task Loaded()
     {
-        IsLoadedEnabled = false;
         var tunnelsData = await GetTunnelListAsync();
 
         if (tunnelsData.Count == 0)
         {
             ListDataContext.Clear();
-            IsLoadedEnabled = true;
             return;
         }
-
-        WritingLog($"加载到 {tunnelsData.Count} 个隧道信息");
-
+        
         var runningTunnels = await IsTunnelRunningAsync(tunnelsData);
-        var settings = JsonNode.Parse(await File.ReadAllTextAsync(SettingsFilePath))?["StartedItems"];
+        var settings = JsonNode.Parse(await File.ReadAllTextAsync(App.SettingsFilePath))?["StartedItems"];
 
         ListDataContext.Clear();
         await Task.WhenAll(tunnelsData.Select(async tunnel =>
@@ -62,7 +59,5 @@ public partial class TunnelPageViewModel : ObservableObject
             await newItem.OnTunnelClick();
             return Task.CompletedTask;
         }));
-
-        IsLoadedEnabled = true;
     }
 }

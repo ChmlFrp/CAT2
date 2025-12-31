@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <UseWPF>true</UseWPF>
-        <Version>1.1.9.1</Version>
+        <Version>1.2.0.1</Version>
         <OutputType>WinExe</OutputType>
         <LangVersion>preview</LangVersion>
         <ApplicationIcon>logo.ico</ApplicationIcon>

@@ -86,8 +86,8 @@
         <ui:NumberBox
             Visibility="{Binding NumberBoxVisibility}"
             Text="{Binding RemotePort,UpdateSourceTrigger=PropertyChanged}"
-            Maximum="{Binding Maximum}"
-            Minimum="{Binding Minimum}"
+            Maximum="65534"
+            Minimum="1"
             PlaceholderText="外网端口" />
 
         <ui:TextBox

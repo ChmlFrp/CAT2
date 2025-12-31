@@ -47,7 +47,6 @@
                 FontSize="18"
                 Header="清除隧道日志缓存"
                 Icon="{ui:SymbolIcon CommentOff24}"
-                IsEnabled="{Binding IsClearedEnabled}"
                 Command="{Binding ClearedCommand}" />
         </ui:CardExpander>
 

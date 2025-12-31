@@ -1,11 +1,19 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Wpf.Ui;
 using Wpf.Ui.Extensions;
 
-namespace CAT2.Common;
+namespace CAT2;
 
-public static class DialogService
+public partial class App
 {
+    public static Window MainWindw;
+
+    public static readonly string AssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+
+    public static readonly string SettingsFilePath = Path.Combine(DataPath, "Settings-CAT2.json");
+    
     public static readonly SnackbarService SnackBarService = new();
 
     public static readonly ContentDialogService ContentDialogService = new();

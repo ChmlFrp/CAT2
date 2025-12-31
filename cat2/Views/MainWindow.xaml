@@ -4,13 +4,14 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:pages="clr-namespace:CAT2.Views.Pages"
     xmlns:vm="clr-namespace:CAT2.ViewModels"
+    xmlns:local="clr-namespace:CAT2"
 
-    Title="{Binding AssemblyName}"
+    Title="{x:Static local:App.AssemblyName}"
     ExtendsContentIntoTitleBar="True"
     x:Class="CAT2.Views.MainWindow"
     MinHeight="450" MinWidth="600"
+    WindowBackdropType="Auto"
     SizeChanged="OnSizeChanged"
-    WindowBackdropType="Mica"
     Loaded="OnLoaded">
 
     <ui:FluentWindow.DataContext>
@@ -62,7 +63,6 @@
                         Content="管理隧道"
                         Name="TunnelItem"
                         Visibility="Collapsed"
-                        NavigationCacheMode="Required"
                         Icon="{ui:SymbolIcon AlignLeft48}"
                         TargetPageType="{x:Type pages:TunnelPage}" />
 
@@ -70,7 +70,6 @@
                         Content="查看节点"
                         Name="NodeItem"
                         Visibility="Collapsed"
-                        NavigationCacheMode="Required"
                         Icon="{ui:SymbolIcon AppsListDetail24}"
                         TargetPageType="{x:Type pages:NodePage}" />
 
@@ -78,7 +77,6 @@
                         Content="用户信息"
                         Name="UserItem"
                         Visibility="Collapsed"
-                        NavigationCacheMode="Required"
                         Icon="{ui:SymbolIcon BookContacts32}"
                         TargetPageType="{x:Type pages:UserPage}" />
                 </ui:NavigationView.MenuItems>
@@ -86,7 +84,6 @@
                 <ui:NavigationView.FooterMenuItems>
                     <ui:NavigationViewItem
                         Content="设置"
-                        NavigationCacheMode="Required"
                         Icon="{ui:SymbolIcon Settings48}"
                         TargetPageType="{x:Type pages:SettingPage}" />
                 </ui:NavigationView.FooterMenuItems>

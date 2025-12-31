@@ -29,13 +29,13 @@ public partial class LoginPageViewModel : ObservableObject
     {
         if (await LoginWithCredentialsAsync(Username, Password, msg =>
             {
-                ShowSnackBar(
+                App.ShowSnackBar(
                     "登录错误",
                     msg == null ? "网络错误，请稍后再试。" : $"{msg}",
                     ControlAppearance.Danger,
                     SymbolRegular.TagError24);
             }))
-            ShowSnackBar(
+            App.ShowSnackBar(
                 "登录成功！",
                 $"欢迎回来，{Username}！",
                 ControlAppearance.Success,
@@ -45,7 +45,7 @@ public partial class LoginPageViewModel : ObservableObject
     [RelayCommand]
     private async Task RegisterClick()
     {
-        ShowSnackBar(
+        App.ShowSnackBar(
             "跳转至网页中...",
             "请稍等...",
             ControlAppearance.Info,

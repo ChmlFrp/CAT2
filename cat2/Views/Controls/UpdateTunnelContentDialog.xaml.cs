@@ -23,8 +23,8 @@ public partial class UpdateTunnelContentDialog
         InitializeComponent();
 
         _viewModel = new UpdateTunnelContentDialogViewModel(_tunnelInfo);
+        _ = _viewModel.LoadNodes();
         DataContext = _viewModel;
-        Loaded += _viewModel.LoadNodes;
     }
 
     protected override async void OnButtonClick(ContentDialogButton button)
@@ -41,22 +41,20 @@ public partial class UpdateTunnelContentDialog
             _viewModel.LocalPort,
             _viewModel.RemotePort
         );
-
-        WritingLog($"更新隧道返回：{msg}");
-
+        
         if (string.IsNullOrEmpty(msg))
-            ShowSnackBar(
+            App.ShowSnackBar(
                 "隧道更新失败",
                 "请检查网络状态，或查看API状态。",
                 ControlAppearance.Danger,
                 SymbolRegular.TagError24);
         else if (msg.Contains("成功"))
-            ShowSnackBar("隧道更新成功",
+            App.ShowSnackBar("隧道更新成功",
                 $"{_tunnelInfo.name}已更新至隧道列表。",
                 ControlAppearance.Success,
                 SymbolRegular.Checkmark24);
         else
-            ShowSnackBar("隧道创建失败",
+            App.ShowSnackBar("隧道创建失败",
                 $"{msg}",
                 ControlAppearance.Danger,
                 SymbolRegular.TagError24);

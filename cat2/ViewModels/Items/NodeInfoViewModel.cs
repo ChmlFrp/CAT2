@@ -29,6 +29,6 @@ public partial class NodeInfoViewModel(
     [RelayCommand]
     private async Task ShowAddTunnelDialogAsync()
     {
-        await new AddTunnelContentDialog(ContentDialogService.GetDialogHost()).ShowAsync();
+        await new AddTunnelContentDialog(App.ContentDialogService.GetDialogHost()).ShowAsync();
     }
 }
